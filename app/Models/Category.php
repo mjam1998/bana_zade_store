@@ -12,7 +12,6 @@ class Category extends Model
 
     protected $fillable = [
       'name',
-      'super_category_id',
       'slug',
       'meta_title',
       'meta_description',
@@ -20,12 +19,13 @@ class Category extends Model
         'image',
         'image_alt',
         'image_title',
-        'is_list'
+         'is_active'
 
     ];
-    public function superCategory(){
-        return $this->belongsTo(SuperCategory::class);
-    }
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
     public function products()
     {
         return $this->hasMany(Product::class);
@@ -40,5 +40,12 @@ class Category extends Model
                 $product->delete();
             });
         });
+
+        static::updated(function ($category) {
+            if ($category->wasChanged('is_active') && !$category->is_active) {
+                $category->products()->update(['is_active' => false]);
+            }
+        });
+
     }
 }

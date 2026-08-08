@@ -15,12 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('category_id');
             $table->string('name','400');
+            $table->string('unit_name','400');
             $table->string('slug','400')->unique();
-            $table->string('code','400')->unique();
-            $table->string('size','400')->nullable();
             $table->bigInteger('count')->nullable();
-            $table->decimal('price',15,0)->nullable();
-            $table->decimal('discount',15,0)->nullable();
+            $table->decimal('base_price',15,0)->nullable();
             $table->text('description')->nullable();
             $table->string('meta_title','400')->nullable();
             $table->string('meta_description','400')->nullable();
@@ -28,7 +26,8 @@ return new class extends Migration
             $table->string('image','400')->nullable();
             $table->string('image_alt','400')->nullable();
             $table->string('image_title','400')->nullable();
-            $table->boolean('has_sub_product')->default(false);
+            $table->boolean('is_special')->default(false);
+            $table->boolean('is_active')->default(true);
             $table->softDeletes();
             $table->timestamps();
             $table->foreign('category_id')->references('id')->on('categories');

@@ -12,11 +12,7 @@ class User extends Authenticatable
     protected  $fillable=[
         'name',
         'mobile',
-        'type',
         'password'
     ];
 
-    protected $casts=[
-      'type'=>UserType::class,
-    ];
 }

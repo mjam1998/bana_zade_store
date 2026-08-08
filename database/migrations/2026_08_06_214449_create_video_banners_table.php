@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('send_methods', function (Blueprint $table) {
+        Schema::create('video_banners', function (Blueprint $table) {
             $table->id();
-            $table->string('name','255');
-            $table->text('description');
-            $table->softDeletes();
+            $table->string('video_mp4');
+            $table->string('video_webm');
+            $table->string('image');
+            $table->string('image_alt');
+            $table->string('meta_description');
+            $table->string('page_title');
             $table->timestamps();
         });
     }
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('send_methods');
+        Schema::dropIfExists('video_banners');
     }
 };

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('send_method_id');
+            $table->unsignedBigInteger('user_id');
             $table->tinyInteger('status')->default(0);
             $table->string('name','255');
             $table->string('code','20')->nullable()->unique();
@@ -31,7 +31,7 @@ return new class extends Migration
             $table->timestamp('send_at')->nullable();
             $table->timestamp('paid_at')->nullable();
             $table->timestamps();
-            $table->foreign('send_method_id')->references('id')->on('send_methods');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

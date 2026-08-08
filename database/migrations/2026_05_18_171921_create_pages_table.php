@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('meta_title','400')->nullable();
             $table->string('meta_description','400')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->softDeletes();
             $table->timestamps();
         });

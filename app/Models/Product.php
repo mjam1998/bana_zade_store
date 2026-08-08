@@ -13,10 +13,8 @@ class Product extends Model
       'name',
       'category_id',
       'slug',
-      'code',
-      'size',
       'count',
-      'price',
+      'base_price',
       'discount',
       'description',
       'meta_title',
@@ -25,11 +23,14 @@ class Product extends Model
       'image',
       'image_alt',
       'image_title',
-        'has_sub_product'
+        'is_special',
+        'is_active',
+        'unit_name'
     ];
 
     protected $casts = [
-        'has_sub_product' => 'boolean',
+        'is_special' => 'boolean',
+        'is_active' => 'boolean',
     ];
 
     public function category(){
@@ -42,20 +43,30 @@ class Product extends Model
     public function orderItems(){
         return $this->hasMany(OrderItem::class);
     }
-    public function subProducts()
+
+    public function productPriceTiers()
     {
-        return $this->hasMany(SubProduct::class);
+        return $this->hasMany(ProductPriceTier::class);
     }
+    public function unitPriceFor(int $qty): int
+    {
+        $tier = $this->priceTiers()
+            ->where('min_qty', '<=', $qty)
+            ->where(function ($q) use ($qty) {
+                $q->whereNull('max_qty')->orWhere('max_qty', '>=', $qty);
+            })
+            ->orderByDesc('min_qty')
+            ->first();
+
+        return $tier?->unit_price ?? $this->base_price;
+    }
+
     protected static function booted()
     {
         static::deleting(function ($product) {
             $product->update([
                 'slug'=> $product->slug . '_deleted_'.time(),
-                'code'=> $product->code . '_deleted_'.time(),
             ]);
-            $product->subProducts()->each(function ($subProduct) {
-                $subProduct->delete();
-            });
             $product->comments()->each(function ($comment) {
                 $comment->delete();
             });

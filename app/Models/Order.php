@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     protected $fillable = [
-      'send_method_id',
+      'user_id',
         'code',
       'status',
       'name',
@@ -32,9 +32,9 @@ class Order extends Model
         'is_paid' => 'boolean',
     ];
 
-    public function sendMethod()
+    public function user()
     {
-        return $this->belongsTo(SendMethod::class);
+        return $this->belongsTo(User::class);
     }
     public function orderItems()
     {

@@ -15,5 +15,10 @@ class Page extends Model
         'slug',
         'meta_title',
         'meta_description',
+        'is_active',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
     ];
 }

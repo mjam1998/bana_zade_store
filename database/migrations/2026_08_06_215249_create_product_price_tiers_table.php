@@ -11,16 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sub_products', function (Blueprint $table) {
+        Schema::create('product_price_tiers', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->nullable()->unique();
             $table->unsignedBigInteger('product_id');
-            $table->string('name','400');
-            $table->decimal('price',15,0)->nullable();
-            $table->decimal('discount',15,0)->nullable();
-            $table->softDeletes();
+            $table->unsignedInteger('min_qty');
+            $table->unsignedInteger('max_qty')->nullable();
+            $table->decimal('unit_price',15,0)->nullable();
             $table->timestamps();
             $table->foreign('product_id')->references('id')->on('products');
+            $table->index(['product_id', 'min_qty', 'max_qty']);
         });
     }
 
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sub_products');
+        Schema::dropIfExists('product_price_tiers');
     }
 };
