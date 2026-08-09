@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name','255');
             $table->string('mobile','12');
             $table->string('password','400');
+            $table->boolean('is_active')->default(true);
             $table->softDeletes();
             $table->timestamps();
         });

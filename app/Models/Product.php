@@ -25,7 +25,8 @@ class Product extends Model
       'image_title',
         'is_special',
         'is_active',
-        'unit_name'
+        'unit_name',
+        'min_shop_count'
     ];
 
     protected $casts = [

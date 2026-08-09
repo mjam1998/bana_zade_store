@@ -12,7 +12,16 @@ class User extends Authenticatable
     protected  $fillable=[
         'name',
         'mobile',
-        'password'
+        'password',
+        'is_active',
     ];
 
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

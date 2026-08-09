@@ -1,400 +1,628 @@
 @extends('front.layout.master')
 
-
-@section('meta_title', 'فروشگاه آقای صفر تا صد | تجهیزات تاسیسات')
-@section('meta_description', 'خرید آنلاین تجهیزات تاسیسات، لوله، شیرآلات و اتصالات با بهترین قیمت و ارسال سریع از فروشگاه آقای صفر تا صد')
-@section('meta_keywords', 'تجهیزات تاسیسات، خرید لوله، شیرآلات، اتصالات، فروشگاه تاسیسات اصفهان')
-
-@push('canonical')
-    <link rel="canonical" href="{{ route('home') }}">
-@endpush
-
-
-
-
 @section('content')
-    <!-- SLIDER SECTION -->
-    <section class="w-full transition-colors duration-500" >
-        <div class="w-full px-4 sm:px-6 lg:px-8">
-            <!--Slider-->
-            <div class="relative group overflow-hidden rounded-2xl sm:rounded-3xl lg:rounded-[2.5rem]">
+    <!-- Hero Section -->
+    <section class="hero text-center">
+        <div class="container position-relative z-1">
+            <h1 class="display-4 fw-bold mb-4">  بازرگانی بنازاده</h1>
+            <p class="lead mb-5 opacity-75 fw-light mx-auto" style="max-width: 700px;"> تأمین مستقیم مواد غذایی با بهترین قیمت برای فروشگاه‌ها، رستوران‌ها و عمده‌فروشان سراسر کشور مستقیم از کارخانه</p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <a href="#products" class="btn btn-light text-primary btn-lg px-5 shadow">مشاهده محصولات</a>
 
-                <div class="swiper mainHeroSwiper h-full min-h-[300px] sm:min-h-[400px] lg:min-h-[500px]" >
-                    <div class="swiper-wrapper" >
-                        @foreach($sliders as $slider)
-                            <div class="swiper-slide relative">
-                                <!-- اضافه شدن pointer-events-none -->
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none z-10"></div>
+            </div>
+        </div>
+    </section>
 
-                                <!-- اضافه شدن کلاس‌ها برای پر کردن کل فضای اسلاید -->
-                                <a href="{{$slider->url}}" class="block w-full h-full relative z-20">
-                                    <img src="{{asset('banners/'.$slider->image)}}" alt="{{$slider->image_alt}}" title="{{$slider->image_title}}" class="w-full h-full object-cover">
+    <!-- Categories -->
+    <section id="categories" class="py-5 mt-4">
+        <div class="container position-relative">
+            <div class="d-flex justify-content-between align-items-center mb-5">
+                <h2 class="fw-bold mb-0 text-primary">دسته‌بندی‌ها</h2>
+                <a href="#" class="btn btn-sm btn-outline-primary rounded-pill px-4">همه دسته‌ها</a>
+            </div>
+
+            <!-- Swiper -->
+            <div class="swiper categorySwiper pb-4 px-2">
+                <div class="swiper-wrapper">
+                    <!-- دسته ۱ -->
+                    <div class="swiper-slide">
+                        <div class="card category-card text-center h-100">
+                            <div class="card-body py-4">
+                                <img src="assets/img/rice.jpg" alt="نوشیدنی‌ها" class="category-img mb-3 mx-auto d-block">
+                                <h6 class="mb-0 fw-bold">نوشیدنی‌ها</h6>
+                                <i class="bi bi-arrow-left-short category-arrow"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- دسته ۲ -->
+                    <div class="swiper-slide">
+                        <div class="card category-card text-center h-100">
+                            <div class="card-body py-4">
+                                <img src="assets/img/rice.jpg" alt="لبنیات" class="category-img mb-3 mx-auto d-block">
+                                <h6 class="mb-0 fw-bold">لبنیات</h6>
+                                <i class="bi bi-arrow-left-short category-arrow"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <div class="card category-card text-center h-100">
+                            <div class="card-body py-4">
+                                <img src="assets/img/rice.jpg" alt="لبنیات" class="category-img mb-3 mx-auto d-block">
+                                <h6 class="mb-0 fw-bold">لبنیات</h6>
+                                <i class="bi bi-arrow-left-short category-arrow"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="card category-card text-center h-100">
+                            <div class="card-body py-4">
+                                <img src="assets/img/rice.jpg" alt="لبنیات" class="category-img mb-3 mx-auto d-block">
+                                <h6 class="mb-0 fw-bold">لبنیات</h6>
+                                <i class="bi bi-arrow-left-short category-arrow"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- دسته ۳ -->
+                    <div class="swiper-slide">
+                        <div class="card category-card text-center h-100">
+                            <div class="card-body py-4">
+                                <img src="assets/img/rice.jpg" alt="حبوبات و غلات" class="category-img mb-3 mx-auto d-block">
+                                <h6 class="mb-0 fw-bold">حبوبات و غلات</h6>
+                                <i class="bi bi-arrow-left-short category-arrow"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- دسته ۴ -->
+                    <div class="swiper-slide">
+                        <div class="card category-card text-center h-100">
+                            <div class="card-body py-4">
+                                <img src="assets/img/rice.jpg" alt="روغن و چاشنی" class="category-img mb-3 mx-auto d-block">
+                                <h6 class="mb-0 fw-bold">روغن و چاشنی</h6>
+                                <i class="bi bi-arrow-left-short category-arrow"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- دسته ۵ -->
+                    <div class="swiper-slide">
+                        <div class="card category-card text-center h-100">
+                            <div class="card-body py-4">
+                                <img src="assets/img/rice.jpg" alt="مواد بسته‌بندی" class="category-img mb-3 mx-auto d-block">
+                                <h6 class="mb-0 fw-bold">مواد بسته‌بندی</h6>
+                                <i class="bi bi-arrow-left-short category-arrow"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- دسته ۶ -->
+                    <div class="swiper-slide">
+                        <div class="card category-card text-center h-100">
+                            <div class="card-body py-4">
+                                <img src="assets/img/rice.jpg" alt="منجمد و یخچالی" class="category-img mb-3 mx-auto d-block">
+                                <h6 class="mb-0 fw-bold">منجمد و یخچالی</h6>
+                                <i class="bi bi-arrow-left-short category-arrow"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="container">
+            <div class="promo-banner d-flex align-items-center p-4 p-md-5"
+                 style="background: linear-gradient(135deg, #0d6efd 0%, #06357a 100%); border-radius:  40px 40px; box-shadow: 0 10px 30px rgba(13,110,253,0.15); overflow: hidden;">
+                <div class="d-flex flex-column flex-md-row align-items-center justify-content-between w-100 gap-4">
+                    <div class="text-white text-center text-md-start">
+                        <h3 class="fw-bold mb-2">هر چقدر بیشتر بخری، ارزان‌تر می‌شه!</h3>
+                        <p class="mb-0 fs-5" style="opacity:0.85;">با افزایش تعداد و حجم خرید، قیمت هر محصول کاهش می‌یابد</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products: Discounted (Slider) -->
+    <section id="discounted-products" class="py-5 discount-section">
+        <div class="container position-relative">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold mb-0 text-danger"><i class="bi bi-tags me-2"></i>محصولات با تخفیف ویژه</h2>
+
+                <a href="#" class="btn btn-sm btn-outline-danger rounded-pill px-4">مشاهده همه تخفیف‌ها</a>
+            </div>
+
+            <!-- Swiper -->
+            <div class="swiper productSwiper pb-4 px-2">
+                <div class="swiper-wrapper">
+                    <!-- Discount Product 1 -->
+                    <div class="swiper-slide">
+                        <div class="card product-card h-100 border-danger border-opacity-25">
+                            <div class="position-relative">
+                                <img src="assets/img/rice.jpg" class="card-img-top product-img" alt="شکر">
+                                <span class="badge-discount position-absolute top-0 start-0 m-3">٪۱۵ تخفیف</span>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-title fw-bold mb-2">شکر سفید ۵۰ کیلویی (فروش ویژه)</h6>
+                                <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>حداقل سفارش: ۲ گونی</p>
+                                <div class="d-flex justify-content-between align-items-end mt-auto">
+                                    <div>
+                                        <div class="old-price text-decoration-line-through text-muted small">۲٬۴۵۰٬۰۰۰</div>
+                                        <div class="price text-danger fw-bold fs-5">۲٬۰۸۲٬۵۰۰ <span class="fs-6 text-muted fw-normal">تومان</span></div>
+                                    </div>
+                                    <button class="btn cart-btn">
+                                        <i class="bi bi-cart-plus fs-5"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Discount Product 1 -->
+                    <div class="swiper-slide">
+                        <div class="card product-card h-100 border-danger border-opacity-25">
+                            <div class="position-relative">
+                                <img src="assets/img/rice.jpg" class="card-img-top product-img" alt="شکر">
+                                <span class="badge-discount position-absolute top-0 start-0 m-3">٪۱۵ تخفیف</span>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-title fw-bold mb-2">شکر سفید ۵۰ کیلویی (فروش ویژه)</h6>
+                                <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>حداقل سفارش: ۲ گونی</p>
+                                <div class="d-flex justify-content-between align-items-end mt-auto">
+                                    <div>
+                                        <div class="old-price text-decoration-line-through text-muted small">۲٬۴۵۰٬۰۰۰</div>
+                                        <div class="price text-danger fw-bold fs-5">۲٬۰۸۲٬۵۰۰ <span class="fs-6 text-muted fw-normal">تومان</span></div>
+                                    </div>
+                                    <button class="btn btn-danger rounded-circle shadow-sm text-white" style="padding: 10px 12px;">
+                                        <i class="bi bi-cart-plus fs-5"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Discount Product 1 -->
+                    <div class="swiper-slide">
+                        <div class="card product-card h-100 border-danger border-opacity-25">
+                            <div class="position-relative">
+                                <img src="assets/img/rice.jpg" class="card-img-top product-img" alt="شکر">
+                                <span class="badge-discount position-absolute top-0 start-0 m-3">٪۱۵ تخفیف</span>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-title fw-bold mb-2">شکر سفید ۵۰ کیلویی (فروش ویژه)</h6>
+                                <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>حداقل سفارش: ۲ گونی</p>
+                                <div class="d-flex justify-content-between align-items-end mt-auto">
+                                    <div>
+                                        <div class="old-price text-decoration-line-through text-muted small">۲٬۴۵۰٬۰۰۰</div>
+                                        <div class="price text-danger fw-bold fs-5">۲٬۰۸۲٬۵۰۰ <span class="fs-6 text-muted fw-normal">تومان</span></div>
+                                    </div>
+                                    <button class="btn btn-danger rounded-circle shadow-sm text-white" style="padding: 10px 12px;">
+                                        <i class="bi bi-cart-plus fs-5"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Discount Product 1 -->
+                    <div class="swiper-slide">
+                        <div class="card product-card h-100 border-danger border-opacity-25">
+                            <div class="position-relative">
+                                <img src="assets/img/rice.jpg" class="card-img-top product-img" alt="شکر">
+                                <span class="badge-discount position-absolute top-0 start-0 m-3">٪۱۵ تخفیف</span>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-title fw-bold mb-2">شکر سفید ۵۰ کیلویی (فروش ویژه)</h6>
+                                <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>حداقل سفارش: ۲ گونی</p>
+                                <div class="d-flex justify-content-between align-items-end mt-auto">
+                                    <div>
+                                        <div class="old-price text-decoration-line-through text-muted small">۲٬۴۵۰٬۰۰۰</div>
+                                        <div class="price text-danger fw-bold fs-5">۲٬۰۸۲٬۵۰۰ <span class="fs-6 text-muted fw-normal">تومان</span></div>
+                                    </div>
+                                    <button class="btn btn-danger rounded-circle shadow-sm text-white" style="padding: 10px 12px;">
+                                        <i class="bi bi-cart-plus fs-5"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Discount Product 1 -->
+                    <div class="swiper-slide">
+                        <div class="card product-card h-100 border-danger border-opacity-25">
+                            <div class="position-relative">
+                                <img src="assets/img/rice.jpg" class="card-img-top product-img" alt="شکر">
+                                <span class="badge-discount position-absolute top-0 start-0 m-3">٪۱۵ تخفیف</span>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-title fw-bold mb-2">شکر سفید ۵۰ کیلویی (فروش ویژه)</h6>
+                                <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>حداقل سفارش: ۲ گونی</p>
+                                <div class="d-flex justify-content-between align-items-end mt-auto">
+                                    <div>
+                                        <div class="old-price text-decoration-line-through text-muted small">۲٬۴۵۰٬۰۰۰</div>
+                                        <div class="price text-danger fw-bold fs-5">۲٬۰۸۲٬۵۰۰ <span class="fs-6 text-muted fw-normal">تومان</span></div>
+                                    </div>
+                                    <button class="btn btn-danger rounded-circle shadow-sm text-white" style="padding: 10px 12px;">
+                                        <i class="bi bi-cart-plus fs-5"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Discount Product 2 -->
+                    <div class="swiper-slide">
+                        <div class="card product-card h-100 border-danger border-opacity-25">
+                            <div class="position-relative">
+                                <img src="assets/img/rice.jpg" class="card-img-top product-img" alt="چای">
+                                <span class="badge-discount position-absolute top-0 start-0 m-3">٪۱۰ تخفیف</span>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-title fw-bold mb-2">چای سیاه ممتاز (۵ کیلویی)</h6>
+                                <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>حداقل سفارش: ۴ بسته</p>
+                                <div class="d-flex justify-content-between align-items-end mt-auto">
+                                    <div>
+                                        <div class="old-price text-decoration-line-through text-muted small">۱٬۲۲۰٬۰۰۰</div>
+                                        <div class="price text-danger fw-bold fs-5">۱٬۰۹۸٬۰۰۰ <span class="fs-6 text-muted fw-normal">تومان</span></div>
+                                    </div>
+                                    <button class="btn btn-danger rounded-circle shadow-sm text-white" style="padding: 10px 12px;">
+                                        <i class="bi bi-cart-plus fs-5"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="swiper-button-next text-danger"></div>
+                <div class="swiper-button-prev text-danger"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Promo Banner -->
+    <section class="py-5">
+        <div class="container">
+            <div class="promo-banner d-flex align-items-center p-4 p-md-5" style="background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);">
+                <div class="d-flex flex-column flex-md-row align-items-center justify-content-between w-100 gap-4">
+                    <div class="text-white text-center text-md-start">
+                        <h3 class="fw-bold mb-2">عضویت در باشگاه مشتریان عمده</h3>
+                        <p class="mb-0 opacity-75 fs-5">قیمت‌های پلکانی و پشتیبانی اختصاصی</p>
+                    </div>
+                    <button class="btn btn-warning btn-lg text-dark fw-bold px-5 shadow" data-bs-toggle="modal" data-bs-target="#wholesaleModal">
+                        ثبت‌نام
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products: Best Sellers (Slider) -->
+    <section id="products" class="py-5">
+        <div class="container position-relative">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold mb-0 text-primary">جدیدترین محصولات  </h2>
+                <a href="#" class="btn btn-sm btn-outline-primary rounded-pill px-4">مشاهده همه</a>
+            </div>
+
+            <!-- Swiper -->
+            <div class="swiper productSwiper pb-4 px-2">
+                <div class="swiper-wrapper">
+                    <!-- Product 1 -->
+                    <div class="swiper-slide">
+                        <div class="card product-card h-100">
+                            <div class="position-relative">
+                                <img src="assets/img/rice.jpg" class="card-img-top product-img" alt="روغن">
+                                <span class="badge-wholesale position-absolute top-0 end-0 m-3">عمده</span>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-primary fw-bold mb-2">روغن آفتابگردان ۱۸ لیتری</h6>
+                                <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>حداقل سفارش: ۵ عدد</p>
+                                <div class="d-flex justify-content-between align-items-end mt-auto">
+                                    <div>
+                                        <div class="old-price">۲٬۱۰۰٬۰۰۰</div>
+                                        <div class="price">۱٬۸۵۰٬۰۰۰ <span class="fs-6 text-muted fw-normal">تومان</span></div>
+                                    </div>
+                                    <button class="btn btn-light text-primary rounded-circle shadow-sm" style="padding: 10px 12px;">
+                                        <i class="bi bi-cart-plus fs-5"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="card product-card h-100">
+                            <div class="position-relative">
+                                <img src="assets/img/rice.jpg" class="card-img-top product-img" alt="روغن">
+                                <span class="badge-wholesale position-absolute top-0 end-0 m-3">عمده</span>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-primary fw-bold mb-2">روغن آفتابگردان ۱۸ لیتری</h6>
+                                <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>حداقل سفارش: ۵ عدد</p>
+                                <div class="d-flex justify-content-between align-items-end mt-auto">
+                                    <div>
+                                        <div class="old-price">۲٬۱۰۰٬۰۰۰</div>
+                                        <div class="price">۱٬۸۵۰٬۰۰۰ <span class="fs-6 text-muted fw-normal">تومان</span></div>
+                                    </div>
+                                    <button class="btn btn-light text-primary rounded-circle shadow-sm" style="padding: 10px 12px;">
+                                        <i class="bi bi-cart-plus fs-5"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="card product-card h-100">
+                            <div class="position-relative">
+                                <img src="assets/img/rice.jpg" class="card-img-top product-img" alt="روغن">
+                                <span class="badge-wholesale position-absolute top-0 end-0 m-3">عمده</span>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-primary fw-bold mb-2">روغن آفتابگردان ۱۸ لیتری</h6>
+                                <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>حداقل سفارش: ۵ عدد</p>
+                                <div class="d-flex justify-content-between align-items-end mt-auto">
+                                    <div>
+                                        <div class="old-price">۲٬۱۰۰٬۰۰۰</div>
+                                        <div class="price">۱٬۸۵۰٬۰۰۰ <span class="fs-6 text-muted fw-normal">تومان</span></div>
+                                    </div>
+                                    <button class="btn btn-light text-primary rounded-circle shadow-sm" style="padding: 10px 12px;">
+                                        <i class="bi bi-cart-plus fs-5"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="card product-card h-100">
+                            <div class="position-relative">
+                                <img src="assets/img/rice.jpg" class="card-img-top product-img" alt="روغن">
+                                <span class="badge-wholesale position-absolute top-0 end-0 m-3">عمده</span>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-primary fw-bold mb-2">روغن آفتابگردان ۱۸ لیتری</h6>
+                                <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>حداقل سفارش: ۵ عدد</p>
+                                <div class="d-flex justify-content-between align-items-end mt-auto">
+                                    <div>
+                                        <div class="old-price">۲٬۱۰۰٬۰۰۰</div>
+                                        <div class="price">۱٬۸۵۰٬۰۰۰ <span class="fs-6 text-muted fw-normal">تومان</span></div>
+                                    </div>
+                                    <button class="btn btn-light text-primary rounded-circle shadow-sm" style="padding: 10px 12px;">
+                                        <i class="bi bi-cart-plus fs-5"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product 2 -->
+                    <div class="swiper-slide">
+                        <div class="card product-card h-100">
+                            <div class="position-relative">
+                                <img src="assets/img/rice.jpg" class="card-img-top product-img" alt="برنج">
+                                <span class="badge-wholesale position-absolute top-0 end-0 m-3">عمده</span>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-primary fw-bold mb-2">برنج طارم ممتاز (۱۰ کیلویی)</h6>
+                                <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>حداقل سفارش: ۱۰ کیسه</p>
+                                <div class="d-flex justify-content-between align-items-end mt-auto">
+                                    <div>
+                                        <div class="price">۹۸۰٬۰۰۰ <span class="fs-6 text-muted fw-normal">تومان</span></div>
+                                    </div>
+                                    <button class="btn btn-light text-primary rounded-circle shadow-sm" style="padding: 10px 12px;">
+                                        <i class="bi bi-cart-plus fs-5"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- محصولات ۳ و ۴ را مشابه بالا داخل <div class="swiper-slide"> قرار دهید -->
+                </div>
+
+                <!-- دکمه‌های کنترل اسلایدر -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Articles -->
+    <section id="articles" class="py-5">
+        <div class="container position-relative">
+            <div class="d-flex justify-content-between align-items-center mb-5">
+                <h2 class="fw-bold mb-0 text-primary">مقالات </h2>
+                <a href="#" class="btn btn-sm btn-outline-primary rounded-pill px-4">همه مقالات</a>
+            </div>
+
+            <!-- Swiper -->
+            <div class="swiper articleSwiper pb-4 px-2">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class=" card article-card h-100">
+                            <img src="assets/img/images.jfif" class="card-img-top article-img" alt="مقاله">
+                            <div class="card-body d-flex flex-column">
+                                <div class="text-muted small mb-3">
+                                    <i class="bi bi-calendar3 me-1"></i> ۱۲ مرداد ۱۴۰۴
+                                    <span class="mx-2 text-light">|</span>
+                                    <i class="bi bi-person me-1"></i> تیم محتوا
+                                </div>
+                                <h5 class="card-primary fw-bold mb-3">چطور خرید عمده مواد غذایی را بهینه کنیم؟</h5>
+                                <p class="card-text text-muted mb-4">راهنمای کامل مدیریت موجودی، حداقل سفارش و کاهش هزینه حمل برای فروشگاه‌ها و رستوران‌ها.</p>
+                                <a href="#" class="article-link">
+                                    مطالعه مطلب
+                                    <i class="bi bi-arrow-left"></i>
                                 </a>
                             </div>
-                        @endforeach
-
-
-
-                    </div>
-                    <div class="absolute bottom-4 left-4 sm:bottom-8 sm:left-8 flex gap-2 sm:gap-3 z-10">
-                        <div class="swiper-button-prev-custom w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center cursor-pointer hover:bg-white hover:text-blue-600 transition-all">
-                            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
-                            </svg>
-                        </div>
-                        <div class="swiper-button-next-custom w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center cursor-pointer hover:bg-white hover:text-blue-600 transition-all">
-                            <svg class="w-4 h-4 sm:w-5 sm:h-5 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
-                            </svg>
                         </div>
                     </div>
-                    <div class="swiper-pagination !bottom-4 sm:!bottom-8 !right-4 sm:!right-8 !left-auto !w-auto"></div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-
-    <!-- END SLIDER SECTION -->
-    <!-- CATEGORY SECTION -->
-    <section class="relative overflow-hidden py-16 transition-colors duration-700">
-        <div class="container relative z-10">
-            <!-- Header -->
-            <div class="flex items-end justify-between mb-10 gap-4 flex-wrap">
-                <div class="flex items-center gap-6">
-                    <div class="relative group">
-                        <div class="relative w-16 h-16 bg-white dark:bg-black border border-gray-100 dark:border-blue-500/40 rounded-[1.8rem] flex items-center justify-center text-blue-600 shadow-2xl">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div>
-                        <h2 class="text-3xl font-black text-gray-900 dark:text-white tracking-tight">دسته‌بندی‌ها</h2>
-                        <p class="text-[10px] font-black text-blue-500 uppercase tracking-[0.4em] mt-2 flex items-center gap-2">
-                            <span class="w-8 h-[2px] bg-blue-500/30"></span>
-                            Categories
-                        </p>
-                    </div>
-                </div>
-                <a href="{{route('search')}}" class="group/link relative overflow-hidden px-8 py-3.5 rounded-2xl transition-all duration-500 flex items-center gap-3 bg-white/40 backdrop-blur-md border border-gray-200 text-gray-800 hover:border-blue-500/50 hover:text-white dark:bg-white/[0.03] dark:border-white/10 dark:text-gray-300 dark:hover:text-white">
-                    <span class="absolute inset-0 bg-blue-600 translate-y-full group-hover/link:translate-y-0 transition-transform duration-500 ease-out"></span>
-                    <span class="relative z-10 text-[13px] font-black tracking-tight">مشاهده تمامی محصولات</span>
-                    <div class="relative z-10 w-5 h-5 flex items-center justify-center bg-blue-600/10 dark:bg-white/5 rounded-lg group-hover/link:bg-white/20 transition-colors">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"/>
-                        </svg>
-                    </div>
-                </a>
-            </div>
-            <!-- Filter Buttons -->
-            <div class="flex gap-3 mb-6 overflow-x-auto pb-2">
-                @foreach($superCategories as $index=>$superCategory)
-                    <button
-                        class="category-filter-btn px-4 py-2 rounded-lg whitespace-nowrap
-    {{ $index === 0 ? 'active bg-blue-600 text-white' : 'bg-gray-200 text-gray-700' }}"
-                        data-category="{{$superCategory->id}}">
-                        {{$superCategory->name}}
-                    </button>
-
-                @endforeach
-
-            </div>
-            <!-- Category Slider -->
-
-                <div class="swiper categorySwiper !overflow-visible">
-                    <div class="swiper-wrapper">
-                        <!-- Slide 1 - گوشی موبایل -->
-                        @foreach($superCategories as $superCategory)
-                            @foreach($superCategory->categories as $category)
-                                <div class="swiper-slide h-auto p-2" data-category="{{$superCategory->id}}">
-                                    <a href="{{route('category',['slug'=>$category->slug])}}">
-                                        <div class="group relative h-full pt-10">
-                                            <div class="absolute inset-0 bg-white/80 dark:bg-[#0a0a0a]/40 backdrop-blur-3xl rounded-[2.8rem] border border-gray-100 dark:border-white/5 shadow-sm transition-all duration-500 group-hover:border-blue-400/40 group-hover:shadow-blue-500/15"></div>
-                                            <div class="relative p-5 flex flex-col h-full z-10 transition-transform duration-500 group-hover:-translate-y-4">
-
-                                                <div class="relative mb-6 overflow-hidden rounded-[2rem] h-48 shadow-lg">
-                                                    <img src="{{asset('category/'.$category->image)}}" class="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110" alt="{{$category->image_alt}}" title="{{$category->image_title}}">
-                                                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                                </div>
-                                                <h3 class="text-[18px] font-black text-gray-800 dark:text-gray-100 mb-6 leading-7"> {{$category->name}}</h3>
-                                                <div class="flex items-center justify-between mt-auto pt-5 border-t border-gray-100 dark:border-white/5">
-
-                                                    <div class="w-10 h-10 bg-primary-500 dark:bg-primary-600 text-white rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-all">
-                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"/>
-                                                        </svg>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
+                    <div class="swiper-slide">
+                        <div class="card  article-card h-100">
+                            <img src="assets/img/images.jfif" class="card-img-top article-img" alt="مقاله">
+                            <div class="card-body d-flex flex-column">
+                                <div class="text-muted small mb-3">
+                                    <i class="bi bi-calendar3 me-1"></i> ۵ مرداد ۱۴۰۴
+                                    <span class="mx-2 text-light">|</span>
+                                    <i class="bi bi-person me-1"></i> واحد کیفیت
                                 </div>
-                            @endforeach
-
-                        @endforeach
-
-                    </div>
-                </div>
-
-
-
-            <!-- Navigation Buttons -->
-            <div class="flex justify-center gap-6 mt-12">
-                <div class="swiper-cat-prev w-14 h-14 rounded-2xl bg-white/50 dark:bg-white/5 dark:text-white border border-white dark:border-white/10 flex items-center justify-center cursor-pointer hover:bg-blue-600 hover:text-white transition-all shadow-lg group">
-                    <svg class="w-6 h-6 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
-                    </svg>
-                </div>
-                <div class="swiper-cat-next w-14 h-14 rounded-2xl bg-white/50 dark:bg-white/5 dark:text-white border border-white dark:border-white/10 flex items-center justify-center cursor-pointer hover:bg-blue-600 hover:text-white transition-all shadow-lg group">
-                    <svg class="w-6 h-6 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
-                    </svg>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- END CATEGORY SECTION -->
-
-
-
-    <!-- AMAZING SECTION -->
-    <section class="amazing-deals-section relative overflow-hidden transition-colors duration-500">
-        <div class="container pb-4 relative z-10">
-
-            <!-- Header -->
-            <div class="flex flex-col lg:flex-row items-center justify-between mb-8 gap-8 bg-white/30 dark:bg-white/[0.02] backdrop-blur-md p-8 rounded-[3rem] border border-white/50 dark:border-white/10 shadow-xl">
-
-                <div class="flex items-center gap-5">
-                    <div class="relative">
-                        <div class="absolute inset-0 bg-secondary-500 blur-lg opacity-40 animate-ping"></div>
-                        <div class="relative w-4 h-12 bg-secondary-500 rounded-full"></div>
-                    </div>
-                    <div>
-                        <h2 class="text-4xl font-black text-gray-900 dark:text-white tracking-tight">
-                            پیشنهاد <span class="text-secondary-600">شگفت‌انگیز</span>
-                        </h2>
-                        <p class="text-gray-500 dark:text-gray-400 font-medium mt-1">تخفیف‌های ویژه فقط برای امروز</p>
-                    </div>
-                </div>
-
-                <div class="flex items-center gap-4 bg-black/5 dark:bg-white/5 p-3 rounded-2xl border border-black/5 dark:border-white/5">
-                    <div class="flex gap-3 text-2xl font-black dark:text-white" id="special-timer-unique">
-                        <div class="timer-box flex flex-col items-center">
-                            <span class="bg-secondary-500 text-white px-3 py-1 rounded-xl shadow-lg shadow-red-500/30">۰۰</span>
-                            <span class="text-[10px] mt-1 opacity-50">ثانیه</span>
-                        </div>
-                        <span class="mt-1 text-secondary-600">:</span>
-                        <div class="timer-box flex flex-col items-center">
-                            <span>۰۰</span>
-                            <span class="text-[10px] mt-1 opacity-50">دقیقه</span>
-                        </div>
-                        <span class="mt-1 opacity-20">:</span>
-                        <div class="timer-box flex flex-col items-center">
-                            <span>۰۰</span>
-                            <span class="text-[10px] mt-1 opacity-50">ساعت</span>
+                                <h5 class="card-primary fw-bold mb-3">نکات نگهداری مواد غذایی در انبار فروشگاهی</h5>
+                                <p class="card-text text-muted mb-4">دما، رطوبت، چیدمان FIFO و کنترل تاریخ انقضا؛ اصولی که ضایعات را کم می‌کند.</p>
+                                <a href="#" class="article-link">
+                                    مطالعه مطلب
+                                    <i class="bi bi-arrow-left"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <!-- Replace slider with banner -->
-            <a href="{{$discountBanner->url}}" class="block rounded-[3rem] overflow-hidden shadow-2xl border border-white/40 dark:border-white/10 transition-transform duration-300 hover:scale-[1.02]">
-                <img src="{{asset('banners/'.$discountBanner->image)}}" class="w-full h-64 md:h-80 lg:h-96 object-cover" alt="{{$discountBanner->image_alt}}" title="{{$discountBanner->image_title}}">
-            </a>
-
-
-
-        </div>
-    </section>
-    <!-- END AMAZING SECTION -->
-
-
-
-    <!-- MAG -->
-    <section class="magazine-section relative overflow-hidden py-16 transition-colors duration-700">
-        <div class="container relative z-10">
-            <div class="flex items-end justify-between mb-10 gap-4 flex-wrap">
-                <div class="flex items-center gap-6">
-                    <div class="relative group">
-                        <div class="relative w-16 h-16 bg-white dark:bg-black border border-gray-100 dark:border-blue-500/40 rounded-[1.8rem] flex items-center justify-center text-blue-600 shadow-2xl">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v10a2 2 0 01-2 2z"></path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div>
-                        <h2 class="text-3xl font-black text-gray-900 dark:text-white tracking-tight"> بلاگ</h2>
-                        <p class="text-[10px] font-black text-blue-500 uppercase tracking-[0.4em] mt-2 flex items-center gap-2">
-                            <span class="w-8 h-[2px] bg-blue-500/30"></span>
-                           Blogs
-
-                        </p>
-                    </div>
-                </div>
-                <a href="{{route('blogs')}}" class="group/link relative overflow-hidden px-8 py-3.5 rounded-2xl transition-all duration-500 flex items-center gap-3 bg-white/40 backdrop-blur-md border border-gray-200 text-gray-800 hover:border-blue-500/50 hover:text-white dark:bg-white/[0.03] dark:border-white/10 dark:text-gray-300 dark:hover:text-white">
-                    <span class="absolute inset-0 bg-blue-600 translate-y-full group-hover/link:translate-y-0 transition-transform duration-500 ease-out"></span>
-                    <span class="relative z-10 text-[13px] font-black tracking-tight">مشاهده همه مطالب</span>
-                    <div class="relative z-10 w-5 h-5 flex items-center justify-center bg-blue-600/10 dark:bg-white/5 rounded-lg group-hover/link:bg-white/20 transition-colors">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"/>
-                        </svg>
-                    </div>
-                </a>
-            </div>
-            <div class="swiper magazineSwiper !overflow-visible">
-                <div class="swiper-wrapper">
-                    @foreach($blogs as $blog)
-                        <div class="swiper-slide h-auto p-4">
-                            <a href="{{route('front.blog.show',['slug'=>$blog->slug])}}">
-                                <div class="group relative h-full pt-10">
-                                    <div class="absolute inset-0 bg-white/80 dark:bg-[#0a0a0a]/40 backdrop-blur-3xl rounded-[2.8rem] border border-gray-100 dark:border-white/5 shadow-sm transition-all duration-500 group-hover:border-blue-400/40 group-hover:shadow-blue-500/15"></div>
-                                    <div class="relative p-5 flex flex-col h-full z-10 transition-transform duration-500 group-hover:-translate-y-4">
-
-                                        <div class="relative mb-6 overflow-hidden rounded-[2rem] h-48 shadow-lg">
-                                            <img src="{{'blog/'.$blog->image}}" class="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110" alt="{{$blog->image_alt}}" title="{{$blog->image_title}}">
-                                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                        </div>
-                                        <div class="flex items-center gap-4 mb-4 text-[11px] font-bold text-gray-400">
-
-                                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                                            <span class="tabular-nums">{{ \Morilog\Jalali\Jalalian::fromDateTime($blog->created_at)->format('Y/m/d') }}</span>
-                                        </div>
-                                        <h3 class="text-[16px] font-black text-gray-800 dark:text-gray-100 mb-6 line-clamp-2 leading-7 h-14 group-hover:text-blue-600 transition-colors">{{$blog->title}}
-                                        </h3>
-                                        <div class="flex items-center justify-between mt-auto pt-5 border-t border-gray-100 dark:border-white/5">
-
-                                            <div class="w-10 h-10 bg-primary-500 dark:bg-primary-600 text-white rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-all">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"/>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
+                    <div class="swiper-slide">
+                        <div class="card article-card h-100">
+                            <img src="assets/img/images.jfif" class="card-img-top article-img" alt="مقاله">
+                            <div class="card-body d-flex flex-column">
+                                <div class="text-muted small mb-3">
+                                    <i class="bi bi-calendar3 me-1"></i> ۵ مرداد ۱۴۰۴
+                                    <span class="mx-2 text-light">|</span>
+                                    <i class="bi bi-person me-1"></i> واحد کیفیت
                                 </div>
-                            </a>
+                                <h5 class="card-primary fw-bold mb-3">نکات نگهداری مواد غذایی در انبار فروشگاهی</h5>
+                                <p class="card-text text-muted mb-4">دما، رطوبت، چیدمان FIFO و کنترل تاریخ انقضا؛ اصولی که ضایعات را کم می‌کند.</p>
+                                <a href="#" class="article-link">
+                                    مطالعه مطلب
+                                    <i class="bi bi-arrow-left"></i>
+                                </a>
+                            </div>
                         </div>
-                    @endforeach
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="card article-card h-100">
+                            <img src="assets/img/images.jfif" class="card-img-top article-img" alt="مقاله">
+                            <div class="card-body d-flex flex-column">
+                                <div class="text-muted small mb-3">
+                                    <i class="bi bi-calendar3 me-1"></i> ۵ مرداد ۱۴۰۴
+                                    <span class="mx-2 text-light">|</span>
+                                    <i class="bi bi-person me-1"></i> واحد کیفیت
+                                </div>
+                                <h5 class="card-primary fw-bold mb-3">نکات نگهداری مواد غذایی در انبار فروشگاهی</h5>
+                                <p class="card-text text-muted mb-4">دما، رطوبت، چیدمان FIFO و کنترل تاریخ انقضا؛ اصولی که ضایعات را کم می‌کند.</p>
+                                <a href="#" class="article-link">
+                                    مطالعه مطلب
+                                    <i class="bi bi-arrow-left"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
 
+                    <div class="swiper-slide">
+                        <div class="card article-card h-100">
+                            <img src="assets/img/images.jfif" class="card-img-top article-img" alt="مقاله">
 
+                            <div class="card-body d-flex flex-column">
+                                <div class="text-muted small mb-3">
+                                    <i class="bi bi-calendar3 me-1"></i> ۲۸ تیر ۱۴۰۴
+                                    <span class="mx-2 text-light">|</span>
+                                    <i class="bi bi-person me-1"></i> واحد فروش
+                                </div>
+                                <h5 class="card-primary fw-bold mb-3">تفاوت قیمت خرده‌فروشی و عمده در بازار</h5>
+                                <p class="card-text text-muted mb-4">چرا خرید عمده به‌صرفه‌تر است و چه زمانی سراغ قراردادهای بلندمدت برویم؟</p>
+                                <a href="#" class="article-link">
+                                    مطالعه مطلب
+                                    <i class="bi bi-arrow-left"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="flex justify-center gap-6 mt-12">
-                <div class="swiper-nav-prev w-14 h-14 rounded-2xl bg-white/50 dark:bg-white/5 dark:text-white border border-white dark:border-white/10 flex items-center justify-center cursor-pointer hover:bg-blue-600 hover:text-white transition-all shadow-lg group">
-                    <svg class="w-6 h-6 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
-                    </svg>
-                </div>
-                <div class="swiper-nav-next w-14 h-14 rounded-2xl bg-white/50 dark:bg-white/5 dark:text-white border border-white dark:border-white/10 flex items-center justify-center cursor-pointer hover:bg-blue-600 hover:text-white transition-all shadow-lg group">
-                    <svg class="w-6 h-6 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
-                    </svg>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- END MAG -->
 
-    <!-- 4 BANNERS SECTION -->
-    <section class="banners-section py-16">
-        <div class="container relative z-10">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Banner 1 -->
-                <a href="{{$banner1->url}}" class="group relative overflow-hidden rounded-[2rem] h-64 md:h-80 shadow-lg block">
-                    <img src="{{'banners/'.$banner1->image}}"
-                         class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
-                         alt="{{$banner1->image_alt}}"
-                         title="{{$banner1->image_title}}">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-                </a>
-
-                <!-- Banner 2 -->
-                <a href="{{$banner2->url}}" class="group relative overflow-hidden rounded-[2rem] h-64 md:h-80 shadow-lg block">
-                    <img src="{{'banners/'.$banner2->image}}"
-                         class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
-                         alt="{{$banner2->image_alt}}"
-                         title="{{$banner2->image_title}}">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-                </a>
-
-                <!-- Banner 3 -->
-                <a href="{{$banner3->url}}" class="group relative overflow-hidden rounded-[2rem] h-64 md:h-80 shadow-lg block">
-                    <img src="{{'banners/'.$banner3->image}}"
-                         class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
-                         alt="{{$banner3->image_alt}}"
-                         title="{{$banner3->image_title}}">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-                </a>
-
-                <!-- Banner 4 -->
-                <a href="{{$banner4->url}}" class="group relative overflow-hidden rounded-[2rem] h-64 md:h-80 shadow-lg block">
-                    <img src="{{'banners/'.$banner4->image}}"
-                         class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
-                         alt="{{$banner4->image_alt}}"
-                         title="{{$banner4->image_title}}">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-                </a>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
             </div>
         </div>
     </section>
 
+    <!-- About / Features -->
+    <section id="about" class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold text-primary">چرا بازرگانی بنازاده؟</h2>
+                <p class="text-muted mt-2">تأمین‌کننده مطمئن مواد غذایی برای کسب‌وکارهای شما</p>
+            </div>
 
-    <!-- SHOP FEATURE -->
-    <section class="relative overflow-hidden transition-colors duration-500">
-        <div class="container pt-5">
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
-                <div class="flex flex-col items-center text-center group">
-                    <div class="relative w-20 h-20 mb-6 flex items-center justify-center">
-                        <div class="absolute inset-0 bg-blue-500/10 dark:bg-blue-500/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div class="relative z-10 w-full h-full bg-white dark:bg-gray-900 rounded-[2rem] border border-gray-100 dark:border-gray-800 shadow-sm transition-all duration-500 group-hover:-translate-y-2 group-hover:border-blue-500/50 group-hover:shadow-xl group-hover:shadow-blue-500/10 flex items-center justify-center">
-                            <svg class="w-9 h-9 text-gray-700 dark:text-gray-300 group-hover:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                            </svg>
+            <div class="row g-4 mb-5">
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon bg-primary-subtle">
+                            <i class="bi bi-tag-fill text-primary"></i>
+                        </div>
+                        <h5>قیمت عمده واقعی</h5>
+                        <p>خرید مستقیم از کارخانه بدون واسطه</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon bg-success-subtle">
+                            <i class="bi bi-truck text-success"></i>
+                        </div>
+                        <h5>ارسال سریع</h5>
+                        <p>پوشش سراسری با ناوگان اختصاصی</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon bg-info-subtle">
+                            <i class="bi bi-shield-check text-info"></i>
+                        </div>
+                        <h5>کیفیت تضمینی</h5>
+                        <p>ضمانت اصالت و تاریخ انقضای معتبر</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon bg-warning-subtle">
+                            <i class="bi bi-headset text-warning"></i>
+                        </div>
+                        <h5>پشتیبانی اختصاصی</h5>
+                        <p>کارشناس فروش ویژه مشتریان عمده</p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <h3 class="fw-bold mb-4">درباره بازرگانی بنازاده</h3>
+                    <p class="text-muted lh-lg">بازرگانی بنازاده با بیش از ۱۵ سال سابقه، تأمین‌کننده تخصصی مواد غذایی برای فروشگاه‌ها، رستوران‌ها، کترینگ‌ها و پخش‌های محلی است. تمرکز ما روی قیمت رقابتی، موجودی پایدار و ارسال منظم است.</p>
+                    <ul class="list-unstyled mt-4">
+                        <li class="mb-3 d-flex align-items-center"><i class="bi bi-check-circle-fill text-success fs-5 me-3"></i>تنوع بالا در اقلام پرمصرف فروشگاهی</li>
+                        <li class="mb-3 d-flex align-items-center"><i class="bi bi-check-circle-fill text-success fs-5 me-3"></i>امکان قرارداد ماهانه و فصلی</li>
+                        <li class="mb-3 d-flex align-items-center"><i class="bi bi-check-circle-fill text-success fs-5 me-3"></i>فاکتور رسمی و پشتیبانی پس از فروش</li>
+                    </ul>
+                </div>
+                <div class="col-lg-6">
+                    <div class="position-relative d-flex align-items-center">
+
+                        <!-- حذف position-absolute و z-index منفی -->
+                        <video autoplay loop muted playsinline preload="auto"
+                               class="w-100 object-fit-cover rounded-4 shadow-sm"
+                               style="min-height: 400px;">
+                            <source src="assets/video/video.mp4" type="video/mp4">
+                            <source src="assets/video/video.webm" type="video/webm">
+                            <!-- فالبک عکس -->
+                            <img src="assets/img/store.jpg" alt="store" class="w-100 object-fit-cover rounded-4 shadow-sm">
+                        </video>
+
+                        <!-- باکس شناور اعتماد -->
+                        <div class="position-absolute bottom-0 end-0 bg-white p-3 m-3 m-md-4 rounded-4 shadow d-flex align-items-center">
+                            <i class="bi bi-patch-check-fill text-primary fs-1 ms-3"></i>
+                            <div>
+                                <h5 class="fw-bold text-dark mb-0">۱۵ سال</h5>
+                                <small class="text-muted">تأمین مستمر و مطمئن</small>
+                            </div>
                         </div>
                     </div>
-                    <h3 class="text-sm font-black text-gray-900 dark:text-white mb-2 transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400">ارسال فوق سریع</h3>
-                    <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-6 max-w-[150px]">تحویل کالا در  سراسر کشور</p>
                 </div>
-                <div class="flex flex-col items-center text-center group">
-                    <div class="relative w-20 h-20 mb-6 flex items-center justify-center">
-                        <div class="absolute inset-0 bg-secondary-500/10 dark:bg-secondary-500/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div class="relative z-10 w-full h-full bg-white dark:bg-gray-900 rounded-[2rem] border border-gray-100 dark:border-gray-800 shadow-sm transition-all duration-500 group-hover:-translate-y-2 group-hover:border-secondary-500/50 group-hover:shadow-xl group-hover:shadow-secondary-500/10 flex items-center justify-center">
-                            <svg class="w-9 h-9 text-gray-700 dark:text-gray-300 group-hover:text-secondary-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 15v-1a4 4 0 00-4-4H8m0 0l3 3m-3-3l3-3m9 14V5a2 2 0 00-2-2H6a2 2 0 00-2 2v16l4-2 4 2 4-2 4 2z"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <h3 class="text-sm font-black text-gray-900 dark:text-white mb-2 transition-colors group-hover:text-secondary-600 dark:group-hover:text-secondary-500">قیمت مناسب</h3>
-                    <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-6 max-w-[150px]">کیفت بالا کالاهای ساختمانی</p>
-                </div>
-                <div class="flex flex-col items-center text-center group">
-                    <div class="relative w-20 h-20 mb-6 flex items-center justify-center">
-                        <div class="absolute inset-0 bg-emerald-500/10 dark:bg-emerald-500/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div class="relative z-10 w-full h-full bg-white dark:bg-gray-900 rounded-[2rem] border border-gray-100 dark:border-gray-800 shadow-sm transition-all duration-500 group-hover:-translate-y-2 group-hover:border-emerald-500/50 group-hover:shadow-xl group-hover:shadow-emerald-500/10 flex items-center justify-center">
-                            <svg class="w-9 h-9 text-gray-700 dark:text-gray-300 group-hover:text-emerald-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <h3 class="text-sm font-black text-gray-900 dark:text-white mb-2 transition-colors group-hover:text-emerald-600 dark:group-hover:text-emerald-500">پرداخت امن</h3>
-                    <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-6 max-w-[150px]">استفاده از پروتکل‌های امن و درگاه‌های معتبر</p>
-                </div>
-                <div class="flex flex-col items-center text-center group">
-                    <div class="relative w-20 h-20 mb-6 flex items-center justify-center">
-                        <div class="absolute inset-0 bg-indigo-500/10 dark:bg-indigo-500/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div class="relative z-10 w-full h-full bg-white dark:bg-gray-900 rounded-[2rem] border border-gray-100 dark:border-gray-800 shadow-sm transition-all duration-500 group-hover:-translate-y-2 group-hover:border-indigo-500/50 group-hover:shadow-xl group-hover:shadow-indigo-500/10 flex items-center justify-center">
-                            <svg class="w-9 h-9 text-gray-700 dark:text-gray-300 group-hover:text-indigo-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <h3 class="text-sm font-black text-gray-900 dark:text-white mb-2 transition-colors group-hover:text-indigo-600 dark:group-hover:text-indigo-400">ضمانت اصالت</h3>
-                    <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-6 max-w-[150px]">تضمین ۱۰۰٪ کالاها با گارانتی معتبر</p>
-                </div>
+
             </div>
         </div>
     </section>
-
-
 
 @endsection
