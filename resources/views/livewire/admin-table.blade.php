@@ -1,22 +1,30 @@
 <div>
     {{-- جستجو --}}
+
     <div class="row mb-3 g-2">
-        <div class="col-12 col-md-8">
+        <div class="col-12 col-md-6">
             <input type="text"
                    wire:model.defer="searchInput"
                    wire:keydown.enter="applySearch"
                    class="form-control"
                    placeholder="جستجو بر اساس نام یا شماره موبایل...">
         </div>
-        <div class="col-6 col-md-2">
-            <button wire:click="applySearch" class="btn btn-primary w-100">
-                جستجو
-            </button>
+        <div class="col-12 col-md-2">
+            <select wire:model.live="selectedRole" class="form-select">
+                <option value="">همه نقش‌ها</option>
+                @foreach($roles as $role)
+                    <option value="{{ $role->name }}">{{ $role->name }}</option>
+                @endforeach
+            </select>
         </div>
         <div class="col-6 col-md-2">
-            <a href="{{route('admin.create')}}" class="btn btn-primary w-100" style="background-color: #0e9f6e;color: white;">افزودن</a>
+            <button wire:click="applySearch" class="btn btn-primary w-100">جستجو</button>
+        </div>
+        <div class="col-6 col-md-2">
+            <a href="{{ route('admin.create') }}" class="btn btn-primary w-100" style="background-color: #0e9f6e;color: white;">افزودن</a>
         </div>
     </div>
+
 
     {{-- جدول --}}
     <div class="table-responsive">
@@ -26,7 +34,7 @@
 
                 <th class="text-center">نام</th>
                 <th class="text-center">موبایل</th>
-                <th class="text-center">گیرنده پیامک</th>
+                <th class="text-center">نقش</th>
                 <th class="text-center">عملیات</th>
             </tr>
             </thead>
@@ -39,10 +47,11 @@
                     <td class="text-center">{{ $user->name }}</td>
                     <td class="text-center">{{ $user->mobile }}</td>
                     <td class="text-center">
-                        <span class="badge bg-{{ $user->type->color() }}">
-                            {{ $user->type->label() }}
-                        </span>
+                        @foreach($user->roles as $role)
+                            <span class="badge bg-secondary">{{ $role->name }}</span>
+                        @endforeach
                     </td>
+
                     <td class="text">
                         <div class="dropdown position-static">
                             <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown" data-bs-boundary="viewport">
