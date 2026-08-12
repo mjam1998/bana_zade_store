@@ -27,7 +27,7 @@ class AdminProductTable extends Component
     public function render()
     {
         $products = Product::query()
-
+            ->with('category')
             ->when($this->search, function ($query) {
                 $query->where(function ($q) {
                     $q->where('name', 'like', '%' . $this->search . '%')

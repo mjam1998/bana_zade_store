@@ -71,36 +71,36 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label required">کد فنی محصول </label>
-                            <input type="text" class="form-control mt-2" name="code" value="{{old('code')}}" required>
+                            <label class="control-label required"> واحد اندازه گیری فروش </label>
+                            <input type="text" class="form-control mt-2" name="unit_name" value="{{old('unit_name')}}" placeholder="مثلا لیتر، کیسه 10 کیلویی،کارتن 6 عددی" required>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label ">سایز</label>
-                            <input type="text" class="form-control mt-2" name="size" value="{{old('size')}}" >
+                            <label class="control-label required "> تعداد حداقل خرید</label>
+                            <input type="number" class="form-control mt-2" name="min_shop_count" value="{{old('min_shop_count')}}" required >
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label ">موجودی</label>
-                            <input type="number" class="form-control mt-2" name="count" value="{{old('count')}}" >
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label ">میزان تخفیف</label>
-                            <input type="number" class="form-control mt-2" name="discount" value="{{old('discount')}}" >
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label required">قیمت(تومان)</label>
-                            <input type="number" class="form-control mt-2" name="price" value="{{old('price')}}" required>
+                            <label class="control-label required">موجودی</label>
+                            <input type="number" class="form-control mt-2" name="count" value="{{old('count')}}" required>
                         </div>
                     </div>
 
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label required">قیمت پایه(تومان)</label>
+                            <input type="number" class="form-control mt-2" name="base_price" value="{{old('base_price')}}" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label ">درصد تخفیف</label>
+                            <input type="number" class="form-control mt-2" name="discount" placeholder="درصد تخفیف برای قیمت پایه" value="{{old('discount')}}" max="100">
+                        </div>
+                    </div>
                     <div class="col-md-6" >
                         <div class="form-group">
                             <label class="control-label">عنوان متا  صفحه (title)</label>
@@ -114,7 +114,15 @@
                             <input type="text" class="form-control mt-2" name="meta_description" value="{{old('meta_description')}}" maxlength="300">
                         </div>
                     </div>
-
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">نمایش محصول در بنر محصولات ویژه  </label>
+                            <select class="form-select mt-2" name="is_special">
+                                <option value="0" >خیر</option>
+                                <option value="1" >بلی</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="control-label">کلمات کلیدی (keywords)</label>
@@ -135,7 +143,7 @@
                             <label class="control-label">Alt تصویر</label>
                             <input type="text" class="form-control mt-2" name="image_alt" value="{{old('image_alt')}}" maxlength="400">
                         </div>
-                    </div>
+                     </div>
 
                     <div class="col-md-4">
                         <div class="form-group">
@@ -149,8 +157,27 @@
                             <label class="form-label mt-3">توضیحات محصول</label>
                             @include('partial.editor',['value'=>''])
                         </div>
-                    </div>
+                     </div>
 
+                </div>
+                <div class="col-12 mt-4">
+                    <label class="control-label mb-2">پله‌های قیمتی بر اساس تعداد خرید(با افزاش تعداد خرید کاربر قیمت نسبت به قیمت پایه کاهش میابد)</label>
+                    <table class="table table-bordered" id="price-tiers-table">
+                        <thead>
+                        <tr>
+                            <th>از تعداد</th>
+                            <th>تا تعداد (خالی = بی‌نهایت)</th>
+                            <th>قیمت واحد (تومان)</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- ردیف‌ها اینجا اضافه می‌شن -->
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn btn-outline-primary btn-sm" id="add-tier-row">
+                        <i class="bi bi-plus"></i> افزودن پله قیمتی
+                    </button>
                 </div>
 
                 <div class="row text-center mt-4">
@@ -161,7 +188,7 @@
                         </button>
                     </div>
                     <div class="col-md-3 mt-2"></div>
-                    <div class="col-md-3 mt-2"></div>
+                     <div class="col-md-3 mt-2"></div>
                 </div>
 
             </form>
@@ -211,5 +238,94 @@
         });
 
     </script>
+    <script>
+        let tierIndex = 0;
+        const tbody = document.querySelector('#price-tiers-table tbody');
+
+        function addTierRow() {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+            <td>
+                <input type="number" min="1" class="form-control"
+                       name="tiers[${tierIndex}][min_qty]" required>
+            </td>
+            <td>
+                <input type="number" min="1" class="form-control"
+                       name="tiers[${tierIndex}][max_qty]">
+            </td>
+            <td>
+                <input type="number" min="0" class="form-control"
+                       name="tiers[${tierIndex}][unit_price]" required>
+            </td>
+            <td>
+                <button type="button" class="btn btn-danger btn-sm remove-tier-row">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </td>
+        `;
+            tbody.appendChild(row);
+            tierIndex++;
+        }
+
+        document.getElementById('add-tier-row').addEventListener('click', addTierRow);
+
+        tbody.addEventListener('click', function (e) {
+            if (e.target.closest('.remove-tier-row')) {
+                e.target.closest('tr').remove();
+            }
+        });
+
+        // یک ردیف پیش‌فرض
+        addTierRow();
+
+        document.querySelector('form').addEventListener('submit', function (e) {
+            const rows = tbody.querySelectorAll('tr');
+            const tiers = [];
+
+            for (const row of rows) {
+                const min = row.querySelector('[name*="[min_qty]"]').value;
+                const maxInput = row.querySelector('[name*="[max_qty]"]');
+                const max = maxInput.value;
+
+                if (!min) continue; // ردیف خالی
+
+                tiers.push({
+                    min: parseInt(min),
+                    max: max ? parseInt(max) : null, // null یعنی بی‌نهایت
+                });
+            }
+
+            // مرتب‌سازی بر اساس min برای بررسی راحت‌تر
+            tiers.sort((a, b) => a.min - b.min);
+
+            for (let i = 0; i < tiers.length; i++) {
+                const current = tiers[i];
+
+                // ۱) چک min <= max (اگر max خالی نبود)
+                if (current.max !== null && current.max < current.min) {
+                    alert(`خطا: در پله با شروع ${current.min}، مقدار "تا تعداد" نباید کمتر از "از تعداد" باشد.`);
+                    e.preventDefault();
+                    return;
+                }
+
+                // ۲) اگر این ردیف بی‌نهایت است (max === null) نباید ردیف بعدی وجود داشته باشد
+                if (current.max === null && i < tiers.length - 1) {
+                    alert(`خطا: پله‌ای که "تا تعداد" آن خالی (بی‌نهایت) است باید آخرین پله باشد.`);
+                    e.preventDefault();
+                    return;
+                }
+
+                // ۳) چک همپوشانی با پله بعدی
+                const next = tiers[i + 1];
+                if (next && current.max !== null && current.max >= next.min) {
+                    alert(`خطا: بازه ${current.min} تا ${current.max} با بازه بعدی (شروع از ${next.min}) هم‌پوشانی دارد.`);
+                    e.preventDefault();
+                    return;
+                }
+            }
+        });
+
+    </script>
+
 @endpush
 

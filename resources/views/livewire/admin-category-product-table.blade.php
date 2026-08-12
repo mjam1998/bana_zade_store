@@ -6,7 +6,7 @@
                    wire:model.defer="searchInput"
                    wire:keydown.enter="applySearch"
                    class="form-control"
-                   placeholder="جستجو بر اساس نام، اسلاگ یا کد محصول... ">
+                   placeholder="جستجو بر اساس نام، اسلاگ... ">
         </div>
         <div class="col-12 col-md-3">
             <button wire:click="applySearch" class="btn btn-primary w-100">
@@ -24,7 +24,7 @@
 
                 <th class="text-center">نام</th>
                 <th class="text-center">اسلاگ</th>
-                <th class="text-center">کد</th>
+
                 <th class="text-center">عملیات</th>
             </tr>
             </thead>
@@ -37,7 +37,7 @@
                         {{ \Illuminate\Support\Str::limit( $product->name, 25) }}
                     </td>
                     <td class="text-center">{{ $product->slug }}</td>
-                    <td class="text-center">{{ $product->code }}</td>
+
                     <td class="text">
                         <div class="dropdown position-static">
                             <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown" data-bs-boundary="viewport">

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('unit_name','400');
             $table->string('slug','400')->unique();
             $table->bigInteger('count')->nullable();
+            $table->unsignedTinyInteger('discount')->nullable();
             $table->bigInteger('min_shop_count')->nullable();
             $table->decimal('base_price',15,0)->nullable();
             $table->text('description')->nullable();

@@ -55,56 +55,64 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label required">کد فنی محصول</label>
-                            <input type="text" class="form-control mt-2" name="code" value="{{old('code', $product->code)}}" required>
+                            <label class="control-label required"> واحد اندازه گیری فروش </label>
+                            <input type="text" class="form-control mt-2" name="unit_name" value="{{old('unit_name', $product->unit_name)}}" placeholder="مثلا لیتر، کیسه 10 کیلویی، کارتن 6 عددی" required>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label">سایز</label>
-                            <input type="text" class="form-control mt-2" name="size" value="{{old('size', $product->size)}}">
+                            <label class="control-label required"> تعداد حداقل خرید</label>
+                            <input type="number" class="form-control mt-2" name="min_shop_count" value="{{old('min_shop_count', $product->min_shop_count)}}" required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label">موجودی</label>
-                            <input type="number" class="form-control mt-2" name="count" value="{{old('count', $product->count)}}">
+                            <label class="control-label required">موجودی</label>
+                            <input type="number" class="form-control mt-2" name="count" value="{{old('count', $product->count)}}" required>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">میزان تخفیف</label>
-                            <input type="number" class="form-control mt-2" name="discount" value="{{old('discount', $product->discount)}}">
-                        </div>
-                    </div>
-                    @if(!$product->has_sub_product)
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label required">قیمت(تومان)</label>
-                                <input type="number" class="form-control mt-2" name="price" value="{{old('price', $product->price)}}" required>
-                            </div>
-                        </div>
-                    @endif
-
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label"> عنوان متا صفحه (title)</label>
+                            <label class="control-label required">قیمت پایه(تومان)</label>
+                            <input type="number" class="form-control mt-2" name="base_price" value="{{old('base_price', $product->base_price)}}" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">درصد تخفیف</label>
+                            <input type="number" class="form-control mt-2" name="discount" placeholder="درصد تخفیف برای قیمت پایه" value="{{old('discount', $product->discount)}}" max="100">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">عنوان متا صفحه (title)</label>
                             <input type="text" class="form-control mt-2" name="meta_title" value="{{old('meta_title', $product->meta_title)}}" maxlength="300">
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label"> توضیحات متا (meta description) </label>
+                            <label class="control-label">توضیحات متا (meta description)</label>
                             <input type="text" class="form-control mt-2" name="meta_description" value="{{old('meta_description', $product->meta_description)}}" maxlength="300">
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">نمایش محصول در بنر محصولات ویژه</label>
+                            <select class="form-select mt-2" name="is_special">
+                                <option value="0" {{old('is_special', $product->is_special) == 0 ? 'selected' : ''}}>خیر</option>
+                                <option value="1" {{old('is_special', $product->is_special) == 1 ? 'selected' : ''}}>بلی</option>
+                            </select>
                         </div>
                     </div>
 
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label class="control-label"> کلمات کلیدی (keywords)</label>
+                            <label class="control-label">کلمات کلیدی (keywords)</label>
                             <input type="text" class="form-control mt-2" id="keywords-input" name="keywords" value="{{old('keywords', $product->keywords)}}" placeholder="کلمه را تایپ کنید و Enter بزنید">
                         </div>
                     </div>
@@ -112,8 +120,8 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label class="control-label"> تصویر محصول</label>
-                            <input type="file"  class="form-control mt-2" name="image" accept="image/*">
-                            <span style="font-size: small;color: grey"> در صورت وارد نکردن، تصویر قبلی حفظ می‌شود.</span>
+                            <input type="file" class="form-control mt-2" name="image" accept="image/*">
+                            <span style="font-size: small;color: grey">در صورت وارد نکردن، تصویر قبلی حفظ می‌شود.</span>
                             @if($product->image)
                                 <div class="mt-3">
                                     <img src="{{asset('product/'.$product->image)}}" alt="{{$product->image_alt}}" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
@@ -124,25 +132,45 @@
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label class="control-label"> Alt تصویر</label>
+                            <label class="control-label">Alt تصویر</label>
                             <input type="text" class="form-control mt-2" name="image_alt" value="{{old('image_alt', $product->image_alt)}}" maxlength="400">
                         </div>
                     </div>
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label class="control-label">Title تصویر </label>
+                            <label class="control-label">Title تصویر</label>
                             <input type="text" class="form-control mt-2" name="image_title" value="{{old('image_title', $product->image_title)}}" maxlength="400">
                         </div>
                     </div>
 
                     <div class="col-12">
                         <div class="form-group">
-                            <label class="form-label mt-3">توضیحات محصول </label>
+                            <label class="form-label mt-3">توضیحات محصول</label>
                             @include('partial.editor',['value'=>$product->description ?? ''])
                         </div>
                     </div>
 
+                </div>
+
+                <div class="col-12 mt-4">
+                    <label class="control-label mb-2">پله‌های قیمتی بر اساس تعداد خرید (با افزایش تعداد خرید کاربر قیمت نسبت به قیمت پایه کاهش می‌یابد)</label>
+                    <table class="table table-bordered" id="price-tiers-table">
+                        <thead>
+                        <tr>
+                            <th>از تعداد</th>
+                            <th>تا تعداد (خالی = بی‌نهایت)</th>
+                            <th>قیمت واحد (تومان)</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- ردیف‌ها با جاوااسکریپت پر می‌شن -->
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn btn-outline-primary btn-sm" id="add-tier-row">
+                        <i class="bi bi-plus"></i> افزودن پله قیمتی
+                    </button>
                 </div>
 
                 <div class="row text-center mt-4">
@@ -157,83 +185,22 @@
                 </div>
 
             </form>
-            @if($product->has_sub_product)
-                <hr class="mt-5">
-                <div class="d-flex align-items-center mt-4 mb-3">
-                    <h4 class="mb-0">
-                        <i class="bi bi-box-seam"></i> زیرمحصول‌ها
-                    </h4>
-
-                    <a href="{{route('admin.subproduct.create',['product'=>$product])}}"
-                       class="btn btn-success btn-sm ms-auto">
-                        <i class="bi bi-plus-lg"></i>
-                        افزودن زیرمحصول
-                    </a>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-bordered text-center align-middle">
-                        <thead class="table-light">
-                        <tr>
-                            <th>نام</th>
-                            <th>کد</th>
-                            <th>قیمت</th>
-                            <th>تخفیف</th>
-                            <th>عملیات</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @if($product->subProducts->count())
-                        @foreach($product->subProducts as $sub)
-                            <tr>
-                                <td>{{ $sub->name }}</td>
-                                <td>{{ $sub->code }}</td>
-                                <td>{{ number_format($sub->price) }}</td>
-                                <td>{{ $sub->discount }}</td>
-                                <td>
-                                    <div class="dropdown position-static">
-                                        <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown" data-bs-boundary="viewport">
-                                            عملیات  <i class="bi bi-three-dots-vertical"></i>
-                                        </button>
-
-                                        <ul class="dropdown-menu">
-                                            <li>
-                                                <a href="{{ route('admin.subproduct.edit',$sub->id) }}"
-                                                   class="dropdown-item">
-                                                    <i class="bi bi-pencil me-2"></i> ویرایش
-                                                </a>
-                                            </li>
-                                        <li>
-                                            <a class="dropdown-item text-danger"
-                                               href="#"
-                                               onclick="cancelArticle('{{ route('admin.subproduct.destroy',$sub->id)}}', 'cancel-article-form-{{ $sub->id }}')">
-                                                <i class="bi bi-trash me-2"></i> حذف
-                                            </a>
-                                        </li>
-
-                                    <form id="cancel-article-form-{{ $sub->id }}"
-                                          action="{{ route('admin.subproduct.destroy',$sub->id) }}"
-                                          method="POST"
-                                          style="display:none;">
-                                        @csrf
-                                        @method('DELETE')
-                                    </form>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                        @endif
-                        </tbody>
-                    </table>
-                </div>
-            @endif
-
         </div>
     </div>
 
 @endsection
 
 @push('scripts')
+    @php
+        $existingTiersForJs = $product->productPriceTiers->map(function ($t) {
+            return [
+                'min_qty' => $t->min_qty,
+                'max_qty' => $t->max_qty,
+                'unit_price' => $t->unit_price,
+            ];
+        });
+    @endphp
+
     <script>
         var input = document.querySelector('#keywords-input');
         var tagify = new Tagify(input, {
@@ -249,25 +216,6 @@
             var tags = tagify.value.map(tag => tag.value).join(',');
             input.value = tags;
         });
-
-        function cancelArticle(url, formId) {
-            Swal.fire({
-                title: 'آیا مطمئن هستید؟',
-                text: 'این عملیات قابل بازگشت نیست!!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'بله، حذف شود',
-                cancelButtonText: 'خیر'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const form = document.getElementById(formId);
-                    form.action = url;
-                    form.submit();
-                }
-            });
-        }
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -282,6 +230,100 @@
                 noChoicesText: 'دسته بندی وجود ندارد',
                 itemSelectText: '',
             });
+        });
+    </script>
+    <script>
+        let tierIndex = 0;
+        const tbody = document.querySelector('#price-tiers-table tbody');
+
+        // پله‌های موجود از سرور (برای پر کردن اولیه جدول)
+        const existingTiers = @json($existingTiersForJs);
+
+        function addTierRow(tier = null) {
+            const row = document.createElement('tr');
+            const min = tier?.min_qty ?? '';
+            const max = tier?.max_qty ?? '';
+            const price = tier?.unit_price ?? '';
+
+            row.innerHTML = `
+            <td>
+                <input type="number" min="1" class="form-control"
+                       name="tiers[${tierIndex}][min_qty]" value="${min}" required>
+            </td>
+            <td>
+                <input type="number" min="1" class="form-control"
+                       name="tiers[${tierIndex}][max_qty]" value="${max}">
+            </td>
+            <td>
+                <input type="number" min="0" class="form-control"
+                       name="tiers[${tierIndex}][unit_price]" value="${price}" required>
+            </td>
+            <td>
+                <button type="button" class="btn btn-danger btn-sm remove-tier-row">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </td>
+        `;
+            tbody.appendChild(row);
+            tierIndex++;
+        }
+
+        document.getElementById('add-tier-row').addEventListener('click', () => addTierRow());
+
+        tbody.addEventListener('click', function (e) {
+            if (e.target.closest('.remove-tier-row')) {
+                e.target.closest('tr').remove();
+            }
+        });
+
+        // پر کردن جدول با پله‌های موجود، در غیر این صورت یک ردیف خالی
+        if (existingTiers.length > 0) {
+            existingTiers.forEach(t => addTierRow(t));
+        } else {
+            addTierRow();
+        }
+
+        document.querySelector('form').addEventListener('submit', function (e) {
+            const rows = tbody.querySelectorAll('tr');
+            const tiers = [];
+
+            for (const row of rows) {
+                const min = row.querySelector('[name*="[min_qty]"]').value;
+                const maxInput = row.querySelector('[name*="[max_qty]"]');
+                const max = maxInput.value;
+
+                if (!min) continue;
+
+                tiers.push({
+                    min: parseInt(min),
+                    max: max ? parseInt(max) : null,
+                });
+            }
+
+            tiers.sort((a, b) => a.min - b.min);
+
+            for (let i = 0; i < tiers.length; i++) {
+                const current = tiers[i];
+
+                if (current.max !== null && current.max < current.min) {
+                    alert(`خطا: در پله با شروع ${current.min}، مقدار "تا تعداد" نباید کمتر از "از تعداد" باشد.`);
+                    e.preventDefault();
+                    return;
+                }
+
+                if (current.max === null && i < tiers.length - 1) {
+                    alert(`خطا: پله‌ای که "تا تعداد" آن خالی (بی‌نهایت) است باید آخرین پله باشد.`);
+                    e.preventDefault();
+                    return;
+                }
+
+                const next = tiers[i + 1];
+                if (next && current.max !== null && current.max >= next.min) {
+                    alert(`خطا: بازه ${current.min} تا ${current.max} با بازه بعدی (شروع از ${next.min}) هم‌پوشانی دارد.`);
+                    e.preventDefault();
+                    return;
+                }
+            }
         });
     </script>
 @endpush

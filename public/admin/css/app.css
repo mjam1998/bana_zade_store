@@ -1606,4 +1606,38 @@ body::-webkit-scrollbar-thumb:hover {
 
 .modal-backdrop {
     z-index: 1990 !important;
+}/* فاصله‌ی کم و استاندارد در موبایل */
+@media (max-width: 768px) {
+    .main {
+        padding: 12px;
+        padding-bottom: 70px; /* برای منوی پایین موبایل */
+    }
+
+    .profile-content {
+        padding: 16px 12px;
+        margin-bottom: 16px;
+        border-radius: 14px;
+    }
+
+    .section-title {
+        font-size: 1.15rem;
+        margin-bottom: 18px !important;
+        padding-bottom: 12px;
+        gap: 8px;
+    }
 }
+
+/* موبایل کوچک */
+@media (max-width: 480px) {
+    .main {
+        padding: 8px;
+        padding-bottom: 65px;
+    }
+
+    .profile-content {
+        padding: 14px 10px;
+        border-radius: 12px;
+        margin-bottom: 12px;
+    }
+}
+

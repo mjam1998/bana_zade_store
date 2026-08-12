@@ -71,7 +71,7 @@ Route::prefix('/admin')->middleware('auth')->group(function(){
          Route::get('/edit/{product}', [AdminProductController::class,'edit'])->name('admin.product.edit');
          Route::put('/update/{product}', [AdminProductController::class,'update'])->name('admin.product.update');
          Route::delete('/delete/{product}', [AdminProductController::class,'delete'])->name('admin.product.delete');
-
+       Route::patch('/change-status/{product}', [AdminProductController::class,'changeStatus'])->name('admin.product.change.status');
 
          Route::get('/comment/list/{product}', [AdminProductController::class,'commentList'])->name('admin.product.comment.list');
          Route::get('/comment/create/{product}', [AdminProductController::class,'commentCreate'])->name('admin.product.comment.create');
