@@ -42,8 +42,10 @@ class Category extends Model
         });
 
         static::updated(function ($category) {
-            if ($category->wasChanged('is_active') && !$category->is_active) {
-                $category->products()->update(['is_active' => false]);
+            if ($category->wasChanged('is_active')) {
+                $category->products()->update([
+                    'is_active' => $category->is_active
+                ]);
             }
         });
 

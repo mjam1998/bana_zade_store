@@ -4,104 +4,28 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
-use App\Models\MegaCategory;
-use App\Models\SuperCategory;
 use App\Rules\SlugRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Encoders\WebpEncoder;
+use Intervention\Image\Image;
+use Intervention\Image\ImageManager;
 
 class AdminCategoryController extends Controller
 {
-    public function megaCategoryIndex(){
-        return view('admin.category.mega-category.index');
-    }
-    public function megaCategoryCreate(){
-        return view('admin.category.mega-category.create');
-    }
-    public function megaCategoryStore(Request $request){
-       $data= $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-        ], [
-            'name.required' => 'وارد کردن نام الزامی است.',
-            'name.string'   => 'نام باید به صور متن وارد شود.',
-            'name.max'      => 'نام نباید بیشتر از ۲۵۵ کاراکتر باشد.',
-        ]);
-        MegaCategory::create($data);
-        return redirect()->route('admin.mega-category.index')->with('success','دسته بندی با موفقیت افزوده شد.');
 
-    }
-    public function megaCategoryEdit(MegaCategory $megaCategory)
+    public function index()
     {
-        return view('admin.category.mega-category.edit', compact('megaCategory'));
+        return view('admin.category.index');
     }
-    public function megaCategoryUpdate(Request $request, MegaCategory $megaCategory){
-        $data= $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-        ], [
-            'name.required' => 'وارد کردن نام الزامی است.',
-            'name.string'   => 'نام باید به صور متن وارد شود.',
-            'name.max'      => 'نام نباید بیشتر از ۲۵۵ کاراکتر باشد.',
-        ]);
-        $megaCategory->update($data);
-        return redirect()->route('admin.mega-category.index')->with('success','دسته بندی با موفقیت ویرایش شد.');
+    public function create(){
+        return view('admin.category.create');
     }
-    public function megaCategoryDelete(MegaCategory $megaCategory)
-    {
-        $megaCategory->delete();
-        return redirect()->route('admin.mega-category.index')->with('success','دسته بندی با موفقیت حذف شد.');
-    }
-    public function superCategoryIndex(MegaCategory $megaCategory){
-        return view('admin.category.super-category.index', compact('megaCategory'));
-    }
-    public function superCategoryCreate(MegaCategory $megaCategory){
-        return view('admin.category.super-category.create', compact('megaCategory'));
-    }
-    public function superCategoryStore(Request $request){
-        $data= $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'mega_category_id' => ['required', 'exists:mega_categories,id'],
-        ], [
-            'name.required' => 'وارد کردن نام الزامی است.',
-            'mega_category_id.required' => 'وارد کردن دسته بندی شاخه اول الزامی است.',
-            'mega_category_id.exists' => 'ایدی دسته بندی شاخه اول نامعتبر است.',
-            'name.string'   => 'نام باید به صور متن وارد شود.',
-            'name.max'      => 'نام نباید بیشتر از ۲۵۵ کاراکتر باشد.',
-        ]);
-        SuperCategory::create($data);
-        return redirect()->route('admin.super-category.index',['mega_category'=>$data['mega_category_id']])->with('success','دسته بندی با موفقیت افزوده شد.');
-    }
-    public function superCategoryEdit(SuperCategory $superCategory){
-        return view('admin.category.super-category.edit', compact('superCategory'));
-    }
-    public function superCategoryUpdate(Request $request, SuperCategory $superCategory){
-        $data= $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'mega_category_id' => ['required', 'exists:mega_categories,id'],
-        ], [
-            'name.required' => 'وارد کردن نام الزامی است.',
-            'mega_category_id.required' => 'وارد کردن دسته بندی شاخه اول الزامی است.',
-            'mega_category_id.exists' => 'ایدی دسته بندی شاخه اول نامعتبر است.',
-            'name.string'   => 'نام باید به صور متن وارد شود.',
-            'name.max'      => 'نام نباید بیشتر از ۲۵۵ کاراکتر باشد.',
-        ]);
-        $superCategory->update($data);
-        return redirect()->route('admin.super-category.index',['mega_category'=>$data['mega_category_id']])->with('success','دسته بندی با موفقیت ویرایش شد.');
-    }
-    public function superCategoryDelete(SuperCategory $superCategory){
-        $superCategory->delete();
-        return back()->with('success','دسته بندی با موفقیت حذف شد.');
-    }
-    public function primaryCategoryIndex(SuperCategory $superCategory)
-    {
-        return view('admin.category.primary-category.index', compact('superCategory'));
-    }
-    public function primaryCategoryCreate(SuperCategory $superCategory){
-        return view('admin.category.primary-category.create', compact('superCategory'));
-    }
-    public function primaryCategoryStore(Request $request)
+    public function store(Request $request)
     {
         $data = $request->validate([
-            'super_category_id' => 'required|exists:super_categories,id',
+
             'name' => 'required|string|max:300',
             'slug' => [
                 'required',
@@ -110,16 +34,14 @@ class AdminCategoryController extends Controller
                 'unique:categories,slug,',
                 new SlugRule(),
             ],
-            'is_list'=> 'nullable|boolean',
+
             'meta_title' => 'nullable|string|max:300',
             'meta_description' => 'nullable|string|max:300',
             'keywords' => 'nullable|string|max:400',
-            'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:5148',
+            'image' => 'required|image|mimes:jpeg,png,jpg,webp,jfif|max:5148',
             'image_alt' => 'nullable|string|max:400',
             'image_title' => 'nullable|string|max:400',
         ], [
-            'super_category_id.required' => 'انتخاب دسته‌بندی اصلی الزامی است',
-            'super_category_id.exists' => 'دسته‌بندی اصلی انتخاب شده معتبر نیست',
             'name.required' => 'نام دسته‌بندی الزامی است',
             'name.max' => 'نام دسته‌بندی نباید بیشتر از 300 کاراکتر باشد',
             'slug.required' => 'اسلاگ الزامی است',
@@ -130,26 +52,31 @@ class AdminCategoryController extends Controller
             'keywords.max' => 'کلمات کلیدی نباید بیشتر از 400 کاراکتر باشد',
             'image.required' => 'تصویر دسته‌بندی الزامی است',
             'image.image' => 'فایل انتخابی باید تصویر باشد',
-            'image.mimes' => 'فرمت تصویر باید jpeg، png، jpg یا webp باشد',
+            'image.mimes' => 'فرمت تصویر باید jpeg،jfif، png، jpg یا webp باشد',
             'image.max' => 'حجم تصویر نباید بیشتر از 5 مگابایت باشد',
             'image_alt.max' => 'Alt تصویر نباید بیشتر از 400 کاراکتر باشد',
             'image_title.max' => 'Title تصویر نباید بیشتر از 400 کاراکتر باشد',
         ]);
-        $file = $request->file("image");
-        $ext = $file->getClientOriginalExtension();
-        $filename =  $data['slug']."_" .time(). "." . $ext;
-        $file->storeAs('category', $filename, 'public');
+
+        $filename = $data['slug'] . "_" . time() . ".webp";
+
+        $manager = new ImageManager(new Driver());
+        $image = $manager->decode($request->file('image'));
+        $encoded = $image->encode(new WebpEncoder(quality: 80));
+
+        Storage::disk('public')->put('category/' . $filename, (string) $encoded);
+
         $data['image'] = $filename;
         Category::create($data);
-        return redirect()->route('admin.primary-category.index',['super_category'=>$data['super_category_id']])->with('success','دسته بندی با موفقیت افزوده شد.');
+        return redirect()->route('admin.category.index')->with('success','دسته بندی با موفقیت افزوده شد.');
 
     }
-    public function primaryCategoryEdit(Category $category){
-        return view('admin.category.primary-category.edit', compact('category'));
+    public function edit(Category $category){
+        return view('admin.category.edit', compact('category'));
     }
-    public function primaryCategoryUpdate(Request $request, Category $category){
+    public function update(Request $request, Category $category){
         $data = $request->validate([
-            'super_category_id' => 'required|exists:super_categories,id',
+
             'name' => 'required|string|max:300',
             'slug' => [
                 'required',
@@ -158,16 +85,13 @@ class AdminCategoryController extends Controller
                 'unique:categories,slug,' . $category->id,
                 new SlugRule(),
             ],
-            'is_list'=> 'nullable|boolean',
             'meta_title' => 'nullable|string|max:300',
             'meta_description' => 'nullable|string|max:300',
             'keywords' => 'nullable|string|max:400',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5148',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,jfif,webp|max:5148',
             'image_alt' => 'nullable|string|max:400',
             'image_title' => 'nullable|string|max:400',
         ], [
-            'super_category_id.required' => 'انتخاب دسته‌بندی اصلی الزامی است',
-            'super_category_id.exists' => 'دسته‌بندی اصلی انتخاب شده معتبر نیست',
             'name.required' => 'نام دسته‌بندی الزامی است',
             'name.max' => 'نام دسته‌بندی نباید بیشتر از 300 کاراکتر باشد',
             'slug.required' => 'اسلاگ الزامی است',
@@ -183,23 +107,36 @@ class AdminCategoryController extends Controller
             'image_title.max' => 'Title تصویر نباید بیشتر از 400 کاراکتر باشد',
         ]);
         if ($request->hasFile("image")) {
-            $file = $request->file("image");
             if ($category->image) {
                 Storage::disk('public')->delete('category/' . $category->image);
             }
-            $ext = $file->getClientOriginalExtension();
-            $filename =  $data['slug']."_" .time(). "." . $ext;
-            $file->storeAs('category', $filename, 'public');
+            $filename = $data['slug'] . "_" . time() . ".webp";
+
+            $manager = new ImageManager(new Driver());
+            $image = $manager->decode($request->file('image'));
+            $encoded = $image->encode(new WebpEncoder(quality: 80));
+
+            Storage::disk('public')->put('category/' . $filename, (string) $encoded);
             $data['image'] = $filename;
         }
         $category->update($data);
-        return redirect()->route('admin.primary-category.index',['super_category'=>$data['super_category_id']])->with('success','دسته بندی با موفقیت ویرایش شد.');
+        return redirect()->route('admin.category.index')->with('success','دسته بندی با موفقیت ویرایش شد.');
 
     }
-    public function primaryCategoryDelete(Category $category){
+    public function delete(Category $category){
         $category->delete();
         return back()->with('success','دسته بندی با موفقیت حذف شد.');
 
+    }
+
+    public function changeStatus(Category $category)
+    {
+       if ($category->is_active){
+           $category->update(['is_active' => false]);
+       }else{
+           $category->update(['is_active' => true]);
+       }
+        return back()->with('success','وضعیت دسته بندی با موفقیت تغییر کرد.');
     }
     public function categoryProductIndex(Category $category)
     {

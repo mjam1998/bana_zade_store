@@ -5,13 +5,15 @@
     <div class="profile-content">
         <div class="profile-section active">
             <h3 class="section-title mb-4">
-                <i class="bi bi-list-ul"></i> لیست دسته بندی های شاخه اول
+                <i class="bi bi-list-ul"></i> لیست دسته بندی ها
             </h3>
             @if(session()->has('success'))
                 <p class="alert alert-success">{{session('success')}}</p>
             @endif
-            <livewire:admin-mega-category-table/>
+            <livewire:admin-category-table />
 
         </div>
     </div>
 @endsection
+
+

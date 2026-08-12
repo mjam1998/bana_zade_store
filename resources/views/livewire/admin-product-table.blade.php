@@ -1,19 +1,21 @@
 <div>
     {{-- جستجو --}}
     <div class="row mb-3 g-2">
-        <div class="col-12 col-md-9">
+        <div class="col-12 col-md-8">
             <input type="text"
                    wire:model.defer="searchInput"
                    wire:keydown.enter="applySearch"
                    class="form-control"
                    placeholder="جستجو بر اساس نام، اسلاگ یا کد محصول... ">
         </div>
-        <div class="col-12 col-md-3">
+        <div class="col-6 col-md-2">
             <button wire:click="applySearch" class="btn btn-primary w-100">
                 جستجو
             </button>
         </div>
-
+        <div class="col-6 col-md-2">
+            <a href="{{ route('admin.product.create') }}" class="btn btn-primary w-100" style="background-color: #0e9f6e;color: white;">افزودن</a>
+        </div>
     </div>
 
     {{-- جدول --}}

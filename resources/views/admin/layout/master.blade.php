@@ -14,7 +14,7 @@
     <!-- Bootstrap RTL CSS -->
     <link href="{{asset('bootstrap/bootstrap.rtl.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('bootstrap/bootstrap-icons.css')}}">
-
+    <link href="{{asset('front/assets/fonts/vazirmatn-font-face.css')}}" rel="stylesheet">
     <link href="{{ asset('admin/css/app.css') }}" rel="stylesheet">
     <link href="{{asset('admin/choises/choices.min.css')}}" rel="stylesheet" />
     <link href="{{asset('bootstrap/tagify.css')}}" rel="stylesheet">
@@ -49,22 +49,9 @@
         <ul>
             <li><a href="{{route('admin.index')}}"  ><i class="bi bi-house"></i> داشبورد</a></li>
             <li><a href="{{route('admin.list')}}"  ><i class="bi bi-people"></i> ادمین ها</a></li>
-            <li><a href="{{route('admin.mega-category.index')}}"  ><i class="bi bi-list-ul"></i> دسته بندی ها</a></li>
+            <li><a href="{{route('admin.category.index')}}"  ><i class="bi bi-list-ul"></i> دسته بندی ها</a></li>
+            <li><a href="{{route('admin.product.index')}}"  ><i class="bi bi-box-seam"></i> محصولات</a></li>
 
-            <li class="has-submenu" >
-                <a href="javascript:void(0)" class="menu-toggle">
-                    <i class="bi bi-box-seam"></i> محصولات</a>
-                <ul class="submenu">
-
-                    <li><a href="{{route('admin.product.create')}}" style="font-size: small"><i class="bi bi-pencil-square"></i> افزودن محصول</a></li>
-                    <li><a href="{{route('admin.product.excel.create')}}" style="font-size: small"><i class="bi bi-pencil-square"></i> افزودن لیستی محصولات ثابت</a></li>
-                    <li><a href="{{route('admin.product.excel.create-sub-product')}}" style="font-size: small"><i class="bi bi-pencil-square"></i> افزودن لیستی محصولات متغیر</a></li>
-                    <li><a href="{{route('admin.product.index')}}" style="font-size: small"><i class="bi bi-pencil-square"></i> لیست محصولات</a></li>
-                    <li><a href="{{route('admin.product.bulk-upload')}}" style="font-size: small"><i class="bi bi-pencil-square"></i> آپلود گروهی عکس محصولات</a></li>
-                    <li><a href="{{route('admin.product.uploaded-images')}}" style="font-size: small"><i class="bi bi-pencil-square"></i>  عکس های آپلود شده</a></li>
-
-                </ul>
-            </li>
             <li><a href="{{route('admin.order.index')}}"  ><i class="bi bi-cart"></i> سفارشات</a></li>
             <li><a href="{{route('admin.blog.index')}}"  ><i class="bi bi-layout-text-sidebar"></i> بلاگ</a></li>
             <li><a href="{{route('admin.send-method.index')}}"  ><i class="bi bi-truck"></i> روش ارسال</a></li>

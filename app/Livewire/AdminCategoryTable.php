@@ -16,12 +16,8 @@ class AdminCategoryTable extends Component
     // input جستجو
     public $searchInput = '';
     public $search = '';
-    public $superCategoryId;
-    public function mount($superCategoryId = null)
-    {
-        // ✅ مقدار پیش‌فرض اگر پاس داده نشده باشه
-        $this->superCategoryId  = $superCategoryId ?? 0;
-    }
+
+
     public function applySearch()
     {
         $this->search = $this->searchInput;
@@ -31,7 +27,6 @@ class AdminCategoryTable extends Component
     public function render()
     {
         $categories = Category::query()
-            ->where('super_category_id', $this->superCategoryId)
             ->when($this->search, function ($query) {
                 $query->where(function ($q) {
                     $q->where('name', 'like', '%' . $this->search . '%')

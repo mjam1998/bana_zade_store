@@ -7,7 +7,7 @@
     <div class="profile-content">
         <div class="profile-section active">
             <h3 class="section-title mb-4">
-                <i class="bi bi-list-ul"></i>افزودن دسته بندی {{$superCategory->name}}
+                <i class="bi bi-list-ul"></i>افزودن دسته بندی
             </h3>
             @if($errors->any())
                 <div class="alert alert-danger alert-dismissible fade show">
@@ -20,9 +20,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             @endif
-            <form method="post" action="{{route('admin.primary-category.store')}}" enctype="multipart/form-data" >
+            <form method="post" action="{{route('admin.category.store')}}" enctype="multipart/form-data" >
                 @csrf
-                <input type="hidden" name="super_category_id" value="{{$superCategory->id}}">
+
 
                 <div class="row">
                     <div class="col-md-6">
@@ -49,22 +49,13 @@
                     </div>
 
                     <div class="col-md-6">
-                        <div class="form-group">
+                        <div class="form-group" >
                             <label class="control-label">توضیحات متا (meta description)</label>
                             <input type="text" class="form-control mt-2" name="meta_description" value="{{old('meta_description')}}" maxlength="300">
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label class="control-label">نحوه نمایش محصولات در صفحه دسته بندی </label>
-                        <select class="form-select mt-2" name="is_list">
-                            <option value="1" >لیستی</option>
-                            <option value="0" >کارتی</option>
-                        </select>
 
-                    </div>
-                </div>
                 <div class="row mt-3">
                     <div class="col-md-12">
                         <div class="form-group">
