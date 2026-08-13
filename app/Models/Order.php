@@ -15,7 +15,7 @@ class Order extends Model
       'mobile',
       'total_amount',
       'pay_amount',
-      'track_number',
+      'description',
       'state',
       'city',
       'address',

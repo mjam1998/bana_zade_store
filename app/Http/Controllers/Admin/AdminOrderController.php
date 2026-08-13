@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\OrderStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
-use App\Models\SendMethod;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Morilog\Jalali\Jalalian;
 use TCPDF;
 use TCPDF_FONTS;
@@ -16,40 +18,43 @@ class AdminOrderController extends Controller
         return view('admin.order.index');
     }
 
+    public function userList(User $user)
+    {
+        return view('admin.order.user-orders',compact('user'));
+    }
     public function show(Order $order){
 
         $order->load([
             'orderItems.product' => fn($q) => $q->withTrashed(),
-            'sendMethod'=> fn($q) => $q->withTrashed()
         ]);
-        $sendMethods = SendMethod::all();
 
-        return view('admin.order.show', compact('order', 'sendMethods'));
+
+        return view('admin.order.show', compact('order'));
     }
     public function update(Request $request, Order $order)
     {
 
         $validated = $request->validate([
-            'status' => 'required|integer|in:0,1,2',
-            'send_method_id' => 'nullable|exists:send_methods,id',
-            'track_number' => 'nullable|string|max:255|unique:orders,track_number,' . $order->id,
-            'send_at' => 'nullable|string',
+            'status' => [
+                'required',
+                'integer',
+                Rule::enum(OrderStatus::class),
+            ],
+            'description' => 'nullable|string|max:65000',
+
+            'send_at' => 'nullable|required_if:status,' . OrderStatus::Sent->value . '|string',
         ], [
             'status.required' => 'وضعیت سفارش الزامی است',
             'status.integer' => 'وضعیت باید عدد باشد',
             'status.in' => 'وضعیت انتخاب شده نامعتبر است',
-            'send_method_id.exists' => 'روش ارسال انتخاب شده معتبر نیست',
-            'track_number.string' => 'کد پیگیری باید متن باشد',
-            'track_number.max' => 'کد پیگیری نباید بیشتر از 255 کاراکتر باشد',
-            'track_number.unique' => 'این کد پیگیری قبلا استفاده شده است',
             'send_at.string' => 'فرمت تاریخ ارسال نامعتبر است',
+            'send_at.required_if' => 'در وضعیت «ارسال شده»، تاریخ ارسال الزامی است',
         ]);
 
         try {
             $data = [
                 'status' => $validated['status'],
-                'send_method_id' => $validated['send_method_id'],
-                'track_number' => $validated['track_number'],
+                'description' => $validated['description'],
             ];
 
             if (!empty($validated['send_at'])) {
@@ -71,65 +76,54 @@ class AdminOrderController extends Controller
         }
     }
 
-    // در OrderController.php
-
-    // app/Http/Controllers/Admin/OrderController.php
-
-
-
     public function downloadInvoicePdf($id)
     {
-        $order = Order::with(['orderItems.product', 'orderItems.subProduct', 'sendMethod'])
+        $order = Order::with(['orderItems.product' => fn($q) => $q->withTrashed()])
             ->findOrFail($id);
 
-        // ایجاد نمونه TCPDF
         $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
 
-        // تنظیمات PDF
         $pdf->SetCreator('فروشگاه');
         $pdf->SetAuthor(config('app.name'));
         $pdf->SetTitle('فاکتور سفارش #' . $order->code);
         $pdf->SetSubject('فاکتور');
 
-        // حذف هدر و فوتر پیش‌فرض
         $pdf->setPrintHeader(false);
         $pdf->setPrintFooter(false);
 
-        // **تنظیم RTL برای راست‌چین**
+        // تنظیم RTL برای راست‌چین و چسبیدن صحیح حروف فارسی
         $pdf->setRTL(true);
 
-        // تنظیم فونت فارسی
-//        $pdf->SetFont('dejavusans', '', 10);
+        // اضافه کردن و تنظیم فونت وزیرمتن
         $fontPath = storage_path('fonts/tcpdf/');
+        // تابع addTTFfont نام فونت را برمی‌گرداند (معمولاً حروف کوچک و بدون فاصله)
         $fontRegular = TCPDF_FONTS::addTTFfont($fontPath . 'Vazirmatn-Regular.ttf', 'TrueTypeUnicode', '', 96);
-        $fontBold = TCPDF_FONTS::addTTFfont($fontPath . 'Vazirmatn-Bold.ttf', 'TrueTypeUnicode', '', 96);
-//        $pdf->SetFont($fontRegular, '', 10);
-        // تنظیم حاشیه
+        TCPDF_FONTS::addTTFfont($fontPath . 'Vazirmatn-Bold.ttf', 'TrueTypeUnicode', '', 96);
+
+        // اعمال فونت روی فایل PDF
+        $pdf->SetFont($fontRegular, '', 10);
+
         $pdf->SetMargins(15, 15, 15);
         $pdf->SetAutoPageBreak(true, 15);
-
-        // افزودن صفحه
         $pdf->AddPage();
 
-        // محتوای HTML
-        $html = $this->generateInvoiceHtml($order);
+        // پاس دادن نام فونت به متد HTML
+        $html = $this->generateInvoiceHtml($order, $fontRegular);
 
-        // نوشتن HTML در PDF
         $pdf->writeHTML($html, true, false, true, false, '');
 
-        // خروجی PDF
         return $pdf->Output('invoice_' . $order->code . '.pdf', 'D');
     }
 
-    private function generateInvoiceHtml($order)
+
+    private function generateInvoiceHtml($order, $fontFamily) // دریافت نام فونت
     {
         $order->load([
             'orderItems.product' => fn($q) => $q->withTrashed(),
-            'orderItems.subProduct' => fn($q) => $q->withTrashed(),
         ]);
         $html = '
 <style>
-    * { font-family: dejavusans; }
+     * { font-family: ' . $fontFamily . ', sans-serif; }
     body { direction: rtl; text-align: right; }
 
     .header {
@@ -209,10 +203,10 @@ class AdminOrderController extends Controller
 
 <div class="header">
     <h1>فاکتور فروش</h1>
-    <p><strong>فروشگاه آقای صفر تا صد</strong></p>
-    <p><strong>www.aghaye0ta100.ir</strong></p>
-     <p><strong>دفتر مرکزی: اصفهان، خیابان بابک نبش کوچه ۲۳</strong></p>
-    <p>تلفن: 09136437210</p>
+    <p><strong>بازرگانی بنازاده</strong></p>
+    <p><strong>www.ir</strong></p>
+     <p><strong>دفتر مرکزی: </strong></p>
+    <p>تلفن: </p>
 </div>
 
 <div class="info-section">
@@ -233,10 +227,10 @@ class AdminOrderController extends Controller
 
 <div class="info-section">
     <h3>اطلاعات ارسال و پرداخت</h3>
-    <div class="info-row"><strong>روش ارسال:</strong> ' . $order->sendMethod->name . '</div>
+
     <div class="info-row"><strong>آدرس:</strong> ' . $order->address . '</div>
      <div class="info-row">تاریخ ارسال: ' . \Morilog\Jalali\Jalalian::fromDateTime($order->send_at)->format('Y/m/d') . '</div>
-     <div class="info-row"><strong>کد پیگیری روش ارسال:</strong> ' . $order->track_number . '</div>
+
 </div>
 
 <div class="info-section">
@@ -257,15 +251,7 @@ class AdminOrderController extends Controller
         $row = 1;
         foreach ($order->orderItems as $item) {
 
-
-
                 $productName = $item->product->name;
-
-                // بررسی زیرمحصول
-                if ($item->product->has_sub_product && $item->subProduct) {
-                    $productName .= ' - ' . $item->subProduct->name;
-                }
-
 
             $html .= '
         <tr>
@@ -299,9 +285,5 @@ class AdminOrderController extends Controller
 
         return $html;
     }
-
-
-
-
 
 }

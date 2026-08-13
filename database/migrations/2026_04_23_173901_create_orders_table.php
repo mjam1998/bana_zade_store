@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('mobile','15');
             $table->decimal('total_amount',15,0);
             $table->decimal('pay_amount',15,0);
-            $table->string('track_number',20)->nullable()->unique();
+            $table->text('description')->nullable();
             $table->string('state','255');
             $table->string('city','255');
             $table->text('address');

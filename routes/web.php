@@ -49,6 +49,7 @@ Route::prefix('/admin')->middleware('auth')->group(function(){
    Route::get('/edit/{user}', [adminController::class,'edit'])->name('admin.edit');
    Route::put('/update/{user}', [adminController::class,'update'])->name('admin.update');
    Route::delete('/delete/{user}', [adminController::class,'delete'])->name('admin.delete');
+   Route::patch('/change/status/{user}', [adminController::class,'changeStatus'])->name('admin.change.status');
 
    Route::prefix('/category')->group(function(){
 
@@ -97,6 +98,7 @@ Route::prefix('/admin')->middleware('auth')->group(function(){
      Route::get('/show/{order}', [AdminOrderController::class,'show'])->name('admin.order.show');
      Route::put('/update/{order}', [AdminOrderController::class,'update'])->name('admin.order.update');
        Route::get('/{id}/invoice-pdf', [AdminOrderController::class, 'downloadInvoicePdf'])->name('admin.order.invoice-pdf');
+       Route::get('list/{user}', [AdminOrderController::class,'userList'])->name('admin.order.user.list');
    });
    Route::prefix('/banner')->group(function(){
        Route::get('/index', [AdminBannerController::class, 'index'])->name('admin.banners.index');
@@ -119,6 +121,8 @@ Route::prefix('/admin')->middleware('auth')->group(function(){
         Route::get('/edit/{page}', [AdminExtraPageController::class,'edit'])->name('admin.extra.page.edit');
         Route::put('/update/{page}', [AdminExtraPageController::class,'update'])->name('admin.extra.page.update');
         Route::delete('/delete/{page}', [AdminExtraPageController::class,'delete'])->name('admin.extra.page.delete');
+        Route::patch('/change-status/{page}', [AdminExtraPageController::class,'changeStatus'])->name('admin.extra.page.change.status');
+
     });
     Route::post('/logout',[AdminController::class,'logout'])->name('admin.logout');
 });

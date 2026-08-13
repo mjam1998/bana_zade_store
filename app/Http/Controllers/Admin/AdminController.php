@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Spatie\Permission\Models\Role;
 
 class AdminController extends Controller
 {
@@ -36,8 +37,8 @@ class AdminController extends Controller
 
     public function create()
     {
-        $userTypes=UserType::cases();
-        return view('admin.manage-admin.create',compact('userTypes'));
+        $roles = Role::all();
+        return view('admin.manage-admin.create',compact('roles'));
     }
 
     public function store(Request $request){
@@ -45,14 +46,17 @@ class AdminController extends Controller
         $data =$request->validate([
             'name' => ['required', 'string', 'max:255'],
             'mobile' => ['required', 'string', 'regex:/^09[0-9]{9}$/', 'unique:users,mobile'],
-            'type' => ['required', Rule::enum(UserType::class)],
+            'roles' => ['required', 'array'],
+            'roles.*' => ['exists:roles,name'],
             'password' => ['required', 'string', 'min:4', 'same:repassword'],
             'repassword' => ['required', 'string'],
         ], [
             'name.required' => 'نام الزامی است.',
             'name.string' => 'نام باید متن باشد.',
             'name.max' => 'نام نباید بیشتر از ۲۵۵ کاراکتر باشد.',
-
+            'roles.required' => ' نقش‌ کاربر اجباری هست.',
+            'roles.array' => 'فرمت نقش‌ها نامعتبر است.',
+            'roles.*.exists' => 'نقش انتخاب شده در سیستم وجود ندارد.',
             'mobile.required' => 'شماره موبایل الزامی است.',
             'mobile.string' => 'شماره موبایل باید متن باشد.',
             'mobile.regex' => 'فرمت شماره موبایل صحیح نیست. (مثال: ۰۹۱۲۳۴۵۶۷۸۹)',
@@ -70,100 +74,114 @@ class AdminController extends Controller
             'repassword.string' => 'تکرار رمز عبور باید متن باشد.',
         ]);
 
+        $roles = $data['roles'] ?? [];
+        unset($data['roles']);
+
         $data['password'] = Hash::make($data['password']);
 
-        $user=User::query()->create($data);
-        if ($user->type==UserType::Primary){
-            User::where('type', UserType::Primary)->where('id','!=',$user->id)->update(['type' => UserType::Regular]);
+        $user = User::query()->create($data);
+
+
+        if (!empty($roles)) {
+            $user->assignRole($roles);
         }
 
         return redirect()->route('admin.list')
-            ->with('success', 'ادمین با موفقیت ایجاد شد');
+            ->with('success', 'کاربر با موفقیت ایجاد شد');
     }
 
-    public function edit(User $user){
-        $userTypes=UserType::cases();
-        return view('admin.manage-admin.edit',compact('userTypes','user'));
+    public function edit(User $user)
+    {
+        $roles = Role::all();
+
+
+        $userRoles = $user->roles->pluck('name')->toArray();
+
+        return view('admin.manage-admin.edit', compact(
+            'user',
+            'roles',
+            'userRoles'
+        ));
     }
     public function update(Request $request, User $user)
     {
-        if ($user->type == UserType::Primary && $request->type != UserType::Primary->value) {
-
-            $primaryCount = User::where('type', UserType::Primary)->count();
-
-            if ($primaryCount <= 1) {
-                return back()->withInput()->with('error', 'حداقل یک ادمین گیرنده پیامک باید وجود داشته باشد.');
-            }
-        }
-
-        $validated = $request->validate([
+        $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
+
             'mobile' => [
                 'required',
                 'string',
                 'regex:/^09[0-9]{9}$/',
-                Rule::unique('users', 'mobile')->ignore($user->id)
+                'unique:users,mobile,' . $user->id,
             ],
-            'type' => ['required', Rule::in(array_column(UserType::cases(), 'value'))],
+
+            'roles' => ['required', 'array'],
+            'roles.*' => ['exists:roles,name'],
+
             'password' => ['nullable', 'string', 'min:4', 'same:repassword'],
             'repassword' => ['nullable', 'string'],
         ], [
             'name.required' => 'نام الزامی است.',
             'name.string' => 'نام باید متن باشد.',
-            'name.max' => 'نام نباید بیشتر از 255 کاراکتر باشد.',
+            'name.max' => 'نام نباید بیشتر از ۲۵۵ کاراکتر باشد.',
 
             'mobile.required' => 'شماره موبایل الزامی است.',
             'mobile.string' => 'شماره موبایل باید متن باشد.',
-            'mobile.regex' => 'فرمت شماره موبایل صحیح نیست. (مثال: 09123456789)',
+            'mobile.regex' => 'فرمت شماره موبایل صحیح نیست. (مثال: ۰۹۱۲۳۴۵۶۷۸۹)',
             'mobile.unique' => 'این شماره موبایل قبلاً ثبت شده است.',
 
-            'type.required' => 'نوع کاربر الزامی است.',
-            'type.in' => 'نوع کاربر انتخاب شده معتبر نیست.',
+            'roles.required' => 'نقش کاربر اجباری است.',
+            'roles.array' => 'فرمت نقش‌ها نامعتبر است.',
+            'roles.*.exists' => 'نقش انتخاب شده در سیستم وجود ندارد.',
 
             'password.string' => 'رمز عبور باید متن باشد.',
-            'password.min' => 'رمز عبور باید حداقل 4 کاراکتر باشد.',
-            'password.same' => 'رمز عبور و تکرار آن یکسان نیستند.',
+            'password.min' => 'رمز عبور باید حداقل ۴ کاراکتر باشد.',
+            'password.same' => 'رمز عبور و تکرار رمز عبور مطابقت ندارند.',
 
             'repassword.string' => 'تکرار رمز عبور باید متن باشد.',
         ]);
 
-        $user->name = $validated['name'];
-        $user->mobile = $validated['mobile'];
-        $user->type = UserType::from($validated['type']);
+
+        $user->name = $data['name'];
+        $user->mobile = $data['mobile'];
 
 
-        // فقط در صورت وارد کردن رمز عبور جدید، آن را تغییر دهید
-        if (!empty($validated['password'])) {
-            $user->password = Hash::make($validated['password']);
+        if (!empty($data['password'])) {
+            $user->password = Hash::make($data['password']);
         }
 
         $user->save();
 
-        if ($user->type==UserType::Primary){
-            User::where('type', UserType::Primary)->where('id','!=',$user->id)->update(['type' => UserType::Regular]);
-        }
 
-        return redirect()->route('admin.list')->with('success', 'ادمین با موفقیت ویرایش شد.');
+        $user->syncRoles($data['roles']);
+
+        return redirect()
+            ->route('admin.list')
+            ->with('success', 'اطلاعات کاربر با موفقیت ویرایش شد.');
     }
 
-    public function delete(User $user){
-        if ($user === auth()->user()){
-            return back()->with('error','نمیتوانید خودتان را حذف کنید');
+    public function delete(User $user)
+    {
+        if ($user->id === auth()->id()) {
+            return back()->with('error', 'نمی‌توانید خودتان را حذف کنید.');
         }
-
-
-        if ($user->type == UserType::Primary) {
-
-            $primaryCount = User::where('type', UserType::Primary)->count();
-
-            if ($primaryCount <= 1) {
-                return back()->with('error', 'حداقل یک ادمین گیرنده پیامک باید در سایت باقی بماند.');
-            }
-        }
-
+        $user->update([
+            'mobile' => $user->mobile . '_deleted_' . $user->id,
+        ]);
 
         $user->delete();
+
         return back()->with('success', 'ادمین با موفقیت حذف شد.');
+    }
+
+    public function changeStatus(User $user)
+    {
+        if ($user->is_active){
+            $user->update(['is_active' => false]);
+        }else{
+            $user->update(['is_active' => true]);
+        }
+        return back()->with('success','وضعیت کاربر با موفقیت تغییر کرد.');
     }
     public function logout(Request $request)
     {

@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('video_banners', function (Blueprint $table) {
             $table->id();
-            $table->string('video_mp4');
-            $table->string('video_webm');
-            $table->string('image');
-            $table->string('image_alt');
-            $table->string('meta_description');
-            $table->string('page_title');
+            $table->string('video_mp4')->nullable();
+            $table->string('video_webm')->nullable();
+            $table->string('image')->nullable();
+            $table->string('image_alt')->nullable();
+            $table->string('meta_description')->nullable();
+            $table->string('page_title')->nullable();
             $table->timestamps();
         });
     }

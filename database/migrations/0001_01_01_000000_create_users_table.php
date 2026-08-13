@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name','255');
-            $table->string('mobile','12');
+            $table->string('mobile','50');
             $table->string('password','400');
             $table->boolean('is_active')->default(true);
             $table->softDeletes();

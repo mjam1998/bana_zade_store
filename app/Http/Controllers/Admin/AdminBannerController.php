@@ -5,97 +5,126 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\BannerType;
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
+use App\Models\VideoBanner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Encoders\WebpEncoder;
+use Intervention\Image\ImageManager;
 
 class AdminBannerController extends Controller
 {
     public function index()
     {
-        $banners = Banner::orderBy('type')->get()->groupBy(function($banner) {
-            return $banner->type->value;
-        });
-        return view('admin.banner.index', compact('banners'));
+        $banner = VideoBanner::query()->latest()->first();
+        return view('admin.banner.index', compact('banner'));
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'id' => 'nullable|exists:banners,id',
-            'type' => 'required|integer|in:1,2,3,4,5,6',
-            'meta_title' => 'nullable|string|max:400',
-            'meta_description' => 'nullable|string|max:400',
-            'image' => $request->id ? 'nullable|image|mimes:jpeg,png,jpg,webp|max:20480' : 'required|image|mimes:jpeg,png,jpg,webp|max:20480',
-            'image_alt' => 'nullable|string|max:400',
-            'image_title' => 'nullable|string|max:400',
-            'url' => 'nullable|url|max:500',
+        $request->validate([
+            'video_mp4' => 'nullable|mimes:mp4|max:20480',
+            'video_webm' => 'nullable|mimes:webm|max:20480',
+            'image' => 'nullable|image',
+            'image_alt' => 'nullable|string|max:255',
+            'page_title' => 'required|string|max:255',
+            'meta_description' => 'nullable|string',
         ], [
-            'type.required' => 'انتخاب نوع بنر الزامی است.',
-            'type.in' => 'نوع بنر انتخاب شده معتبر نیست.',
-            'image.required' => 'آپلود تصویر الزامی است.',
-            'image.image' => 'فایل آپلود شده باید تصویر باشد.',
-            'image.mimes' => 'فرمت تصویر باید jpeg، png، jpg یا webp باشد.',
-            'image.max' => 'حجم تصویر نباید بیشتر از 20 مگابایت باشد.',
-            'url.url' => 'آدرس URL وارد شده معتبر نیست.',
-            'meta_title.max' => 'عنوان متا نباید بیشتر از 400 کاراکتر باشد.',
-            'meta_description.max' => 'توضیحات متا نباید بیشتر از 400 کاراکتر باشد.',
+            'video_mp4.mimes' => 'فایل ویدئویی باید با فرمت MP4 باشد.',
+            'video_mp4.max' => 'حجم ویدئوی MP4 نباید بیشتر از ۲۰ مگابایت باشد.',
+
+            'video_webm.mimes' => 'فایل ویدئویی باید با فرمت WebM باشد.',
+            'video_webm.max' => 'حجم ویدئوی WebM نباید بیشتر از ۲۰ مگابایت باشد.',
+
+            'image.image' => 'فایل انتخاب‌شده باید یک تصویر معتبر باشد.',
+
+            'image_alt.string' => 'متن جایگزین تصویر باید به صورت متن باشد.',
+            'image_alt.max' => 'متن جایگزین تصویر نباید بیشتر از ۲۵۵ کاراکتر باشد.',
+
+            'page_title.required' => 'وارد کردن عنوان صفحه الزامی است.',
+            'page_title.string' => 'عنوان صفحه باید به صورت متن باشد.',
+            'page_title.max' => 'عنوان صفحه نباید بیشتر از ۲۵۵ کاراکتر باشد.',
+
+            'meta_description.string' => 'توضیحات متا باید به صورت متن باشد.',
         ]);
 
-        // بررسی محدودیت تعداد اسلایدر
-        if ($validated['type'] == BannerType::Slider->value) {
-            $sliderCount = Banner::where('type', BannerType::Slider->value)
-                ->when($request->id, fn($q) => $q->where('id', '!=', $request->id))
-                ->count();
+        $banner = VideoBanner::firstOrNew([]);
 
-            if ($sliderCount >= 5) {
-                return back()->withErrors(['type' => 'حداکثر 5 اسلایدر مجاز است'])->withInput();
-            }
-        }
-
-        // بررسی یکتا بودن سایر بنرها
-        if ($validated['type'] != BannerType::Slider->value) {
-            $exists = Banner::where('type', $validated['type'])
-                ->when($request->id, fn($q) => $q->where('id', '!=', $request->id))
-                ->exists();
-
-            if ($exists) {
-                return back()->withErrors(['type' => 'این نوع بنر قبلاً ایجاد شده است'])->withInput();
-            }
-        }
-
-        $banner = $request->id ? Banner::findOrFail($request->id) : new Banner();
-
+        // پردازش تصویر به WebP
         if ($request->hasFile('image')) {
-            if ($banner->exists && $banner->image) {
-                Storage::disk('public')->delete('banners/'.$banner->image);
+            if ($banner->image) Storage::disk('public')->delete('banners/' . $banner->image);
+
+            $filename = time() . ".webp";
+
+            $manager = new ImageManager(new Driver());
+            $image = $manager->decode($request->file('image'));
+            $encoded = $image->encode(new WebpEncoder(quality: 80));
+            Storage::disk('public')->put('banners/' . $filename, (string) $encoded);
+
+            $banner->image = $filename;
+        }
+
+        // آپلود ویدیو MP4
+        if ($request->hasFile('video_mp4')) {
+
+            // حذف ویدیوی قبلی
+            if ($banner->video_mp4) {
+                Storage::disk('public')->delete('banners/' . $banner->video_mp4);
             }
-            $file = $request->file('image');
-            $ext = $file->getClientOriginalExtension();
-            $filename =  'banner'. '_'. BannerType::from($validated['type'])->label().'-'. time() . '.' . $ext;
-            $file->storeAs('banners', $filename, 'public');
-            $validated['image'] = $filename;
 
-        } else {
-            unset($validated['image']);
+            // ذخیره فایل
+            $filename = $request->file('video_mp4')->hashName();
+
+            $request->file('video_mp4')->storeAs(
+                'banners',
+                $filename,
+                'public'
+            );
+
+            // فقط نام فایل در دیتابیس
+            $banner->video_mp4 = $filename;
         }
 
-        unset($validated['id']);
 
-        if ($banner->exists) {
-            $banner->update($validated);
-            $message = 'بنر با موفقیت ویرایش شد';
-        } else {
-            Banner::create($validated);
-            $message = 'بنر با موفقیت ایجاد شد';
+
+        if ($request->hasFile('video_webm')) {
+
+
+            if ($banner->video_webm) {
+                Storage::disk('public')->delete('banners/' . $banner->video_webm);
+            }
+
+
+            $filename = $request->file('video_webm')->hashName();
+
+            $request->file('video_webm')->storeAs(
+                'banners',
+                $filename,
+                'public'
+            );
+
+
+            $banner->video_webm = $filename;
         }
 
-        return redirect()->route('admin.banners.index')->with('success', $message);
+        $banner->image_alt = $request->image_alt;
+        $banner->page_title = $request->page_title;
+        $banner->meta_description = $request->meta_description;
+        $banner->save();
+
+        return back()->with('success', 'بنر و متا تگ‌ها با موفقیت ذخیره شدند.');
     }
 
-    public function destroy(Banner $banner)
+    public function destroy(VideoBanner $banner)
     {
         if ($banner->image) {
             Storage::disk('public')->delete('banners/'.$banner->image);
+        }
+        if ($banner->video_mp4) {
+            Storage::disk('public')->delete('banners/' . $banner->video_mp4);
+        }
+        if ($banner->video_mp4) {
+            Storage::disk('public')->delete('banners/' . $banner->video_mp4);
         }
 
         $banner->delete();

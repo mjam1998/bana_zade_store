@@ -138,15 +138,11 @@
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
 
-                                                    @if($item->product->has_sub_product)
-                                                    <td title="{{  $item->product->name .'-'.$item->subProduct->name }}">
-                                                        {{ \Illuminate\Support\Str::limit(  $item->product->name .'-'.$item->subProduct->name, 25) }}
-                                                    </td>
-                                                    @else
+
                                                     <td title="{{  $item->product->name }}">
                                                         {{ \Illuminate\Support\Str::limit(  $item->product->name , 25) }}
                                                     </td>
-                                                    @endif
+
 
 
                                                 <td class="text-nowrap">{{ number_format($item->price) }} تومان</td>
@@ -184,34 +180,6 @@
                                                 </select>
                                             </div>
                                         </div>
-
-                                        <div class="col-lg-3 col-md-6 col-12">
-                                            <div class="mb-3">
-                                                <label for="send_method_id" class="form-label">روش ارسال</label>
-                                                <select name="send_method_id" id="send_method_id" class="form-control">
-                                                    <option value="0">انتخاب کنید</option>
-                                                    @foreach($sendMethods as $method)
-                                                        <option value="{{ $method->id }}"
-                                                            {{ old('send_method_id', $order->send_method_id) == $method->id  }}>
-                                                            {{ $method->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-3 col-md-6 col-12">
-                                            <div class="mb-3">
-                                                <label for="track_number" class="form-label"> کد پیگیری روش ارسال</label>
-                                                <input type="text"
-                                                       name="track_number"
-                                                       id="track_number"
-                                                       class="form-control"
-                                                       value="{{ old('track_number') }}"
-                                                       placeholder="کد پیگیری روش ارسال مرسوله">
-                                            </div>
-                                        </div>
-
                                         <div class="col-lg-3 col-md-6 col-12">
                                             <div class="mb-3">
                                                 <label for="send_at" class="form-label">تاریخ ارسال</label>
@@ -220,9 +188,17 @@
                                                        id="persianDate"
                                                        class="form-control"
                                                        value="{{ old('send_at') }}"
-                                                       placeholder="1403/12/01">
+                                                  >
                                             </div>
                                         </div>
+
+                                        <div class="col-lg-6 col-md-6 col-12">
+                                            <div class="mb-3">
+                                                <label for="description" class="form-label">توضیحات برای سفارش مشتری</label>
+                                                <textarea name="description" id="description" class="form-control">{{$order->description}}</textarea>
+                                            </div>
+                                        </div>
+
                                     </div>
 
                                     <div class="row">

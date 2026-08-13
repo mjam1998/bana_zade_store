@@ -16,14 +16,9 @@ class RoleAndAdminSeeder extends Seeder
      */
     public function run(): void
     {
-
         app(PermissionRegistrar::class)->forgetCachedPermissions();
 
-        $roles = ['user', 'super-admin'];
-
-        foreach ($roles as $role) {
-            Role::firstOrCreate(['name' => $role]);
-        }
+        $role= Role::firstOrCreate(['name' => 'super-admin']);
 
         $admin = User::firstOrCreate(
             ['mobile' => '09123456789'],
@@ -33,7 +28,6 @@ class RoleAndAdminSeeder extends Seeder
             ]
         );
 
-
-        $admin->syncRoles($roles);
+        $admin->syncRoles($role);
     }
 }

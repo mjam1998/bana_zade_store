@@ -48,14 +48,12 @@
     <div class="nav-menu">
         <ul>
             <li><a href="{{route('admin.index')}}"  ><i class="bi bi-house"></i> داشبورد</a></li>
-            <li><a href="{{route('admin.list')}}"  ><i class="bi bi-people"></i> ادمین ها</a></li>
+            <li><a href="{{route('admin.list')}}"  ><i class="bi bi-people"></i>  کاربران</a></li>
             <li><a href="{{route('admin.category.index')}}"  ><i class="bi bi-list-ul"></i> دسته بندی ها</a></li>
             <li><a href="{{route('admin.product.index')}}"  ><i class="bi bi-box-seam"></i> محصولات</a></li>
-
             <li><a href="{{route('admin.order.index')}}"  ><i class="bi bi-cart"></i> سفارشات</a></li>
             <li><a href="{{route('admin.blog.index')}}"  ><i class="bi bi-layout-text-sidebar"></i> بلاگ</a></li>
-            <li><a href="{{route('admin.send-method.index')}}"  ><i class="bi bi-truck"></i> روش ارسال</a></li>
-            <li><a href="{{route('admin.banners.index')}}"  ><i class="bi bi-image"></i> بنرها</a></li>
+            <li><a href="{{route('admin.banners.index')}}"  ><i class="bi bi-image"></i> بنر</a></li>
             <li><a href="{{route('admin.extra.page.index')}}"  ><i class="bi bi-window-stack"></i> صفحات اضافه</a></li>
             <li><a href="{{route('admin.payment-gateway')}}"  ><i class="bi bi-bank"></i>  درگاه بانکی</a></li>
 

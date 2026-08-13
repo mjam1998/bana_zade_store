@@ -24,7 +24,7 @@ class AdminExtraPageController extends Controller
                 'required',
                 'string',
                 'max:300',
-                'unique:blogs,slug',
+                'unique:pages,slug',
                 new SlugRule(),
             ],
             'description' => 'required',
@@ -87,5 +87,15 @@ class AdminExtraPageController extends Controller
     public function delete(Page $page){
         $page->delete();
         return back()->with('success', 'صفحه با موفقیت حذف شد.');
+    }
+
+    public function changeStatus(Page $page)
+    {
+        if ($page->is_active){
+            $page->update(['is_active' => false]);
+        }else{
+            $page->update(['is_active' => true]);
+        }
+        return back()->with('success','وضعیت صفحه با موفقیت تغییر کرد.');
     }
 }

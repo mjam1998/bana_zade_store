@@ -7,6 +7,9 @@ use App\Models\Blog;
 use App\Rules\SlugRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Encoders\WebpEncoder;
+use Intervention\Image\ImageManager;
 
 class AdminBlogController extends Controller
 {
@@ -58,10 +61,14 @@ class AdminBlogController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $ext = $file->getClientOriginalExtension();
-            $filename = $data['slug'] . '_' . time() . '.' . $ext;
-            $file->storeAs('blog', $filename, 'public');
+
+            $filename = $data['slug'] . "_" . time() . ".webp";
+
+            $manager = new ImageManager(new Driver());
+            $image = $manager->decode($request->file('image'));
+            $encoded = $image->encode(new WebpEncoder(quality: 80));
+
+            Storage::disk('public')->put('blog/' . $filename, (string) $encoded);
             $data['image'] = $filename;
         }
 
@@ -118,10 +125,12 @@ class AdminBlogController extends Controller
                 Storage::disk('public')->delete('blog/' . $blog->image);
             }
 
-            $file = $request->file('image');
-            $ext = $file->getClientOriginalExtension();
-            $filename = $data['slug'] . '_' . time() . '.' . $ext;
-            $file->storeAs('blog', $filename, 'public');
+            $filename = $data['slug'] . "_" . time() . ".webp";
+
+            $manager = new ImageManager(new Driver());
+            $image = $manager->decode($request->file('image'));
+            $encoded = $image->encode(new WebpEncoder(quality: 80));
+            Storage::disk('public')->put('blog/' . $filename, (string) $encoded);
             $data['image'] = $filename;
         } else {
             unset($data['image']);
@@ -149,12 +158,16 @@ class AdminBlogController extends Controller
         ]);
 
         if ($request->hasFile('file')) {
-            $image = $request->file('file');
-            $filename = time() . '_' . $image->getClientOriginalName();
-            $path = $image->storeAs('images', $filename, 'public');
+
+            $filename = time() . ".webp";
+
+            $manager = new ImageManager(new Driver());
+            $image = $manager->decode($request->file('file'));
+            $encoded = $image->encode(new WebpEncoder(quality: 80));
+           Storage::disk('public')->put('images/' . $filename, (string) $encoded);
 
             return response()->json([
-                'location' => asset( $path)
+                'location' => asset( 'images/' . $filename ),
             ]);
         }
 
