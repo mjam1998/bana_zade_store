@@ -48,15 +48,38 @@
     <div class="nav-menu">
         <ul>
             <li><a href="{{route('admin.index')}}"  ><i class="bi bi-house"></i> داشبورد</a></li>
-            <li><a href="{{route('admin.list')}}"  ><i class="bi bi-people"></i>  کاربران</a></li>
-            <li><a href="{{route('admin.category.index')}}"  ><i class="bi bi-list-ul"></i> دسته بندی ها</a></li>
-            <li><a href="{{route('admin.product.index')}}"  ><i class="bi bi-box-seam"></i> محصولات</a></li>
-            <li><a href="{{route('admin.order.index')}}"  ><i class="bi bi-cart"></i> سفارشات</a></li>
-            <li><a href="{{route('admin.blog.index')}}"  ><i class="bi bi-layout-text-sidebar"></i> بلاگ</a></li>
-            <li><a href="{{route('admin.banners.index')}}"  ><i class="bi bi-image"></i> بنر</a></li>
-            <li><a href="{{route('admin.extra.page.index')}}"  ><i class="bi bi-window-stack"></i> صفحات اضافه</a></li>
-            <li><a href="{{route('admin.payment-gateway')}}"  ><i class="bi bi-bank"></i>  درگاه بانکی</a></li>
 
+            @hasrole('super-admin')
+            <li><a href="{{route('admin.list')}}"  ><i class="bi bi-people"></i>  کاربران</a></li>
+            @endhasrole
+
+            @hasanyrole('super-admin|manage-category')
+            <li><a href="{{route('admin.category.index')}}"  ><i class="bi bi-list-ul"></i> دسته بندی ها</a></li>
+            @endhasanyrole
+
+            @hasanyrole('super-admin|manage-product')
+            <li><a href="{{route('admin.product.index')}}"  ><i class="bi bi-box-seam"></i> محصولات</a></li>
+            @endhasanyrole
+
+            @hasanyrole('super-admin|manage-order')
+            <li><a href="{{route('admin.order.index')}}"  ><i class="bi bi-cart"></i> سفارشات</a></li>
+            @endhasanyrole
+
+            @hasanyrole('super-admin|manage-blog')
+            <li><a href="{{route('admin.blog.index')}}"  ><i class="bi bi-layout-text-sidebar"></i> بلاگ</a></li>
+            @endhasanyrole
+
+            @hasanyrole('super-admin|manage-banner')
+            <li><a href="{{route('admin.banners.index')}}"  ><i class="bi bi-image"></i> بنر</a></li>
+            @endhasanyrole
+
+            @hasanyrole('super-admin|manage-extra-page')
+            <li><a href="{{route('admin.extra.page.index')}}"  ><i class="bi bi-window-stack"></i> صفحات اضافه</a></li>
+            @endhasanyrole
+
+            @hasanyrole('super-admin|manage-payment-gateway')
+            <li><a href="{{route('admin.payment-gateway')}}"  ><i class="bi bi-bank"></i>  درگاه بانکی</a></li>
+            @endhasanyrole
 
 
 

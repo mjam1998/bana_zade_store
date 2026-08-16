@@ -41,17 +41,24 @@ Route::get('/cart/mobile-drawer', function () {
 })->name('cart.mobile.drawer');
 
 
-Route::prefix('/admin')->middleware('auth')->group(function(){
+Route::middleware(['auth', 'role:super-admin|manage-category|manage-product|manage-order|manage-blog|manage-banner|manage-extra-page|manage-payment-gateway'])
+    ->prefix('/admin')->group(function(){
    Route::get('/index', [adminController::class,'index'])->name('admin.index');
-   Route::get('/list/index', [adminController::class,'list'])->name('admin.list');
-   Route::get('/create', [adminController::class,'create'])->name('admin.create');
-   Route::post('/store', [adminController::class,'store'])->name('admin.store');
-   Route::get('/edit/{user}', [adminController::class,'edit'])->name('admin.edit');
-   Route::put('/update/{user}', [adminController::class,'update'])->name('admin.update');
-   Route::delete('/delete/{user}', [adminController::class,'delete'])->name('admin.delete');
-   Route::patch('/change/status/{user}', [adminController::class,'changeStatus'])->name('admin.change.status');
 
-   Route::prefix('/category')->group(function(){
+    Route::middleware( 'role:super-admin')
+        ->prefix('/manage-admin')
+        ->group(function () {
+            Route::get('/list/index', [adminController::class,'list'])->name('admin.list');
+            Route::get('/create', [adminController::class,'create'])->name('admin.create');
+            Route::post('/store', [adminController::class,'store'])->name('admin.store');
+            Route::get('/edit/{user}', [adminController::class,'edit'])->name('admin.edit');
+            Route::put('/update/{user}', [adminController::class,'update'])->name('admin.update');
+            Route::delete('/delete/{user}', [adminController::class,'delete'])->name('admin.delete');
+            Route::patch('/change/status/{user}', [adminController::class,'changeStatus'])->name('admin.change.status');
+        });
+
+   Route::middleware('role:super-admin|manage-category')
+       ->prefix('/category')->group(function(){
 
           Route::get('/index', [AdminCategoryController::class,'index'])->name('admin.category.index');
           Route::get('/create', [AdminCategoryController::class,'create'])->name('admin.category.create');
@@ -65,7 +72,9 @@ Route::prefix('/admin')->middleware('auth')->group(function(){
          Route::get('/index/{category}', [AdminCategoryController::class,'categoryProductIndex'])->name('admin.category.product.index');
       });
    });
-   Route::prefix('/product')->group(function(){
+
+   Route::middleware('role:super-admin|manage-product')
+       ->prefix('/product')->group(function(){
          Route::get('/index', [AdminProductController::class,'index'])->name('admin.product.index');
          Route::get('/create', [AdminProductController::class,'create'])->name('admin.product.create');
          Route::post('/store', [AdminProductController::class,'store'])->name('admin.product.store');
@@ -81,11 +90,17 @@ Route::prefix('/admin')->middleware('auth')->group(function(){
        Route::put('/comment/update/{product}/{comment}', [AdminProductController::class,'commentUpdate'])->name('admin.product.comment.update');
        Route::delete('/comment/delete/{comment}', [AdminProductController::class,'commentDelete'])->name('admin.product.comment.delete');
 
-       Route::get('/payment-gateway',[AdminController::class,'paymentGatewayForm'])->name('admin.payment-gateway');
-       Route::put('/payment-gateway/{gateway}',[AdminController::class,'paymentGatewayUpdate'])->name('admin.payment-gateway.update');
 
    });
-   Route::prefix('/blog')->group(function(){
+
+    Route::middleware('role:super-admin|manage-payment-gateway')
+        ->prefix('/payment-gateway')->group(function(){
+            Route::get('/index',[AdminController::class,'paymentGatewayForm'])->name('admin.payment-gateway');
+            Route::put('/update/{gateway}',[AdminController::class,'paymentGatewayUpdate'])->name('admin.payment-gateway.update');
+        });
+
+   Route::middleware('role:super-admin|manage-blog')
+       ->prefix('/blog')->group(function(){
        Route::get('/index', [AdminBlogController::class,'index'])->name('admin.blog.index');
        Route::get('/create', [AdminBlogController::class,'create'])->name('admin.blog.create');
        Route::post('/store', [AdminBlogController::class,'store'])->name('admin.blog.store');
@@ -93,28 +108,27 @@ Route::prefix('/admin')->middleware('auth')->group(function(){
        Route::put('/update/{blog}', [AdminBlogController::class,'update'])->name('admin.blog.update');
        Route::delete('/delete/{blog}', [AdminBlogController::class,'delete'])->name('admin.blog.delete');
    });
-   Route::prefix('/order')->group(function(){
+
+   Route::middleware('role:super-admin|manage-order')
+       ->prefix('/order')->group(function(){
      Route::get('/index', [AdminOrderController::class,'index'])->name('admin.order.index');
      Route::get('/show/{order}', [AdminOrderController::class,'show'])->name('admin.order.show');
      Route::put('/update/{order}', [AdminOrderController::class,'update'])->name('admin.order.update');
        Route::get('/{id}/invoice-pdf', [AdminOrderController::class, 'downloadInvoicePdf'])->name('admin.order.invoice-pdf');
        Route::get('list/{user}', [AdminOrderController::class,'userList'])->name('admin.order.user.list');
    });
-   Route::prefix('/banner')->group(function(){
+
+   Route::middleware('role:super-admin|manage-banner')
+       ->prefix('/banner')->group(function(){
        Route::get('/index', [AdminBannerController::class, 'index'])->name('admin.banners.index');
        Route::post('/store', [AdminBannerController::class, 'store'])->name('admin.banners.store');
        Route::delete('/delete/{banner}', [AdminBannerController::class, 'destroy'])->name('admin.banners.destroy');
    });
-   Route::prefix('/send-method')->group(function(){
-       Route::get('/index',[AdminSendMethodController::class,'index'])->name('admin.send-method.index');
-       Route::get('/create',[AdminSendMethodController::class,'create'])->name('admin.send-method.create');
-       Route::post('/store',[AdminSendMethodController::class,'store'])->name('admin.send-method.store');
-       Route::get('/edit/{send_method}', [AdminSendMethodController::class,'edit'])->name('admin.send-method.edit');
-       Route::put('/update/{send_method}', [AdminSendMethodController::class,'update'])->name('admin.send-method.update');
-       Route::delete('/delete/{send_method}', [AdminSendMethodController::class,'delete'])->name('admin.send-method.delete');
-   });
+
     Route::post('/upload-image', [AdminBlogController::class, 'uploadImage'])->name('admin.upload.image');
-    Route::prefix('/extra-page')->group(function(){
+
+    Route::middleware('role:super-admin|manage-extra-page')
+        ->prefix('/extra-page')->group(function(){
         Route::get('/index', [AdminExtraPageController::class,'index'])->name('admin.extra.page.index');
         Route::get('/create', [AdminExtraPageController::class,'create'])->name('admin.extra.page.create');
         Route::post('/store', [AdminExtraPageController::class,'store'])->name('admin.extra.page.store');
@@ -124,6 +138,7 @@ Route::prefix('/admin')->middleware('auth')->group(function(){
         Route::patch('/change-status/{page}', [AdminExtraPageController::class,'changeStatus'])->name('admin.extra.page.change.status');
 
     });
+
     Route::post('/logout',[AdminController::class,'logout'])->name('admin.logout');
 });
 

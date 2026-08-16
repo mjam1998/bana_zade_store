@@ -52,7 +52,16 @@ class HomeController extends Controller
          'password.required' => 'رمز عبور الزامی است.',
          'password.min' => 'رمز عبور باید حداقل 4 کاراکتر باشد.'
      ]);
-       $user = User::where('mobile', $data['mobile'])->first();
+
+       $user = User::where('mobile', $data['mobile'])
+           ->where('is_active',true)
+           ->first();
+
+       if (!$user) {
+           return back()->withErrors([
+               'mobile' => 'اطلاعات یافت نشد.'
+           ])->withInput();
+       }
 
        if (!Hash::check($data['password'], $user->password)) {
            return back()->withErrors([
