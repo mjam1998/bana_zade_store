@@ -8,13 +8,13 @@ use App\Http\Controllers\Admin\AdminExtraPageController;
 use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminSendMethodController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\OrderController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [homeController::class,'index'])->name('home');
-Route::get('/login', [homeController::class,'login'])->name('login');
-Route::post('/login/submit', [homeController::class,'loginSubmit'])->name('login.submit');
+
 Route::get('/search', [homeController::class,'search'])->name('search');
 Route::get('/category/{slug}', [homeController::class,'category'])->name('category');
 Route::get('/blogs', [homeController::class,'blogs'])->name('blogs');
@@ -39,6 +39,27 @@ Route::get('/cart/sidebar', function () {
 Route::get('/cart/mobile-drawer', function () {
     return view('front.partials.cart-sidebar')->render();
 })->name('cart.mobile.drawer');
+
+Route::get('/login', [AuthController::class,'login'])->name('login');
+Route::post('/login/submit', [AuthController::class,'loginSubmit'])->name('login.submit');
+
+Route::get('register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('register', [AuthController::class, 'register']);
+Route::get('register/verify', [AuthController::class, 'showVerify'])->name('register.verify');
+Route::post('register/verify', [AuthController::class, 'verify']);
+
+Route::get('forgot-password', [AuthController::class, 'showForgot'])->name('password.forgot');
+Route::post('forgot-password', [AuthController::class, 'forgot']);
+Route::get('forgot-password/verify', [AuthController::class, 'showForgotVerify'])->name('password.forgot.verify');
+Route::post('forgot-password/verify', [AuthController::class, 'forgotVerify']);
+
+Route::get('reset-password', [AuthController::class, 'showReset'])->name('password.reset');
+Route::post('reset-password', [AuthController::class, 'reset']);
+
+Route::get('/select-panel', function () {
+    abort_unless(auth()->check(), 403);
+    return view('front.auth.select-panel');
+})->name('select.panel');
 
 
 Route::middleware(['auth', 'role:super-admin|manage-category|manage-product|manage-order|manage-blog|manage-banner|manage-extra-page|manage-payment-gateway'])

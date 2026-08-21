@@ -33,7 +33,9 @@
                             </div>
                         </div>
                     @endif
-
+                        @if(session('success'))
+                            <div class="alert alert-success">{{ session('success') }}</div>
+                        @endif
                     <div class="card shadow-lg border-0 rounded-4">
                         <div class="card-body p-4 p-sm-5">
 
@@ -72,7 +74,7 @@
 
                                 <!-- Forgot Password -->
                                 <div class="text-end mb-4">
-                                    <a href="#" class="small text-decoration-none">
+                                    <a href="{{route('password.forgot')}}" class="small text-decoration-none">
                                         رمز عبور خود را فراموش کرده‌اید؟
                                     </a>
                                 </div>
@@ -85,7 +87,7 @@
                             <!-- Register Link -->
                             <div class="text-center mt-4">
                                 <span class="small text-muted">حساب کاربری ندارید؟</span>
-                                <a href="#" class="small fw-bold text-decoration-none">
+                                <a href="{{route('register')}}" class="small fw-bold text-decoration-none">
                                     ثبت‌نام کنید
                                 </a>
                             </div>

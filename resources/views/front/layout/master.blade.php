@@ -47,7 +47,7 @@
                     <i class="bi bi-cart3 fs-5"></i>
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-2 border-white">3</span>
                 </a>
-                <a href="#" class="btn btn-primary">ورود / ثبت‌نام</a>
+                <a href="{{route('login')}}" class="btn btn-primary">ورود / ثبت‌نام</a>
             </div>
         </div>
     </div>
@@ -185,7 +185,23 @@
 
     });
 </script>
+<script>
+    function togglePassword() {
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eye-icon');
+        const eyeSlashIcon = document.getElementById('eye-slash-icon');
 
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.classList.add('d-none');
+            eyeSlashIcon.classList.remove('d-none');
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.classList.remove('d-none');
+            eyeSlashIcon.classList.add('d-none');
+        }
+    }
+</script>
 @stack('scripts')
 
 </body>

@@ -26,52 +26,6 @@ class HomeController extends Controller
 
        return view('front.index');
    }
-   public function login()
-   {
-       return view('front.login');
-   }
-   public function loginSubmit(Request $request)
-   {
-     $data=$request->validate([
-         'mobile' => [
-         'required',
-         'regex:/^09[0-9]{9}$/',
-         'exists:users,mobile'
-     ],
-         'password' => [
-             'required',
-             'min:4'
-         ]
-     ], [
-         // پیام‌های خطای mobile
-         'mobile.required' => 'شماره موبایل الزامی است.',
-         'mobile.regex' => 'فرمت شماره موبایل صحیح نیست. (مثال: 09123456789)',
-         'mobile.exists' => 'اطلاعات یافت نشد.',
-
-         // پیام‌های خطای password
-         'password.required' => 'رمز عبور الزامی است.',
-         'password.min' => 'رمز عبور باید حداقل 4 کاراکتر باشد.'
-     ]);
-
-       $user = User::where('mobile', $data['mobile'])
-           ->where('is_active',true)
-           ->first();
-
-       if (!$user) {
-           return back()->withErrors([
-               'mobile' => 'اطلاعات یافت نشد.'
-           ])->withInput();
-       }
-
-       if (!Hash::check($data['password'], $user->password)) {
-           return back()->withErrors([
-               'mobile' => 'اطلاعات یافت نشد.'
-           ])->withInput();
-       }
-
-       auth()->login($user);
-       return redirect(route('admin.index'));
-   }
 
     public function search(Request $request)
     {
