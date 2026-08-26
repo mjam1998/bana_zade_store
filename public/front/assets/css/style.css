@@ -453,6 +453,9 @@ html, body {
 .cart-btn:hover{
     transform:rotate(-15deg) scale(1.08);
 }
+        .cart-btn-new:hover{
+            transform:rotate(-15deg) scale(1.08);
+        }
 .product-card .card-title{
     line-height:1.8;
     font-size:1rem;

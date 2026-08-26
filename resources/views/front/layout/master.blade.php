@@ -13,14 +13,16 @@
     <link rel="stylesheet" href="{{asset('front/assets/css/swiper-bundle.min.css')}}" />
 
     <link  rel="stylesheet" href="{{asset('front/assets/css/style.css')}}">
+    <link href="{{asset('admin/choises/choices.min.css')}}" rel="stylesheet" />
 </head>
 <body>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white bg-opacity-75 fixed-top z-3" style="backdrop-filter: blur(10px);">
+<nav class="navbar navbar-expand-lg navbar-light bg-white bg-opacity-75 fixed-top" style="backdrop-filter: blur(10px); z-index: 1030;">
+
 
     <div class="container">
-        <a class="navbar-brand fw-bold text-primary d-flex align-items-center" href="#">
+        <a class="navbar-brand fw-bold text-primary d-flex align-items-center" href="{{route('home')}}">
             <i class="bi bi-shop-window me-2 fs-3"></i>
             بازرگانی بنازاده
         </a>
@@ -31,9 +33,9 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ps-3">
-                <li class="nav-item"><a class="nav-link active" href="#">خانه</a></li>
-                <li class="nav-item"><a class="nav-link" href="#categories">دسته‌بندی‌ها</a></li>
-                <li class="nav-item"><a class="nav-link" href="#products">محصولات</a></li>
+                <li class="nav-item"><a class="nav-link active" href="{{route('home')}}">خانه</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{route('categories')}}">دسته‌بندی‌ها</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{route('products')}}">محصولات</a></li>
                 <li class="nav-item"><a class="nav-link" href="#about">درباره ما</a></li>
                 <li class="nav-item"><a class="nav-link" href="#contact">تماس با ما</a></li>
             </ul>
@@ -58,7 +60,7 @@
 
 
 <!-- Footer -->
-<footer id="contact" class="footer pt-5 pb-3">
+<footer  id="contact" class="footer pt-5 pb-3">
     <div class="container pt-4">
         <div class="row g-5">
             <div class="col-lg-5 col-md-6">
@@ -97,9 +99,9 @@
 </footer>
 
 
-<script src="{{asset('front/assets/js/bootstrap.bundle.min.js')}}">
-
-</script><script src="{{asset('front/assets/js/swiper-bundle.min.js')}}"></script>
+<script  src="{{asset('front/assets/js/bootstrap.bundle.min.js')}}"></script>
+<script src="{{asset('front/assets/js/swiper-bundle.min.js')}}"></script>
+<script src="{{asset('admin/choises/choices.min.js')}}"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         var swipers = document.querySelectorAll('.productSwiper');

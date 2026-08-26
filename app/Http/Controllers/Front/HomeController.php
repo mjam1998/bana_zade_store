@@ -7,14 +7,13 @@ namespace App\Http\Controllers\Front;
 use App\Enums\BannerType;
 use App\Enums\CommentStatus;
 use App\Http\Controllers\Controller;
-use App\Models\Banner;
 use App\Models\Blog;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Page;
 use App\Models\Product;
-use App\Models\SuperCategory;
 use App\Models\User;
+use App\Models\VideoBanner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -23,10 +22,86 @@ class HomeController extends Controller
 {
     public function index()
     {
+        $categories=Category::query()->where('is_active',true)->latest()->take(15)->get();
+        $specialsProducts=Product::query()
+            ->with(['category'])
+            ->where('is_active',true)
+            ->where('is_special',true)
+            ->latest()->take(12)
+            ->get();
 
-       return view('front.index');
+        $products=Product::query()
+            ->with(['category'])
+            ->where('is_active',true)
+            ->latest()->take(12)
+            ->get();
+
+        $blogs=Blog::query()->latest()->take(6)->get();
+
+        $video=VideoBanner::query()->first();
+
+       return view('front.index', compact('categories','specialsProducts','products','blogs','video'));
    }
+    public function categories()
+    {
+        $categories = Category::where('is_active', true)
+            ->select('name', 'slug', 'image', 'image_alt', 'image_title')
+            ->orderBy('name')
+            ->get();
 
+        return view('front.category', compact('categories'));
+    }
+    public function products(Request $request)
+    {
+
+        $query = Product::query()
+           ->with(['category'])
+            ->where('is_active', true)
+            ->select('id', 'name', 'slug', 'base_price', 'discount',
+                'image', 'image_alt', 'image_title', 'unit_name',
+                'min_shop_count', 'is_special', 'created_at', 'category_id');
+
+        // جستجو
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        // فیلتر دسته‌بندی
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        // فیلتر قیمت
+        if ($request->filled('min_price')) {
+            $query->where('base_price', '>=', (int) $request->min_price);
+        }
+        if ($request->filled('max_price')) {
+            $query->where('base_price', '<=', (int) $request->max_price);
+        }
+
+        // فیلتر تخفیف
+        if ($request->filled('has_discount') && $request->has_discount === '1') {
+            $query->where('discount', '>', 0);
+        }
+
+        // مرتب‌سازی
+        match ($request->sort ?? 'newest') {
+            'cheapest'  => $query->orderBy('base_price', 'asc'),
+            'expensive' => $query->orderBy('base_price', 'desc'),
+            default     => $query->orderBy('created_at', 'desc'),
+        };
+
+        $products = $query->paginate(12)->withQueryString();
+
+        $maxPrice = Product::where('is_active', true)->max('base_price') ?? 1000000;
+
+        // دسته‌بندی‌های فعال برای سلکت‌باکس
+        $categories = Category::where('is_active', true)
+            ->orderBy('name')
+            ->get(['id', 'name']);
+
+        return view('front.products', compact('products', 'maxPrice', 'categories'));
+    }
     public function search(Request $request)
     {
         $q = $request->search;

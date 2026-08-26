@@ -18,91 +18,25 @@
         <div class="container position-relative">
             <div class="d-flex justify-content-between align-items-center mb-5">
                 <h2 class="fw-bold mb-0 text-primary">دسته‌بندی‌ها</h2>
-                <a href="#" class="btn btn-sm btn-outline-primary rounded-pill px-4">همه دسته‌ها</a>
+                <a href="{{route('categories')}}" class="btn btn-sm btn-outline-primary rounded-pill px-4">همه دسته‌ها</a>
             </div>
 
-            <!-- Swiper -->
             <div class="swiper categorySwiper pb-4 px-2">
                 <div class="swiper-wrapper">
-                    <!-- دسته ۱ -->
-                    <div class="swiper-slide">
-                        <div class="card category-card text-center h-100">
-                            <div class="card-body py-4">
-                                <img src="assets/img/rice.jpg" alt="نوشیدنی‌ها" class="category-img mb-3 mx-auto d-block">
-                                <h6 class="mb-0 fw-bold">نوشیدنی‌ها</h6>
-                                <i class="bi bi-arrow-left-short category-arrow"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- دسته ۲ -->
-                    <div class="swiper-slide">
-                        <div class="card category-card text-center h-100">
-                            <div class="card-body py-4">
-                                <img src="assets/img/rice.jpg" alt="لبنیات" class="category-img mb-3 mx-auto d-block">
-                                <h6 class="mb-0 fw-bold">لبنیات</h6>
-                                <i class="bi bi-arrow-left-short category-arrow"></i>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="swiper-slide">
-                        <div class="card category-card text-center h-100">
-                            <div class="card-body py-4">
-                                <img src="assets/img/rice.jpg" alt="لبنیات" class="category-img mb-3 mx-auto d-block">
-                                <h6 class="mb-0 fw-bold">لبنیات</h6>
-                                <i class="bi bi-arrow-left-short category-arrow"></i>
+                    @foreach($categories as $category)
+                        <div class="swiper-slide">
+                            <div class="card category-card text-center h-100">
+                                <div class="card-body py-4">
+                                    <img src="{{asset('category/'.$category->image)}}" alt="{{$category->image_alt}}" title="{{$category->image_title}}" class="category-img mb-3 mx-auto d-block">
+                                    <h6 class="mb-0 fw-bold">{{$category->name}}</h6>
+                                    <i class="bi bi-arrow-left-short category-arrow"></i>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="card category-card text-center h-100">
-                            <div class="card-body py-4">
-                                <img src="assets/img/rice.jpg" alt="لبنیات" class="category-img mb-3 mx-auto d-block">
-                                <h6 class="mb-0 fw-bold">لبنیات</h6>
-                                <i class="bi bi-arrow-left-short category-arrow"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- دسته ۳ -->
-                    <div class="swiper-slide">
-                        <div class="card category-card text-center h-100">
-                            <div class="card-body py-4">
-                                <img src="assets/img/rice.jpg" alt="حبوبات و غلات" class="category-img mb-3 mx-auto d-block">
-                                <h6 class="mb-0 fw-bold">حبوبات و غلات</h6>
-                                <i class="bi bi-arrow-left-short category-arrow"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- دسته ۴ -->
-                    <div class="swiper-slide">
-                        <div class="card category-card text-center h-100">
-                            <div class="card-body py-4">
-                                <img src="assets/img/rice.jpg" alt="روغن و چاشنی" class="category-img mb-3 mx-auto d-block">
-                                <h6 class="mb-0 fw-bold">روغن و چاشنی</h6>
-                                <i class="bi bi-arrow-left-short category-arrow"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- دسته ۵ -->
-                    <div class="swiper-slide">
-                        <div class="card category-card text-center h-100">
-                            <div class="card-body py-4">
-                                <img src="assets/img/rice.jpg" alt="مواد بسته‌بندی" class="category-img mb-3 mx-auto d-block">
-                                <h6 class="mb-0 fw-bold">مواد بسته‌بندی</h6>
-                                <i class="bi bi-arrow-left-short category-arrow"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- دسته ۶ -->
-                    <div class="swiper-slide">
-                        <div class="card category-card text-center h-100">
-                            <div class="card-body py-4">
-                                <img src="assets/img/rice.jpg" alt="منجمد و یخچالی" class="category-img mb-3 mx-auto d-block">
-                                <h6 class="mb-0 fw-bold">منجمد و یخچالی</h6>
-                                <i class="bi bi-arrow-left-short category-arrow"></i>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
+
+
                 </div>
 
                 <div class="swiper-button-next"></div>
@@ -132,145 +66,40 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="fw-bold mb-0 text-danger"><i class="bi bi-tags me-2"></i>محصولات با تخفیف ویژه</h2>
 
-                <a href="#" class="btn btn-sm btn-outline-danger rounded-pill px-4">مشاهده همه تخفیف‌ها</a>
             </div>
 
             <!-- Swiper -->
             <div class="swiper productSwiper pb-4 px-2">
                 <div class="swiper-wrapper">
-                    <!-- Discount Product 1 -->
-                    <div class="swiper-slide">
-                        <div class="card product-card h-100 border-danger border-opacity-25">
-                            <div class="position-relative">
-                                <img src="assets/img/rice.jpg" class="card-img-top product-img" alt="شکر">
-                                <span class="badge-discount position-absolute top-0 start-0 m-3">٪۱۵ تخفیف</span>
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <h6 class="card-title fw-bold mb-2">شکر سفید ۵۰ کیلویی (فروش ویژه)</h6>
-                                <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>حداقل سفارش: ۲ گونی</p>
-                                <div class="d-flex justify-content-between align-items-end mt-auto">
-                                    <div>
-                                        <div class="old-price text-decoration-line-through text-muted small">۲٬۴۵۰٬۰۰۰</div>
-                                        <div class="price text-danger fw-bold fs-5">۲٬۰۸۲٬۵۰۰ <span class="fs-6 text-muted fw-normal">تومان</span></div>
+                   @foreach($specialsProducts as $special)
+                        <div class="swiper-slide">
+                            <div class="card product-card h-100 border-danger border-opacity-25">
+                                <div class="position-relative">
+                                    @if($special->image)
+                                    <img src="{{asset('product/'.$special->image)}}" class="card-img-top product-img" alt="{{$special->image_alt}}" title="{{$special->image_title}}">
+                                    @else
+                                        <img src="{{asset('category/'.$special->category->image)}}" class="card-img-top product-img" alt="{{$special->category->image_alt}}" title="{{$special->category->image_title}}">
+                                    @endif
+                                    <span class="badge-discount position-absolute top-0 start-0 m-3">٪{{$special->discount}} تخفیف</span>
+                                </div>
+                                <div class="card-body d-flex flex-column">
+                                    <h6 class="card-title fw-bold mb-2">{{$special->name}}</h6>
+                                    <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>واحد فروش: {{$special->unit_name}} </p>
+                                    <p class="text-muted small mb-3"><i class="bi bi-basket me-1"></i>حداقل سفارش: {{$special->min_shop_count}} </p>
+                                    <div class="d-flex justify-content-between align-items-end mt-auto">
+                                        <div>
+                                            <div class="old-price text-decoration-line-through text-muted small">{{number_format($special->base_price)}}</div>
+                                            <div class="price text-danger fw-bold fs-5">{{number_format($special->base_price - (($special->discount * $special->base_price))/100)}} <span class="fs-6 text-muted fw-normal">تومان</span></div>
+                                        </div>
+                                        <button class="btn cart-btn">
+                                            <i class="bi bi-cart-plus fs-5"></i>
+                                        </button>
                                     </div>
-                                    <button class="btn cart-btn">
-                                        <i class="bi bi-cart-plus fs-5"></i>
-                                    </button>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                   @endforeach
 
-                    <!-- Discount Product 1 -->
-                    <div class="swiper-slide">
-                        <div class="card product-card h-100 border-danger border-opacity-25">
-                            <div class="position-relative">
-                                <img src="assets/img/rice.jpg" class="card-img-top product-img" alt="شکر">
-                                <span class="badge-discount position-absolute top-0 start-0 m-3">٪۱۵ تخفیف</span>
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <h6 class="card-title fw-bold mb-2">شکر سفید ۵۰ کیلویی (فروش ویژه)</h6>
-                                <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>حداقل سفارش: ۲ گونی</p>
-                                <div class="d-flex justify-content-between align-items-end mt-auto">
-                                    <div>
-                                        <div class="old-price text-decoration-line-through text-muted small">۲٬۴۵۰٬۰۰۰</div>
-                                        <div class="price text-danger fw-bold fs-5">۲٬۰۸۲٬۵۰۰ <span class="fs-6 text-muted fw-normal">تومان</span></div>
-                                    </div>
-                                    <button class="btn btn-danger rounded-circle shadow-sm text-white" style="padding: 10px 12px;">
-                                        <i class="bi bi-cart-plus fs-5"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Discount Product 1 -->
-                    <div class="swiper-slide">
-                        <div class="card product-card h-100 border-danger border-opacity-25">
-                            <div class="position-relative">
-                                <img src="assets/img/rice.jpg" class="card-img-top product-img" alt="شکر">
-                                <span class="badge-discount position-absolute top-0 start-0 m-3">٪۱۵ تخفیف</span>
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <h6 class="card-title fw-bold mb-2">شکر سفید ۵۰ کیلویی (فروش ویژه)</h6>
-                                <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>حداقل سفارش: ۲ گونی</p>
-                                <div class="d-flex justify-content-between align-items-end mt-auto">
-                                    <div>
-                                        <div class="old-price text-decoration-line-through text-muted small">۲٬۴۵۰٬۰۰۰</div>
-                                        <div class="price text-danger fw-bold fs-5">۲٬۰۸۲٬۵۰۰ <span class="fs-6 text-muted fw-normal">تومان</span></div>
-                                    </div>
-                                    <button class="btn btn-danger rounded-circle shadow-sm text-white" style="padding: 10px 12px;">
-                                        <i class="bi bi-cart-plus fs-5"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Discount Product 1 -->
-                    <div class="swiper-slide">
-                        <div class="card product-card h-100 border-danger border-opacity-25">
-                            <div class="position-relative">
-                                <img src="assets/img/rice.jpg" class="card-img-top product-img" alt="شکر">
-                                <span class="badge-discount position-absolute top-0 start-0 m-3">٪۱۵ تخفیف</span>
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <h6 class="card-title fw-bold mb-2">شکر سفید ۵۰ کیلویی (فروش ویژه)</h6>
-                                <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>حداقل سفارش: ۲ گونی</p>
-                                <div class="d-flex justify-content-between align-items-end mt-auto">
-                                    <div>
-                                        <div class="old-price text-decoration-line-through text-muted small">۲٬۴۵۰٬۰۰۰</div>
-                                        <div class="price text-danger fw-bold fs-5">۲٬۰۸۲٬۵۰۰ <span class="fs-6 text-muted fw-normal">تومان</span></div>
-                                    </div>
-                                    <button class="btn btn-danger rounded-circle shadow-sm text-white" style="padding: 10px 12px;">
-                                        <i class="bi bi-cart-plus fs-5"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Discount Product 1 -->
-                    <div class="swiper-slide">
-                        <div class="card product-card h-100 border-danger border-opacity-25">
-                            <div class="position-relative">
-                                <img src="assets/img/rice.jpg" class="card-img-top product-img" alt="شکر">
-                                <span class="badge-discount position-absolute top-0 start-0 m-3">٪۱۵ تخفیف</span>
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <h6 class="card-title fw-bold mb-2">شکر سفید ۵۰ کیلویی (فروش ویژه)</h6>
-                                <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>حداقل سفارش: ۲ گونی</p>
-                                <div class="d-flex justify-content-between align-items-end mt-auto">
-                                    <div>
-                                        <div class="old-price text-decoration-line-through text-muted small">۲٬۴۵۰٬۰۰۰</div>
-                                        <div class="price text-danger fw-bold fs-5">۲٬۰۸۲٬۵۰۰ <span class="fs-6 text-muted fw-normal">تومان</span></div>
-                                    </div>
-                                    <button class="btn btn-danger rounded-circle shadow-sm text-white" style="padding: 10px 12px;">
-                                        <i class="bi bi-cart-plus fs-5"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Discount Product 2 -->
-                    <div class="swiper-slide">
-                        <div class="card product-card h-100 border-danger border-opacity-25">
-                            <div class="position-relative">
-                                <img src="assets/img/rice.jpg" class="card-img-top product-img" alt="چای">
-                                <span class="badge-discount position-absolute top-0 start-0 m-3">٪۱۰ تخفیف</span>
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <h6 class="card-title fw-bold mb-2">چای سیاه ممتاز (۵ کیلویی)</h6>
-                                <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>حداقل سفارش: ۴ بسته</p>
-                                <div class="d-flex justify-content-between align-items-end mt-auto">
-                                    <div>
-                                        <div class="old-price text-decoration-line-through text-muted small">۱٬۲۲۰٬۰۰۰</div>
-                                        <div class="price text-danger fw-bold fs-5">۱٬۰۹۸٬۰۰۰ <span class="fs-6 text-muted fw-normal">تومان</span></div>
-                                    </div>
-                                    <button class="btn btn-danger rounded-circle shadow-sm text-white" style="padding: 10px 12px;">
-                                        <i class="bi bi-cart-plus fs-5"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="swiper-button-next text-danger"></div>
@@ -301,123 +130,48 @@
         <div class="container position-relative">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="fw-bold mb-0 text-primary">جدیدترین محصولات  </h2>
-                <a href="#" class="btn btn-sm btn-outline-primary rounded-pill px-4">مشاهده همه</a>
+                <a href="{{route('products')}}" class="btn btn-sm btn-outline-primary rounded-pill px-4">مشاهده همه</a>
             </div>
 
             <!-- Swiper -->
             <div class="swiper productSwiper pb-4 px-2">
                 <div class="swiper-wrapper">
-                    <!-- Product 1 -->
-                    <div class="swiper-slide">
-                        <div class="card product-card h-100">
-                            <div class="position-relative">
-                                <img src="assets/img/rice.jpg" class="card-img-top product-img" alt="روغن">
-                                <span class="badge-wholesale position-absolute top-0 end-0 m-3">عمده</span>
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <h6 class="card-primary fw-bold mb-2">روغن آفتابگردان ۱۸ لیتری</h6>
-                                <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>حداقل سفارش: ۵ عدد</p>
-                                <div class="d-flex justify-content-between align-items-end mt-auto">
-                                    <div>
-                                        <div class="old-price">۲٬۱۰۰٬۰۰۰</div>
-                                        <div class="price">۱٬۸۵۰٬۰۰۰ <span class="fs-6 text-muted fw-normal">تومان</span></div>
-                                    </div>
-                                    <button class="btn btn-light text-primary rounded-circle shadow-sm" style="padding: 10px 12px;">
-                                        <i class="bi bi-cart-plus fs-5"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="card product-card h-100">
-                            <div class="position-relative">
-                                <img src="assets/img/rice.jpg" class="card-img-top product-img" alt="روغن">
-                                <span class="badge-wholesale position-absolute top-0 end-0 m-3">عمده</span>
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <h6 class="card-primary fw-bold mb-2">روغن آفتابگردان ۱۸ لیتری</h6>
-                                <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>حداقل سفارش: ۵ عدد</p>
-                                <div class="d-flex justify-content-between align-items-end mt-auto">
-                                    <div>
-                                        <div class="old-price">۲٬۱۰۰٬۰۰۰</div>
-                                        <div class="price">۱٬۸۵۰٬۰۰۰ <span class="fs-6 text-muted fw-normal">تومان</span></div>
-                                    </div>
-                                    <button class="btn btn-light text-primary rounded-circle shadow-sm" style="padding: 10px 12px;">
-                                        <i class="bi bi-cart-plus fs-5"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="card product-card h-100">
-                            <div class="position-relative">
-                                <img src="assets/img/rice.jpg" class="card-img-top product-img" alt="روغن">
-                                <span class="badge-wholesale position-absolute top-0 end-0 m-3">عمده</span>
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <h6 class="card-primary fw-bold mb-2">روغن آفتابگردان ۱۸ لیتری</h6>
-                                <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>حداقل سفارش: ۵ عدد</p>
-                                <div class="d-flex justify-content-between align-items-end mt-auto">
-                                    <div>
-                                        <div class="old-price">۲٬۱۰۰٬۰۰۰</div>
-                                        <div class="price">۱٬۸۵۰٬۰۰۰ <span class="fs-6 text-muted fw-normal">تومان</span></div>
-                                    </div>
-                                    <button class="btn btn-light text-primary rounded-circle shadow-sm" style="padding: 10px 12px;">
-                                        <i class="bi bi-cart-plus fs-5"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="card product-card h-100">
-                            <div class="position-relative">
-                                <img src="assets/img/rice.jpg" class="card-img-top product-img" alt="روغن">
-                                <span class="badge-wholesale position-absolute top-0 end-0 m-3">عمده</span>
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <h6 class="card-primary fw-bold mb-2">روغن آفتابگردان ۱۸ لیتری</h6>
-                                <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>حداقل سفارش: ۵ عدد</p>
-                                <div class="d-flex justify-content-between align-items-end mt-auto">
-                                    <div>
-                                        <div class="old-price">۲٬۱۰۰٬۰۰۰</div>
-                                        <div class="price">۱٬۸۵۰٬۰۰۰ <span class="fs-6 text-muted fw-normal">تومان</span></div>
-                                    </div>
-                                    <button class="btn btn-light text-primary rounded-circle shadow-sm" style="padding: 10px 12px;">
-                                        <i class="bi bi-cart-plus fs-5"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Product 2 -->
-                    <div class="swiper-slide">
-                        <div class="card product-card h-100">
-                            <div class="position-relative">
-                                <img src="assets/img/rice.jpg" class="card-img-top product-img" alt="برنج">
-                                <span class="badge-wholesale position-absolute top-0 end-0 m-3">عمده</span>
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <h6 class="card-primary fw-bold mb-2">برنج طارم ممتاز (۱۰ کیلویی)</h6>
-                                <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>حداقل سفارش: ۱۰ کیسه</p>
-                                <div class="d-flex justify-content-between align-items-end mt-auto">
-                                    <div>
-                                        <div class="price">۹۸۰٬۰۰۰ <span class="fs-6 text-muted fw-normal">تومان</span></div>
-                                    </div>
-                                    <button class="btn btn-light text-primary rounded-circle shadow-sm" style="padding: 10px 12px;">
-                                        <i class="bi bi-cart-plus fs-5"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @foreach($products as $product)
+                        <div class="swiper-slide">
+                            <div class="card product-card h-100">
+                                <div class="position-relative">
+                                    @if($product->image)
+                                        <img src="{{asset('product/'.$product->image)}}" class="card-img-top product-img" alt="{{$product->image_alt}}" title="{{$product->image_title}}">
+                                    @else
+                                        <img src="{{asset('category/'.$product->category->image)}}" class="card-img-top product-img" alt="{{$product->category->image_alt}}" title="{{$product->category->image_title}}">
+                                    @endif
 
-                    <!-- محصولات ۳ و ۴ را مشابه بالا داخل <div class="swiper-slide"> قرار دهید -->
+                                </div>
+                                <div class="card-body d-flex flex-column">
+                                    <h6 class="card-primary fw-bold mb-2">{{$product->name}}</h6>
+                                    <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>واحد فروش: {{$product->unit_name}} </p>
+                                    <p class="text-muted small mb-3"><i class="bi bi-basket me-1"></i>حداقل سفارش: {{$product->min_shop_count}} </p>
+                                    <div class="d-flex justify-content-between align-items-end mt-auto">
+                                        <div>
+                                            @if($product->discount > 0)
+                                                <div class="old-price">{{$product->base_price}}</div>
+                                                <div class="price">{{number_format($product->base_price - (($product->discount * $product->base_price))/100)}} <span class="fs-6 text-muted fw-normal">تومان</span></div>
+                                            @else
+                                                <div class="text-primary" style="  font-size:1.45rem;font-weight:800;">{{number_format($product->base_price)}} <span class="fs-6 text-muted fw-normal">تومان</span></div>
+                                            @endif
+
+                                        </div>
+                                        <button class="btn cart-btn-new btn-light text-primary rounded-circle shadow-sm" style="padding: 10px 12px;">
+                                            <i class="bi bi-cart-plus fs-5"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+
                 </div>
 
-                <!-- دکمه‌های کنترل اسلایدر -->
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
             </div>
@@ -428,106 +182,33 @@
     <section id="articles" class="py-5">
         <div class="container position-relative">
             <div class="d-flex justify-content-between align-items-center mb-5">
-                <h2 class="fw-bold mb-0 text-primary">مقالات </h2>
-                <a href="#" class="btn btn-sm btn-outline-primary rounded-pill px-4">همه مقالات</a>
+                <h2 class="fw-bold mb-0 text-primary">بلاگ </h2>
+                <a href="#" class="btn btn-sm btn-outline-primary rounded-pill px-4">همه مطالب</a>
             </div>
 
             <!-- Swiper -->
             <div class="swiper articleSwiper pb-4 px-2">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <div class=" card article-card h-100">
-                            <img src="assets/img/images.jfif" class="card-img-top article-img" alt="مقاله">
-                            <div class="card-body d-flex flex-column">
-                                <div class="text-muted small mb-3">
-                                    <i class="bi bi-calendar3 me-1"></i> ۱۲ مرداد ۱۴۰۴
-                                    <span class="mx-2 text-light">|</span>
-                                    <i class="bi bi-person me-1"></i> تیم محتوا
-                                </div>
-                                <h5 class="card-primary fw-bold mb-3">چطور خرید عمده مواد غذایی را بهینه کنیم؟</h5>
-                                <p class="card-text text-muted mb-4">راهنمای کامل مدیریت موجودی، حداقل سفارش و کاهش هزینه حمل برای فروشگاه‌ها و رستوران‌ها.</p>
-                                <a href="#" class="article-link">
-                                    مطالعه مطلب
-                                    <i class="bi bi-arrow-left"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="swiper-slide">
-                        <div class="card  article-card h-100">
-                            <img src="assets/img/images.jfif" class="card-img-top article-img" alt="مقاله">
-                            <div class="card-body d-flex flex-column">
-                                <div class="text-muted small mb-3">
-                                    <i class="bi bi-calendar3 me-1"></i> ۵ مرداد ۱۴۰۴
-                                    <span class="mx-2 text-light">|</span>
-                                    <i class="bi bi-person me-1"></i> واحد کیفیت
-                                </div>
-                                <h5 class="card-primary fw-bold mb-3">نکات نگهداری مواد غذایی در انبار فروشگاهی</h5>
-                                <p class="card-text text-muted mb-4">دما، رطوبت، چیدمان FIFO و کنترل تاریخ انقضا؛ اصولی که ضایعات را کم می‌کند.</p>
-                                <a href="#" class="article-link">
-                                    مطالعه مطلب
-                                    <i class="bi bi-arrow-left"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="card article-card h-100">
-                            <img src="assets/img/images.jfif" class="card-img-top article-img" alt="مقاله">
-                            <div class="card-body d-flex flex-column">
-                                <div class="text-muted small mb-3">
-                                    <i class="bi bi-calendar3 me-1"></i> ۵ مرداد ۱۴۰۴
-                                    <span class="mx-2 text-light">|</span>
-                                    <i class="bi bi-person me-1"></i> واحد کیفیت
-                                </div>
-                                <h5 class="card-primary fw-bold mb-3">نکات نگهداری مواد غذایی در انبار فروشگاهی</h5>
-                                <p class="card-text text-muted mb-4">دما، رطوبت، چیدمان FIFO و کنترل تاریخ انقضا؛ اصولی که ضایعات را کم می‌کند.</p>
-                                <a href="#" class="article-link">
-                                    مطالعه مطلب
-                                    <i class="bi bi-arrow-left"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="card article-card h-100">
-                            <img src="assets/img/images.jfif" class="card-img-top article-img" alt="مقاله">
-                            <div class="card-body d-flex flex-column">
-                                <div class="text-muted small mb-3">
-                                    <i class="bi bi-calendar3 me-1"></i> ۵ مرداد ۱۴۰۴
-                                    <span class="mx-2 text-light">|</span>
-                                    <i class="bi bi-person me-1"></i> واحد کیفیت
-                                </div>
-                                <h5 class="card-primary fw-bold mb-3">نکات نگهداری مواد غذایی در انبار فروشگاهی</h5>
-                                <p class="card-text text-muted mb-4">دما، رطوبت، چیدمان FIFO و کنترل تاریخ انقضا؛ اصولی که ضایعات را کم می‌کند.</p>
-                                <a href="#" class="article-link">
-                                    مطالعه مطلب
-                                    <i class="bi bi-arrow-left"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                    @foreach($blogs as $blog)
+                        <div class="swiper-slide">
+                            <div class=" card article-card h-100">
+                                <img src="{{asset('blog/'.$blog->image)}}" class="card-img-top article-img" alt="{{$blog->image_alt}}" title="{{$blog->image_title}}">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="text-muted small mb-3">
+                                        <i class="bi bi-calendar3 me-1"></i> {{ \Morilog\Jalali\Jalalian::fromDateTime($blog->created_at)->format('Y/m/d') }}
+                                    </div>
+                                    <h5 class="card-primary fw-bold mb-3">{{$blog->title}}</h5>
 
-                    <div class="swiper-slide">
-                        <div class="card article-card h-100">
-                            <img src="assets/img/images.jfif" class="card-img-top article-img" alt="مقاله">
-
-                            <div class="card-body d-flex flex-column">
-                                <div class="text-muted small mb-3">
-                                    <i class="bi bi-calendar3 me-1"></i> ۲۸ تیر ۱۴۰۴
-                                    <span class="mx-2 text-light">|</span>
-                                    <i class="bi bi-person me-1"></i> واحد فروش
+                                    <a href="#" class="article-link">
+                                        مطالعه مطلب
+                                        <i class="bi bi-arrow-left"></i>
+                                    </a>
                                 </div>
-                                <h5 class="card-primary fw-bold mb-3">تفاوت قیمت خرده‌فروشی و عمده در بازار</h5>
-                                <p class="card-text text-muted mb-4">چرا خرید عمده به‌صرفه‌تر است و چه زمانی سراغ قراردادهای بلندمدت برویم؟</p>
-                                <a href="#" class="article-link">
-                                    مطالعه مطلب
-                                    <i class="bi bi-arrow-left"></i>
-                                </a>
                             </div>
                         </div>
-                    </div>
+                    @endforeach
+
                 </div>
 
                 <div class="swiper-button-next"></div>
@@ -600,17 +281,18 @@
                 <div class="col-lg-6">
                     <div class="position-relative d-flex align-items-center">
 
-                        <!-- حذف position-absolute و z-index منفی -->
-                        <video autoplay loop muted playsinline preload="auto"
+                        <video autoplay loop muted playsinline preload="metadata"
+                               poster="{{ asset('banners/'.$video->image) }}"
                                class="w-100 object-fit-cover rounded-4 shadow-sm"
                                style="min-height: 400px;">
-                            <source src="assets/video/video.mp4" type="video/mp4">
-                            <source src="assets/video/video.webm" type="video/webm">
-                            <!-- فالبک عکس -->
-                            <img src="assets/img/store.jpg" alt="store" class="w-100 object-fit-cover rounded-4 shadow-sm">
+
+                            <source src="{{ asset('banners/'.$video->video_webm) }}" type="video/webm">
+                            <source src="{{asset('banners/'.$video->video_mp4)}}" type="video/mp4">
+
+                            <img src="{{asset('banners/'.$video->image)}}" alt="{{$video->image_alt}}" class="w-100 object-fit-cover rounded-4 shadow-sm">
                         </video>
 
-                        <!-- باکس شناور اعتماد -->
+
                         <div class="position-absolute bottom-0 end-0 bg-white p-3 m-3 m-md-4 rounded-4 shadow d-flex align-items-center">
                             <i class="bi bi-patch-check-fill text-primary fs-1 ms-3"></i>
                             <div>
