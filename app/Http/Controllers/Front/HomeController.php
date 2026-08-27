@@ -153,7 +153,6 @@ class HomeController extends Controller
         return view('front.product-detail', compact('product', 'comments'));
     }
 
-
     public function storeComment(Request $request, $slug)
     {
         $product = Product::where('is_active',true)->where('slug',$slug)->firstOrFail();
@@ -175,6 +174,31 @@ class HomeController extends Controller
         ]);
 
         return back()->with('success', 'نظر شما با موفقیت ثبت شد و پس از بررسی منتشر خواهد شد.');
+    }
+
+    public function blogs(Request $request)
+    {
+        $search = $request->get('search');
+
+        $blogs = Blog::when($search, function ($query, $search) {
+            $query->where('title', 'like', '%' . $search . '%');
+        })
+            ->latest()
+            ->paginate(9)
+            ->withQueryString();
+
+        return view('front.blogs', compact('blogs', 'search'));
+    }
+
+
+    public function blogShow(Blog $blog)
+    {
+        $relatedBlogs = Blog::where('id', '!=', $blog->id)
+            ->latest()
+            ->take(3)
+            ->get();
+
+        return view('front.blog-show', compact('blog', 'relatedBlogs'));
     }
     public function page($slug)
     {

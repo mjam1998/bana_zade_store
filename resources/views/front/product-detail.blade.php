@@ -33,6 +33,24 @@
             width: 2.5rem;
             flex: 0 0 2.5rem;
         }
+        .product-description img {
+            max-width: 100% !important;
+            height: auto !important;
+            display: block;
+        }
+
+        .product-description table {
+            max-width: 100%;
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .product-description iframe,
+        .product-description video {
+            max-width: 100%;
+        }
+
     </style>
 
 

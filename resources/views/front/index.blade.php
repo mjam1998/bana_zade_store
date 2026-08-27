@@ -170,10 +170,11 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <button class="btn cart-btn-new btn-light text-primary rounded-circle shadow-sm position-absolute" style="bottom: 15px; left: 15px; padding: 10px 12px; z-index: 2;">
+                                        <i class="bi bi-cart-plus fs-5"></i>
+                                    </button>
                                 </a>
-                                <button class="btn cart-btn-new btn-light text-primary rounded-circle shadow-sm position-absolute" style="bottom: 15px; left: 15px; padding: 10px 12px; z-index: 2;">
-                                    <i class="bi bi-cart-plus fs-5"></i>
-                                </button>
+
                             </div>
                         </div>
                     @endforeach
@@ -192,7 +193,7 @@
         <div class="container position-relative">
             <div class="d-flex justify-content-between align-items-center mb-5">
                 <h2 class="fw-bold mb-0 text-primary">بلاگ </h2>
-                <a href="#" class="btn btn-sm btn-outline-primary rounded-pill px-4">همه مطالب</a>
+                <a href="{{route('blogs')}}" class="btn btn-sm btn-outline-primary rounded-pill px-4">همه مطالب</a>
             </div>
 
             <!-- Swiper -->
@@ -202,18 +203,20 @@
                     @foreach($blogs as $blog)
                         <div class="swiper-slide">
                             <div class=" card article-card h-100">
-                                <img src="{{asset('blog/'.$blog->image)}}" class="card-img-top article-img" alt="{{$blog->image_alt}}" title="{{$blog->image_title}}">
-                                <div class="card-body d-flex flex-column">
-                                    <div class="text-muted small mb-3">
-                                        <i class="bi bi-calendar3 me-1"></i> {{ \Morilog\Jalali\Jalalian::fromDateTime($blog->created_at)->format('Y/m/d') }}
-                                    </div>
-                                    <h5 class="card-primary fw-bold mb-3">{{$blog->title}}</h5>
+                                    <img src="{{asset('blog/'.$blog->image)}}" class="card-img-top article-img" alt="{{$blog->image_alt}}" title="{{$blog->image_title}}">
+                                    <div class="card-body d-flex flex-column">
+                                        <div class="text-muted small mb-3">
+                                            <i class="bi bi-calendar3 me-1"></i> {{ \Morilog\Jalali\Jalalian::fromDateTime($blog->created_at)->format('Y/m/d') }}
+                                        </div>
+                                        <h5 class="card-primary fw-bold mb-3">{{$blog->title}}</h5>
 
-                                    <a href="#" class="article-link">
-                                        مطالعه مطلب
-                                        <i class="bi bi-arrow-left"></i>
-                                    </a>
-                                </div>
+                                        <a href="{{route('blog.show',$blog->slug)}}" class="article-link">
+                                            مطالعه مطلب
+                                            <i class="bi bi-arrow-left"></i>
+                                        </a>
+                                    </div>
+
+
                             </div>
                         </div>
                     @endforeach

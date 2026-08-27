@@ -19,31 +19,9 @@ Route::get('/categories',[HomeController::class,'categories'])->name('categories
 Route::get('/products', [HomeController::class, 'products'])->name('products');
 Route::get('/product/{slug}', [HomeController::class, 'productShow'])->name('product.show');
 Route::post('product/{slug}/comment', [HomeController::class, 'storeComment'])->name('product.comment.store');
+Route::get('/blogs', [HomeController::class, 'blogs'])->name('blogs');
+Route::get('/blog/{blog:slug}', [HomeController::class, 'blogShow'])->name('blog.show');
 
-//Route::get('/search', [homeController::class,'search'])->name('search');
-//Route::get('/category/{slug}', [homeController::class,'category'])->name('category');
-//Route::get('/blogs', [homeController::class,'blogs'])->name('blogs');
-//Route::get('/blog/{slug}', [homeController::class, 'blogShow'])->name('front.blog.show');
-//Route::get('/product/{slug}', [homeController::class, 'show'])->name('product.detail');
-//Route::post('/product/{slug}/comment', [homeController::class, 'storeComment'])->name('product.comment.store');
-//Route::get('/cart', [OrderController::class, 'viewCart'])->name('cart.view');
-//Route::post('/cart/add', [OrderController::class, 'addToCart'])->name('cart.add');
-//Route::post('/cart/update', [OrderController::class, 'updateCart'])->name('cart.update');
-//Route::post('/cart/remove', [OrderController::class, 'removeFromCart'])->name('cart.remove');
-//Route::post('/cart/clear', [OrderController::class, 'clearCart'])->name('cart.clear');
-//Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
-//Route::post('/checkout/process', [OrderController::class, 'processCheckout'])->name('checkout.process');
-//Route::get('/pay-call-back', [OrderController::class, 'payCallback'])->name('pay.call.back');
-//Route::get('/pay-result/{code}', [OrderController::class, 'payResult'])->name('pay.result');
-//Route::get('/order/track', [OrderController::class, 'trackOrder'])->name('order.track');
-//Route::post('/order/track/result', [OrderController::class, 'trackOrderResult'])->name('order.track.result');
-//Route::get('/page/{slug}', [HomeController::class, 'page'])->name('page');
-//Route::get('/cart/sidebar', function () {
-//    return view('front.partials.cart-sidebar')->render();
-//})->name('cart.sidebar');
-//Route::get('/cart/mobile-drawer', function () {
-//    return view('front.partials.cart-sidebar')->render();
-//})->name('cart.mobile.drawer');
 
 Route::get('/login', [AuthController::class,'login'])->name('login');
 Route::post('/login/submit', [AuthController::class,'loginSubmit'])->name('login.submit');

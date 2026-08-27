@@ -19,4 +19,15 @@ class Blog extends Model
         'meta_title',
         'keywords'
     ];
+
+    public function getKeywordsArrayAttribute(): array
+    {
+        $decoded = json_decode($this->keywords, true);
+
+        if (! is_array($decoded)) {
+            return [];
+        }
+
+        return array_column($decoded, 'value');
+    }
 }
