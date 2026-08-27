@@ -32,16 +32,17 @@
                                 </div>
 
                                 <hr class="my-3 text-muted opacity-25">
-                                {{-- فیلتر دسته‌بندی --}}
+
+                                {{-- فیلتر دسته‌بندی (اصلاح شده با slug) --}}
                                 <div class="mb-4">
                                     <label class="form-label fw-semibold text-dark mb-2">
                                         <i class="bi bi-grid ms-1"></i> دسته‌بندی
                                     </label>
-                                    <select name="category_id" class="form-select rounded-3" id="categorySelect">
+                                    <select name="category" class="form-select rounded-3" id="categorySelect">
                                         <option value="">همه دسته‌بندی‌ها</option>
                                         @foreach($categories as $category)
-                                            <option value="{{ $category->id }}"
-                                                {{ (string) request('category_id') === (string) $category->id ? 'selected' : '' }}>
+                                            <option value="{{ $category->slug }}"
+                                                @selected(request('category') === $category->slug)>
                                                 {{ $category->name }}
                                             </option>
                                         @endforeach
@@ -49,6 +50,7 @@
                                 </div>
 
                                 <hr class="my-3 text-muted opacity-25">
+
                                 {{-- مرتب‌سازی --}}
                                 <div class="mb-4">
                                     <label class="form-label fw-semibold text-dark mb-2">
@@ -66,7 +68,7 @@
                                                        name="sort"
                                                        id="sort_{{ $value }}"
                                                        value="{{ $value }}"
-                                                    {{ (request('sort', 'newest') === $value) ? 'checked' : '' }}>
+                                                    @checked(request('sort', 'newest') === $value)>
                                                 <label class="form-check-label" for="sort_{{ $value }}">
                                                     {{ $label }}
                                                 </label>
@@ -107,7 +109,7 @@
                                                name="has_discount"
                                                id="has_discount"
                                                value="1"
-                                            {{ request('has_discount') == '1' ? 'checked' : '' }}>
+                                            @checked(request('has_discount') == '1')>
                                         <label class="form-check-label fw-semibold" for="has_discount">
                                             فقط محصولات تخفیف‌دار
                                         </label>
@@ -128,6 +130,7 @@
                     </div>
                 </div>
 
+
                 {{-- ستون محصولات --}}
                 <div class="col-lg-9">
 
@@ -145,7 +148,7 @@
 
                                 <div class="col-sm-6 col-xl-4">
                                     <div class="card product-card h-100 border-0 shadow-sm rounded-4 overflow-hidden position-relative">
-
+                                        <a href="{{ route('product.show', $product->slug) }}" class="text-decoration-none text-reset">
                                         {{-- بج تخفیف --}}
                                         @if($product->discount > 0)
                                             <span class="position-absolute top-0 start-0 m-2 badge rounded-pill text-white"
@@ -178,7 +181,7 @@
                                                 <i class="bi bi-box me-1"></i>واحد: {{ $product->unit_name }}
                                             </div>
                                             <div class="text-muted small mb-3">
-                                                <i class="bi bi-basket me-1"></i>حداقل: {{ $product->min_shop_count }}
+                                                <i class="bi bi-basket me-1"></i>حداقل سفارش: {{ $product->min_shop_count }}
                                             </div>
 
                                             <div class="mt-auto d-flex justify-content-between align-items-end">
@@ -201,6 +204,7 @@
                                                 </button>
                                             </div>
                                         </div>
+                                        </a>
                                     </div>
                                 </div>
 

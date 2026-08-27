@@ -18,7 +18,7 @@
         <div class="container position-relative">
             <div class="d-flex justify-content-between align-items-center mb-5">
                 <h2 class="fw-bold mb-0 text-primary">دسته‌بندی‌ها</h2>
-                <a href="{{route('categories')}}" class="btn btn-sm btn-outline-primary rounded-pill px-4">همه دسته‌ها</a>
+                <a href="{{ route('categories') }}" class="btn btn-sm btn-outline-primary rounded-pill px-4">همه دسته‌ها</a>
             </div>
 
             <div class="swiper categorySwiper pb-4 px-2">
@@ -26,16 +26,21 @@
 
                     @foreach($categories as $category)
                         <div class="swiper-slide">
-                            <div class="card category-card text-center h-100">
-                                <div class="card-body py-4">
-                                    <img src="{{asset('category/'.$category->image)}}" alt="{{$category->image_alt}}" title="{{$category->image_title}}" class="category-img mb-3 mx-auto d-block">
-                                    <h6 class="mb-0 fw-bold">{{$category->name}}</h6>
-                                    <i class="bi bi-arrow-left-short category-arrow"></i>
+                            {{-- تغییر در این خط: استفاده از category و slug --}}
+                            <a href="{{ route('products', ['category' => $category->slug]) }}" class="text-decoration-none text-dark">
+                                <div class="card category-card text-center h-100">
+                                    <div class="card-body py-4">
+                                        <img src="{{ asset('category/'.$category->image) }}"
+                                             alt="{{ $category->image_alt }}"
+                                             title="{{ $category->image_title }}"
+                                             class="category-img mb-3 mx-auto d-block">
+                                        <h6 class="mb-0 fw-bold">{{ $category->name }}</h6>
+                                        <i class="bi bi-arrow-left-short category-arrow"></i>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     @endforeach
-
 
                 </div>
 
@@ -44,6 +49,7 @@
             </div>
         </div>
     </section>
+
 
     <section class="py-5">
         <div class="container">
@@ -74,6 +80,7 @@
                    @foreach($specialsProducts as $special)
                         <div class="swiper-slide">
                             <div class="card product-card h-100 border-danger border-opacity-25">
+                                <a href="{{ route('product.show', $special->slug) }}" class="text-decoration-none text-reset">
                                 <div class="position-relative">
                                     @if($special->image)
                                     <img src="{{asset('product/'.$special->image)}}" class="card-img-top product-img" alt="{{$special->image_alt}}" title="{{$special->image_title}}">
@@ -84,7 +91,7 @@
                                 </div>
                                 <div class="card-body d-flex flex-column">
                                     <h6 class="card-title fw-bold mb-2">{{$special->name}}</h6>
-                                    <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>واحد فروش: {{$special->unit_name}} </p>
+                                    <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>واحد: {{$special->unit_name}} </p>
                                     <p class="text-muted small mb-3"><i class="bi bi-basket me-1"></i>حداقل سفارش: {{$special->min_shop_count}} </p>
                                     <div class="d-flex justify-content-between align-items-end mt-auto">
                                         <div>
@@ -96,6 +103,7 @@
                                         </button>
                                     </div>
                                 </div>
+                                </a>
                             </div>
                         </div>
                    @endforeach
@@ -138,37 +146,38 @@
                 <div class="swiper-wrapper">
                     @foreach($products as $product)
                         <div class="swiper-slide">
-                            <div class="card product-card h-100">
-                                <div class="position-relative">
-                                    @if($product->image)
-                                        <img src="{{asset('product/'.$product->image)}}" class="card-img-top product-img" alt="{{$product->image_alt}}" title="{{$product->image_title}}">
-                                    @else
-                                        <img src="{{asset('category/'.$product->category->image)}}" class="card-img-top product-img" alt="{{$product->category->image_alt}}" title="{{$product->category->image_title}}">
-                                    @endif
-
-                                </div>
-                                <div class="card-body d-flex flex-column">
-                                    <h6 class="card-primary fw-bold mb-2">{{$product->name}}</h6>
-                                    <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>واحد فروش: {{$product->unit_name}} </p>
-                                    <p class="text-muted small mb-3"><i class="bi bi-basket me-1"></i>حداقل سفارش: {{$product->min_shop_count}} </p>
-                                    <div class="d-flex justify-content-between align-items-end mt-auto">
-                                        <div>
-                                            @if($product->discount > 0)
-                                                <div class="old-price">{{$product->base_price}}</div>
-                                                <div class="price">{{number_format($product->base_price - (($product->discount * $product->base_price))/100)}} <span class="fs-6 text-muted fw-normal">تومان</span></div>
-                                            @else
-                                                <div class="text-primary" style="  font-size:1.45rem;font-weight:800;">{{number_format($product->base_price)}} <span class="fs-6 text-muted fw-normal">تومان</span></div>
-                                            @endif
-
-                                        </div>
-                                        <button class="btn cart-btn-new btn-light text-primary rounded-circle shadow-sm" style="padding: 10px 12px;">
-                                            <i class="bi bi-cart-plus fs-5"></i>
-                                        </button>
+                            <div class="card product-card h-100 position-relative">
+                                <a href="{{ route('product.show', $product->slug) }}" class="text-decoration-none text-reset">
+                                    <div class="position-relative">
+                                        @if($product->image)
+                                            <img src="{{ asset('product/'.$product->image) }}" class="card-img-top product-img" alt="{{ $product->image_alt }}" title="{{ $product->image_title }}">
+                                        @else
+                                            <img src="{{ asset('category/'.$product->category->image) }}" class="card-img-top product-img" alt="{{ $product->category->image_alt }}" title="{{ $product->category->image_title }}">
+                                        @endif
                                     </div>
-                                </div>
+                                    <div class="card-body d-flex flex-column">
+                                        <h6 class="card-primary fw-bold mb-2">{{ $product->name }}</h6>
+                                        <p class="text-muted small mb-3"><i class="bi bi-box me-1"></i>واحد: {{ $product->unit_name }}</p>
+                                        <p class="text-muted small mb-3"><i class="bi bi-basket me-1"></i>حداقل سفارش: {{ $product->min_shop_count }}</p>
+                                        <div class="d-flex justify-content-between align-items-end mt-auto">
+                                            <div>
+                                                @if($product->discount > 0)
+                                                    <div class="old-price">{{ $product->base_price }}</div>
+                                                    <div class="price">{{ number_format($product->base_price - (($product->discount * $product->base_price)) / 100) }} <span class="fs-6 text-muted fw-normal">تومان</span></div>
+                                                @else
+                                                    <div class="text-primary" style="font-size:1.45rem;font-weight:800;">{{ number_format($product->base_price) }} <span class="fs-6 text-muted fw-normal">تومان</span></div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <button class="btn cart-btn-new btn-light text-primary rounded-circle shadow-sm position-absolute" style="bottom: 15px; left: 15px; padding: 10px 12px; z-index: 2;">
+                                    <i class="bi bi-cart-plus fs-5"></i>
+                                </button>
                             </div>
                         </div>
                     @endforeach
+
 
                 </div>
 

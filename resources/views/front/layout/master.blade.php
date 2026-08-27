@@ -41,16 +41,17 @@
             </ul>
 
             <div class="d-flex align-items-center gap-3">
-                <div class="input-group d-none d-md-flex" style="max-width: 300px;">
-                    <input type="text" class="form-control bg-light border-0" placeholder="جستجوی محصول...">
-                    <button class="btn btn-light bg-light border-0 text-primary"><i class="bi bi-search"></i></button>
-                </div>
+                <form action="{{ route('products') }}" method="GET" class="input-group d-none d-md-flex" style="max-width: 300px;">
+                    <input type="text" name="search" value="{{ request('search') }}" class="form-control bg-light border-0" placeholder="جستجوی محصول...">
+                    <button type="submit" class="btn btn-light bg-light border-0 text-primary"><i class="bi bi-search"></i></button>
+                </form>
                 <a href="#" class="btn btn-light position-relative border-0 shadow-sm text-primary">
                     <i class="bi bi-cart3 fs-5"></i>
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-2 border-white">3</span>
                 </a>
-                <a href="{{route('login')}}" class="btn btn-primary">ورود / ثبت‌نام</a>
+                <a href="{{ route('login') }}" class="btn btn-primary">ورود / ثبت‌نام</a>
             </div>
+
         </div>
     </div>
 </nav>

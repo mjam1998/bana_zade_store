@@ -17,6 +17,8 @@ Route::get('/', [homeController::class,'index'])->name('home');
 
 Route::get('/categories',[HomeController::class,'categories'])->name('categories');
 Route::get('/products', [HomeController::class, 'products'])->name('products');
+Route::get('/product/{slug}', [HomeController::class, 'productShow'])->name('product.show');
+Route::post('product/{slug}/comment', [HomeController::class, 'storeComment'])->name('product.comment.store');
 
 //Route::get('/search', [homeController::class,'search'])->name('search');
 //Route::get('/category/{slug}', [homeController::class,'category'])->name('category');

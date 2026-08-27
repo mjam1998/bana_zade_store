@@ -51,7 +51,7 @@ class Product extends Model
     }
     public function unitPriceFor(int $qty): int
     {
-        $tier = $this->priceTiers()
+        $tier = $this->productPriceTiers()
             ->where('min_qty', '<=', $qty)
             ->where(function ($q) use ($qty) {
                 $q->whereNull('max_qty')->orWhere('max_qty', '>=', $qty);
@@ -74,4 +74,17 @@ class Product extends Model
 
         });
     }
+    // app/Models/Product.php
+
+    public function getKeywordsArrayAttribute(): array
+    {
+        $decoded = json_decode($this->keywords, true);
+
+        if (! is_array($decoded)) {
+            return [];
+        }
+
+        return array_column($decoded, 'value');
+    }
+
 }
