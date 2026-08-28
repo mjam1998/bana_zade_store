@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>بازرگانی بنازاده</title>
 
     <link rel="stylesheet" href="{{asset('front/assets/css/bootstrap.rtl.min.css')}}">
@@ -45,10 +46,13 @@
                     <input type="text" name="search" value="{{ request('search') }}" class="form-control bg-light border-0" placeholder="جستجوی محصول...">
                     <button type="submit" class="btn btn-light bg-light border-0 text-primary"><i class="bi bi-search"></i></button>
                 </form>
-                <a href="#" class="btn btn-light position-relative border-0 shadow-sm text-primary">
+                <a href="{{ route('cart.index') }}" class="btn btn-light position-relative border-0 shadow-sm text-primary">
                     <i class="bi bi-cart3 fs-5"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-2 border-white">3</span>
+                    <span id="cart-badge-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-2 border-white">
+        {{ count(session('cart', [])) }}
+    </span>
                 </a>
+
                 <a href="{{ route('login') }}" class="btn btn-primary">ورود / ثبت‌نام</a>
             </div>
 
@@ -203,6 +207,15 @@
             eyeIcon.classList.remove('d-none');
             eyeSlashIcon.classList.add('d-none');
         }
+    }
+</script>
+<script>
+    // تنظیم توکن CSRF برای تمام درخواست‌های fetch
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    function updateCartBadge(count) {
+        const badge = document.getElementById('cart-badge-count');
+        if(badge) badge.innerText = count;
     }
 </script>
 @stack('scripts')

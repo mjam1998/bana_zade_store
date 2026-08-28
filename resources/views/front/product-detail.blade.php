@@ -331,6 +331,29 @@
             qtyInput.addEventListener('input', recalculate);
             recalculate();
         })();
+        document.getElementById('add-to-cart-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const qty = document.getElementById('qty-input').value;
+
+            fetch("{{ route('cart.add', $product->id) }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ quantity: qty })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if(data.success) {
+                        updateCartBadge(data.cartItemCount);
+
+                        alert('محصول با موفقیت به سبد خرید اضافه شد.');
+                    }
+                });
+        });
+
     </script>
 @endpush
 
