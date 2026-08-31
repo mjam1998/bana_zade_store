@@ -12,7 +12,7 @@
                         <a href="{{ route('admin.index') }}" class="btn btn-dark btn-lg">
                             پنل مدیریت
                         </a>
-                        <a href="{{ route('home') }}" class="btn btn-outline-secondary btn-lg">
+                        <a href="{{ route('profile.index') }}" class="btn btn-outline-secondary btn-lg">
                             ناحیه کاربری
                         </a>
                     </div>

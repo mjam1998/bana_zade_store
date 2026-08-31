@@ -15,6 +15,8 @@
 
     <link  rel="stylesheet" href="{{asset('front/assets/css/style.css')}}">
     <link href="{{asset('admin/choises/choices.min.css')}}" rel="stylesheet" />
+
+    @livewireStyles
 </head>
 <body>
 
@@ -52,8 +54,12 @@
         {{ count(session('cart', [])) }}
     </span>
                 </a>
+                @if(auth()->check() && auth()->user()->hasRole('user'))
+                    <a href="{{ route('profile.index') }}" class="btn btn-primary">پروفایل کاربری</a>
+                @else
+                    <a href="{{ route('login') }}" class="btn btn-primary">ورود / ثبت‌نام</a>
+                @endif
 
-                <a href="{{ route('login') }}" class="btn btn-primary">ورود / ثبت‌نام</a>
             </div>
 
         </div>
@@ -210,7 +216,7 @@
     }
 </script>
 <script>
-    // تنظیم توکن CSRF برای تمام درخواست‌های fetch
+
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     function updateCartBadge(count) {
@@ -219,6 +225,6 @@
     }
 </script>
 @stack('scripts')
-
+@livewireScripts
 </body>
 </html>

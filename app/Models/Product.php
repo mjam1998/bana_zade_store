@@ -74,7 +74,6 @@ class Product extends Model
 
         });
     }
-    // app/Models/Product.php
 
     public function getKeywordsArrayAttribute(): array
     {

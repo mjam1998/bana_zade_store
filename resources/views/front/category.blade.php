@@ -10,7 +10,6 @@
             <div class="row g-4">
                 @forelse($categories as $category)
                     <div class="col-6 col-md-4 col-lg-3">
-                        {{-- تغییر این خط: استفاده از category و slug به جای category_id و id --}}
                         <a href="{{ route('products', ['category' => $category->slug]) }}" class="text-decoration-none text-dark">
                             <div class="card category-card text-center h-100 shadow-sm">
                                 <div class="card-body py-4">

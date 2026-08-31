@@ -155,6 +155,7 @@
                     <button type="submit" class="btn btn-primary rounded-pill px-4" @disabled($product->count <= 0)>
                         {{ $product->count > 0 ? 'افزودن به سبد خرید' : 'ناموجود' }}
                     </button>
+                    <p class="alert alert-success mt-3 d-none" id="alert-shop">محصول با موفقیت به سبد خرید اضافه شد.</p>
                 </form>
 
                 {{-- جدول قیمت پلکانی --}}
@@ -189,7 +190,6 @@
             </div>
         </div>
 
-        {{-- توضیحات محصول (HTML از ادیتور) --}}
         <div class="card border-0 shadow-sm rounded-4 p-4 mt-4">
             <h2 class="h6 fw-bold mb-3">توضیحات محصول</h2>
             <div class="product-description">
@@ -349,7 +349,8 @@
                     if(data.success) {
                         updateCartBadge(data.cartItemCount);
 
-                        alert('محصول با موفقیت به سبد خرید اضافه شد.');
+                        document.getElementById('alert-shop').classList.remove('d-none');
+
                     }
                 });
         });

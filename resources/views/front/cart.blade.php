@@ -7,9 +7,9 @@
 
         @if(count($cart) > 0)
             @php
-                $grandOriginalTotal = 0; // جمع کل بدون تخفیف
-                $grandTotal = 0;         // جمع کل پرداختی
-                $totalDiscount = 0;      // سود شما (مجموع تخفیف‌ها)
+                $grandOriginalTotal = 0;
+                $grandTotal = 0;
+                $totalDiscount = 0;
             @endphp
             <div class="row g-4">
                 {{-- لیست محصولات --}}
@@ -24,7 +24,7 @@
                                 $basePrice = $product->base_price;
                                 $unitPrice = $product->unitPriceFor($qty);
 
-                                // اگر قیمت پلکانی اعمال نشده بود، تخفیف درصدی عادی را چک کن
+
                                 if ($unitPrice == $basePrice && $product->discount > 0) {
                                     $unitPrice = round($basePrice * (1 - $product->discount / 100));
                                 }
@@ -49,7 +49,7 @@
                                     <h5 class="h6 mb-1 fw-bold">{{ $product->name }}</h5>
                                     <small class="text-muted d-block">حداقل خرید: {{ $product->min_shop_count ?: 1 }} عدد</small>
 
-                                    {{-- تگ بج همیشه رندر می‌شود، وضعیت نمایش با CSS کنترل می‌شود --}}
+
                                     <span class="badge bg-danger mt-1 item-discount-badge" id="badge-{{ $product->id }}"
                                           style="display: {{ $itemDiscountPercent > 0 ? 'inline-block' : 'none' }};">
                                         {{ $itemDiscountPercent }}% تخفیف
@@ -70,7 +70,6 @@
 
                                 <div class="col-6 col-md-3 mt-3 mt-md-0 text-end d-flex flex-column justify-content-center">
 
-                                    {{-- تگ قیمت خط‌خورده همیشه رندر می‌شود --}}
                                     <del class="text-muted small item-original-total" id="orig-total-{{ $product->id }}"
                                          style="display: {{ $itemDiscountAmount > 0 ? 'inline' : 'none' }};">
                                         {{ number_format($itemOriginalTotal) }}
@@ -109,7 +108,7 @@
                             <span class="fw-bold fs-5 text-success" id="grand-total">{{ number_format($grandTotal) }} تومان</span>
                         </div>
 
-                        <a href="#" class="btn btn-primary w-100 mt-3 rounded-pill py-2">ادامه فرآیند خرید</a>
+                        <a href="{{route('checkout.index')}}" class="btn btn-primary w-100 mt-3 rounded-pill py-2">ادامه فرآیند خرید</a>
                     </div>
                 </div>
             </div>
@@ -128,24 +127,21 @@
         document.addEventListener("DOMContentLoaded", function() {
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-            // تابع کمکی برای فرمت کردن اعداد به صورت سه‌رقم سه‌رقم
             const formatNumber = (num) => new Intl.NumberFormat('fa-IR').format(num);
 
-            // تابع اصلی برای به‌روزرسانی DOM پس از دریافت پاسخ از سرور
             function updateView(data) {
-                // ۱. به‌روزرسانی آیتم خاصی که تغییر کرده
+
                 if (data.itemData) {
                     const item = data.itemData;
                     const itemRow = document.getElementById(`cart-item-${item.id}`);
 
                     if (itemRow) {
-                        // قیمت نهایی آیتم
+
                         const finalTotalEl = itemRow.querySelector(`#total-${item.id}`);
                         if (finalTotalEl) {
                             finalTotalEl.innerText = `${formatNumber(item.finalTotal)} تومان`;
                         }
 
-                        // قیمت خط‌خورده
                         const originalTotalEl = itemRow.querySelector(`#orig-total-${item.id}`);
                         if (originalTotalEl) {
                             if (item.originalTotal > item.finalTotal) {
@@ -156,7 +152,6 @@
                             }
                         }
 
-                        // بج تخفیف
                         const badgeEl = itemRow.querySelector(`#badge-${item.id}`);
                         if (badgeEl) {
                             if (item.discountPercent > 0) {
@@ -169,28 +164,23 @@
                     }
                 }
 
-                // ۲. به‌روزرسانی خلاصه سفارش (همیشه)
                 const cartSummary = data.cartData;
                 document.getElementById('grand-orig-total').innerText = `${formatNumber(cartSummary.grandOriginalTotal)} تومان`;
                 document.getElementById('grand-discount').innerText = `${formatNumber(cartSummary.totalDiscount)} تومان`;
                 document.getElementById('grand-total').innerText = `${formatNumber(cartSummary.grandTotal)} تومان`;
 
-                // ۳. به‌روزرسانی تعداد آیتم‌ها در هدر
                 const badgeCount = document.getElementById('cart-badge-count');
                 if (badgeCount) {
                     badgeCount.innerText = data.cartItemCount;
                     badgeCount.style.display = data.cartItemCount > 0 ? 'block' : 'none';
                 }
 
-                // ۴. اگر سبد خرید خالی شد، صفحه را رفرش کن تا پیام "سبد خالی" نمایش داده شود
                 if (data.cartItemCount === 0) {
                     location.reload();
                 }
             }
 
-            // تابع برای ارسال درخواست آپدیت تعداد
             function updateCartItem(id, qty, button) {
-                // دکمه‌ها را غیرفعال کن تا از کلیک‌های تکراری جلوگیری شود
                 const buttons = document.querySelectorAll(`[data-id='${id}']`);
                 buttons.forEach(btn => btn.disabled = true);
 
@@ -208,16 +198,16 @@
                         if (data.success) {
                             updateView(data);
                         } else {
-                            // اگر سرور خطا داد، مقدار را به حالت قبل برگردان (این بخش اختیاری و برای بهبود UX است)
+
                             alert(data.message || "خطایی رخ داد");
                         }
                     }).catch(err => console.error(err))
                     .finally(() => {
-                        buttons.forEach(btn => btn.disabled = false); // دکمه‌ها را دوباره فعال کن
+                        buttons.forEach(btn => btn.disabled = false);
                     });
             }
 
-            // رویداد برای دکمه‌های افزایش/کاهش
+
             document.querySelectorAll('.cart-qty-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const action = this.dataset.action;
@@ -238,7 +228,7 @@
                 });
             });
 
-            // رویداد برای دکمه حذف
+
             document.querySelectorAll('.remove-item').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const id = this.dataset.id;
@@ -251,9 +241,9 @@
                         .then(res => res.json())
                         .then(data => {
                             if(data.success) {
-                                // حذف المان آیتم از DOM
+
                                 document.getElementById(`cart-item-${id}`).remove();
-                                updateView(data); // به‌روزرسانی خلاصه سبد و هدر
+                                updateView(data);
                             }
                         }).catch(err => console.error(err));
                 });
