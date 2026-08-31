@@ -96,6 +96,27 @@
                 </div>
 
             </div>
+            {{-- بخش نمودار فروش --}}
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm rounded-3">
+                        <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0 fw-bold">
+                                <i class="bi bi-graph-up-arrow text-primary me-2"></i> گزارش مبالغ فروش
+                            </h5>
+                            <select id="chartFilter" class="form-select form-select-sm w-auto shadow-none">
+                                <option value="monthly" selected>ماهانه (سال جاری)</option>
+                                <option value="daily">روزانه (۳۰ روز اخیر)</option>
+                                <option value="yearly">سالانه (۵ سال اخیر)</option>
+                            </select>
+                        </div>
+                        <div class="card-body">
+                            {{-- بوم نمودار --}}
+                            <canvas id="salesChart" height="100"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 
 
@@ -103,91 +124,99 @@
     </div>
 
 
-{{--    <style>--}}
-{{--        .quick-access-card {--}}
-{{--            border-radius: 12px;--}}
-{{--            background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);--}}
-{{--            border: 1px solid #e8ecff !important;--}}
-{{--        }--}}
 
-{{--        .quick-btn {--}}
-{{--            border-radius: 8px;--}}
-{{--            font-size: 0.85rem;--}}
-{{--            padding: 7px 14px;--}}
-{{--            transition: all 0.2s ease;--}}
-{{--            display: inline-flex;--}}
-{{--            align-items: center;--}}
-{{--            white-space: nowrap;--}}
-{{--        }--}}
-
-{{--        .quick-btn:hover {--}}
-{{--            transform: translateY(-2px);--}}
-{{--            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);--}}
-{{--        }--}}
-{{--        .status-card {--}}
-{{--            transition: all 0.3s ease;--}}
-{{--            border-radius: 12px;--}}
-{{--        }--}}
-
-{{--        .status-card:hover {--}}
-{{--            transform: translateY(-5px);--}}
-{{--            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;--}}
-{{--        }--}}
-
-{{--        .total-card {--}}
-{{--            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);--}}
-{{--            color: white;--}}
-{{--        }--}}
-
-{{--        .total-card .text-muted {--}}
-{{--            color: rgba(255, 255, 255, 0.9) !important;--}}
-{{--        }--}}
-
-{{--        .success-card {--}}
-{{--            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);--}}
-{{--            color: white;--}}
-{{--        }--}}
-
-{{--        .success-card .text-muted {--}}
-{{--            color: rgba(255, 255, 255, 0.9) !important;--}}
-{{--        }--}}
-
-{{--        .warning-card {--}}
-{{--            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);--}}
-{{--            color: white;--}}
-{{--        }--}}
-
-{{--        .warning-card .text-muted {--}}
-{{--            color: rgba(255, 255, 255, 0.9) !important;--}}
-{{--        }--}}
-
-{{--        .danger-card {--}}
-{{--            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);--}}
-{{--            color: white;--}}
-{{--        }--}}
-
-{{--        .danger-card .text-muted {--}}
-{{--            color: rgba(255, 255, 255, 0.9) !important;--}}
-{{--        }--}}
-
-{{--        .status-icon {--}}
-{{--            opacity: 0.9;--}}
-{{--        }--}}
-
-{{--        .hover-card {--}}
-{{--            transition: all 0.3s ease;--}}
-{{--            border-radius: 8px;--}}
-{{--        }--}}
-
-{{--        .hover-card:hover {--}}
-{{--            transform: translateX(-5px);--}}
-{{--            box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1) !important;--}}
-{{--        }--}}
-
-{{--        .section-title {--}}
-{{--            color: #2d3748;--}}
-{{--            font-weight: 600;--}}
-{{--        }--}}
-{{--    </style>--}}
 
 @endsection
+@push('scripts')
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            // دریافت داده‌های پاس داده شده از PHP به صورت JSON
+            const rawData = {
+                daily: @json($dailySales),
+                monthly: @json($monthlySales),
+                yearly: @json($yearlySales)
+            };
+
+            const ctx = document.getElementById('salesChart').getContext('2d');
+            let salesChart;
+
+            // تنظیم فونت فارسی برای نمودار
+            Chart.defaults.font.family = 'Vazirmatn, Tahoma, Arial';
+
+            function renderChart(type) {
+                const dataObj = rawData[type];
+                const labels = Object.keys(dataObj);
+                const values = Object.values(dataObj);
+
+                if (salesChart) {
+                    salesChart.destroy(); // پاک کردن نمودار قبلی
+                }
+
+                salesChart = new Chart(ctx, {
+                    type: 'line', // می‌توانید به 'bar' تغییر دهید تا نمودار ستونی شود
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'مبلغ فروش (تومان)',
+                            data: values,
+                            borderColor: '#4e73df',
+                            backgroundColor: 'rgba(78, 115, 223, 0.1)',
+                            borderWidth: 2,
+                            pointBackgroundColor: '#4e73df',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: '#4e73df',
+                            fill: true,
+                            tension: 0.3 // انحنای خط نمودار
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        // فرمت کردن عدد با کاما
+                                        let label = context.dataset.label || '';
+                                        if (label) { label += ': '; }
+                                        if (context.parsed.y !== null) {
+                                            label += new Intl.NumberFormat('fa-IR').format(context.parsed.y) + ' تومان';
+                                        }
+                                        return label;
+                                    }
+                                },
+                                titleFont: { family: 'Vazirmatn' },
+                                bodyFont: { family: 'Vazirmatn' }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        // نمایش اعداد محور Y به صورت مخفف (مثلا 1M) یا با کاما
+                                        if (value >= 1000000) {
+                                            return new Intl.NumberFormat('fa-IR').format(value / 1000000) + ' میلیون';
+                                        }
+                                        return new Intl.NumberFormat('fa-IR').format(value);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // رندر اولیه (حالت ماهانه)
+            renderChart('monthly');
+
+            // تغییر نمودار با تغییر سلکت باکس
+            document.getElementById('chartFilter').addEventListener('change', function(e) {
+                renderChart(e.target.value);
+            });
+        });
+    </script>
+@endpush

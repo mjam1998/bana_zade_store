@@ -30,6 +30,7 @@ class Order extends Model
     protected $casts = [
        'status' => OrderStatus::class,
         'is_paid' => 'boolean',
+        'paid_at' => 'datetime',
     ];
 
     public function user()

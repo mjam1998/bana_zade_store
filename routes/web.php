@@ -22,6 +22,7 @@ Route::get('/product/{slug}', [HomeController::class, 'productShow'])->name('pro
 Route::post('product/{slug}/comment', [HomeController::class, 'storeComment'])->name('product.comment.store');
 Route::get('/blogs', [HomeController::class, 'blogs'])->name('blogs');
 Route::get('/blog/{blog:slug}', [HomeController::class, 'blogShow'])->name('blog.show');
+Route::get('/page/{slug}', [HomeController::class, 'showPage'])->name('dynomic.page.show');
 
 Route::prefix('/cart')->group(function(){
     Route::get('/index', [CartController::class, 'index'])->name('cart.index');

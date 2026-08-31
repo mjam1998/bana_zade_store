@@ -13,12 +13,70 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Morilog\Jalali\Jalalian;
 use Spatie\Permission\Models\Role;
 
 class AdminController extends Controller
 {
     public function index(){
-        // در Controller یا Route
+
+        $dailySales = [];
+        for ($i = 29; $i >= 0; $i--) {
+            $date = Jalalian::now()->subDays($i)->format('m/d');
+            $dailySales[$date] = 0;
+        }
+        $orders30Days = Order::where('is_paid', true)
+            ->where('paid_at', '>=', now()->subDays(30))
+            ->get(['pay_amount', 'paid_at']);
+
+        foreach ($orders30Days as $order) {
+            // اگر paid_at خالی بود از created_at استفاده کند
+            $dateObj = $order->paid_at ?? $order->created_at;
+            $jDate = Jalalian::fromCarbon($dateObj)->format('m/d');
+            if (isset($dailySales[$jDate])) {
+                $dailySales[$jDate] += $order->pay_amount;
+            }
+        }
+
+// 2. آمار ماهانه (سال شمسی جاری)
+        $monthlySales = [
+            'فروردین' => 0, 'اردیبهشت' => 0, 'خرداد' => 0, 'تیر' => 0, 'مرداد' => 0, 'شهریور' => 0,
+            'مهر' => 0, 'آبان' => 0, 'آذر' => 0, 'دی' => 0, 'بهمن' => 0, 'اسفند' => 0
+        ];
+        $currentJalaliYear = Jalalian::now()->getYear();
+        $startOfYear = (new Jalalian($currentJalaliYear, 1, 1))->toCarbon();
+
+        $ordersYear = Order::where('is_paid', true)
+            ->where('paid_at', '>=', $startOfYear)
+            ->get(['pay_amount', 'paid_at']);
+
+        $monthsList = array_keys($monthlySales);
+        foreach ($ordersYear as $order) {
+            $dateObj = $order->paid_at ?? $order->created_at;
+            $jDate = Jalalian::fromCarbon($dateObj);
+            if ($jDate->getYear() == $currentJalaliYear) {
+                $monthName = $monthsList[$jDate->getMonth() - 1];
+                $monthlySales[$monthName] += $order->pay_amount;
+            }
+        }
+
+// 3. آمار سالانه (5 سال اخیر)
+        $yearlySales = [];
+        for ($i = 4; $i >= 0; $i--) {
+            $yearlySales[$currentJalaliYear - $i] = 0;
+        }
+        $startOf5Years = (new Jalalian($currentJalaliYear - 4, 1, 1))->toCarbon();
+        $orders5Years = Order::where('is_paid', true)
+            ->where('paid_at', '>=', $startOf5Years)
+            ->get(['pay_amount', 'paid_at']);
+
+        foreach ($orders5Years as $order) {
+            $dateObj = $order->paid_at ?? $order->created_at;
+            $year = Jalalian::fromCarbon($dateObj)->getYear();
+            if (isset($yearlySales[$year])) {
+                $yearlySales[$year] += $order->pay_amount;
+            }
+        }
         $stats = [
             'products'      => Product::count(),
             'categories'    => Category::count(),
@@ -27,7 +85,7 @@ class AdminController extends Controller
             'sent'          => Order::where('status', \App\Enums\OrderStatus::Sent)->count(),
         ];
 
-        return view('admin.index',compact('stats'));
+        return view('admin.index',compact('stats', 'dailySales', 'monthlySales', 'yearlySales'));
     }
 
     public function list()

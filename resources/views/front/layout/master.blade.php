@@ -20,6 +20,10 @@
 </head>
 <body>
 
+@php
+    $activePages=App\Models\Page::query()->where('is_active',true)->get();
+@endphp
+
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-white bg-opacity-75 fixed-top" style="backdrop-filter: blur(10px); z-index: 1030;">
 
@@ -30,17 +34,27 @@
             بازرگانی بنازاده
         </a>
 
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        <div class="d-flex align-items-center gap-2 d-lg-none ms-auto">
+            <!-- آیکون جستجو - فقط موبایل -->
+            <a href="{{ route('products') }}" class="btn btn-light border-0 shadow-sm text-primary px-2">
+                <i class="bi bi-search fs-5"></i>
+            </a>
+
+            <!-- دکمه همبرگر -->
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ps-3">
                 <li class="nav-item"><a class="nav-link active" href="{{route('home')}}">خانه</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{route('categories')}}">دسته‌بندی‌ها</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{route('products')}}">محصولات</a></li>
-                <li class="nav-item"><a class="nav-link" href="#about">درباره ما</a></li>
-                <li class="nav-item"><a class="nav-link" href="#contact">تماس با ما</a></li>
+                @foreach($activePages as $activePage)
+                    <li class="nav-item"><a class="nav-link" href="{{route('dynomic.page.show',$activePage->slug)}}"> {{$activePage->title}}</a></li>
+                @endforeach
+
             </ul>
 
             <div class="d-flex align-items-center gap-3">
@@ -81,30 +95,35 @@
                 </h5>
                 <p class="opacity-75 lh-lg pe-lg-5">عمده‌فروشی تخصصی مواد غذایی با بیش از ۱۵ سال سابقه در تأمین نیازهای فروشگاه‌ها، رستوران‌ها و سازمان‌ها با تضمین بهترین قیمت و کیفیت.</p>
             </div>
+
             <div class="col-lg-3 col-md-6">
                 <h5 class="mb-4">دسترسی سریع</h5>
                 <ul class="list-unstyled">
-                    <li class="mb-3"><a href="#" class="text-decoration-none text-secondary custom-link">محصولات</a></li>
-                    <li class="mb-3"><a href="#" class="text-decoration-none text-secondary custom-link">دسته‌بندی‌ها</a></li>
-                    <li class="mb-3"><a href="#" class="text-decoration-none text-secondary custom-link">درباره ما</a></li>
-                    <li class="mb-3"><a href="#" class="text-decoration-none text-secondary custom-link">شرایط و قوانین</a></li>
+                    <li class="mb-3"><a href="{{route('products')}}" class="text-decoration-none text-secondary custom-link">محصولات</a></li>
+                    <li class="mb-3"><a href="{{route('categories')}}" class="text-decoration-none text-secondary custom-link">دسته‌بندی‌ها</a></li>
+                    @foreach($activePages as $activePage)
+                        <li class="mb-3"><a href="{{route('dynomic.page.show',$activePage->slug)}}" class="text-decoration-none text-secondary custom-link">{{$activePage->title}}</a></li>
+                    @endforeach
+
+
                 </ul>
             </div>
             <div class="col-lg-4 col-md-12">
                 <h5 class="mb-4">ارتباط با ما</h5>
-                <p class="mb-3 d-flex align-items-center opacity-75"><i class="bi bi-geo-alt me-3 fs-5 text-primary"></i> تهران، بازار بزرگ، خیابان ...</p>
-                <p class="mb-3 d-flex align-items-center opacity-75"><i class="bi bi-telephone me-3 fs-5 text-primary"></i> ۰۲۱-۱۲۳۴۵۶۷۸</p>
-                <p class="mb-3 d-flex align-items-center opacity-75"><i class="bi bi-whatsapp me-3 fs-5 text-success"></i> ۰۹۱۲۱۲۳۴۵۶۷</p>
+                <p class="mb-3 d-flex align-items-center opacity-75"><i class="bi bi-geo-alt me-3 fs-5 text-primary"></i>کرج ٫ بازار بزرگ خیام ٫ غرفه۱۳٫۱۴
+                    بازرگانی بنازاده</p>
+                <p class="mb-3 d-flex align-items-center opacity-75"><i class="bi bi-telephone me-3 fs-5 text-primary"></i> ۰۹۱۲۹۶۱۳۹۶۳</p>
+                <p class="mb-3 d-flex align-items-center opacity-75"><i class="bi bi-telephone me-3 fs-5 text-primary"></i> ۰۹۰۴۶۸۶۳۸۹۵</p>
 
-                <div class="d-flex gap-3 mt-4">
-                    <a href="#" class="btn btn-outline-secondary rounded-circle px-2 py-1"><i class="bi bi-instagram"></i></a>
-                    <a href="#" class="btn btn-outline-secondary rounded-circle px-2 py-1"><i class="bi bi-telegram"></i></a>
-                </div>
+{{--                <div class="d-flex gap-3 mt-4">--}}
+{{--                    <a href="#" class="btn btn-outline-secondary rounded-circle px-2 py-1"><i class="bi bi-instagram"></i></a>--}}
+{{--                    <a href="#" class="btn btn-outline-secondary rounded-circle px-2 py-1"><i class="bi bi-telegram"></i></a>--}}
+{{--                </div>--}}
             </div>
         </div>
         <hr class="border-secondary my-5 opacity-25">
         <div class="text-center small opacity-50 pb-2">
-            © ۱۴۰۴ بازرگانی بنازاده. تمامی حقوق محفوظ است.
+            © 1405-1406 بازرگانی بنازاده. تمامی حقوق محفوظ است.
         </div>
     </div>
 </footer>

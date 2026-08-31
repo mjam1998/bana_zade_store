@@ -7,7 +7,7 @@
             <h1 class="display-4 fw-bold mb-4">  بازرگانی بنازاده</h1>
             <p class="lead mb-5 opacity-75 fw-light mx-auto" style="max-width: 700px;"> تأمین مستقیم مواد غذایی با بهترین قیمت برای فروشگاه‌ها، رستوران‌ها و عمده‌فروشان سراسر کشور مستقیم از کارخانه</p>
             <div class="d-flex justify-content-center gap-3 flex-wrap">
-                <a href="#products" class="btn btn-light text-primary btn-lg px-5 shadow">مشاهده محصولات</a>
+                <a href="{{route('products')}}" class="btn btn-light text-primary btn-lg px-5 shadow">مشاهده محصولات</a>
 
             </div>
         </div>
@@ -125,9 +125,9 @@
                         <h3 class="fw-bold mb-2">عضویت در باشگاه مشتریان عمده</h3>
                         <p class="mb-0 opacity-75 fs-5">قیمت‌های پلکانی و پشتیبانی اختصاصی</p>
                     </div>
-                    <button class="btn btn-warning btn-lg text-dark fw-bold px-5 shadow" data-bs-toggle="modal" data-bs-target="#wholesaleModal">
+                    <a href="{{route('register')}}" class="btn btn-warning btn-lg text-dark fw-bold px-5 shadow" >
                         ثبت‌نام
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>

@@ -209,4 +209,14 @@ class HomeController extends Controller
         return view('front.dynomic-page', compact('page'));
 
     }
+
+    public function showPage($slug)
+    {
+        $page = Page::where('slug', $slug)
+            ->where('is_active', true)
+            ->firstOrFail();
+
+        return view('front.dynomic-page', compact('page'));
+    }
+
 }
